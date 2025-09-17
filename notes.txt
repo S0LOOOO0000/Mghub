@@ -1,0 +1,146 @@
+project-folder/
+│
+├── admin/ (all admin html+php)
+│   ├── admin-attendance.php
+│   ├── admin-bookings.php
+│   ├── admin-dashboard.php
+│   ├── admin-employees.php
+│   ├── admin-inventory.php
+│   └── admin-request.php
+│
+├── client/ (all client html+php)
+│   ├── client-attendance.php
+│   ├── client-bookings.php
+│   ├── client-dashboard.php
+│   ├── client-employees.php
+│   ├── client-inventory.php
+│   └── client-request.php
+│
+├── includes/ (sidebar and navbar) (html+php)
+│   ├── admin-dropdown.php
+│   ├── admin-navbar.php
+│   ├── admin-sidebar.php
+│   ├── client-navbar.php
+│   ├── client-sidebar.php
+│   └── modal.php
+│
+└── css/ (all css)
+│   ├── style.css (main css)
+│   └── components/
+│        ├── breadcrumb.css
+│        ├── button.css
+│        ├── dashboard.css
+│        ├── dropdown.css
+│        ├── navbar.css
+│        ├── form.css
+│        ├── table.css
+│        └── sidebar.css
+│
+├── js/ (all js script)
+│   ├── dashboard.js
+│   ├── event.js
+│   ├── employee.js
+│   └── inventory.js
+│
+├── php/ (backend)
+│   ├──login.php (backend)
+│   ├── add-employee.php (add employee)
+│   ├── add-inventory.php (add employee)
+│   ├── add-event.php (add employee)
+│   ├── delete-inventory.php
+│   ├── delete-event.php
+│   ├── delete-employee.php
+│   ├── edit-inventory.php
+│   ├── edit-event.php
+│   ├── edit-employee.php
+│   ├── get-employee.php (fetch data)
+│   └── get-inventory.php (fetch data)
+│
+├── config/ (database connection)
+│   ├── phpqrcode folder
+│   └── database-connection.php (Connecting to myphpadmin database)
+│
+├── images/ 
+│   ├── employee-photos (folder for image of employee when adding employee)
+│   ├── qr-codes (folder for Qr codes of employee, when adding employee)
+│   └── svg (folder for some svg, when adding employee)
+├── index.php (login html+css)
+├── logout.php
+
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/components/sidebar.css">
+
+
+Responsive table
+https://adrianroselli.com/2017/11/a-responsive-accessible-table.html
+
+CSS trick
+https://www.iamsajid.com/css-tricks
+
+Responsive cards
+https://codepen.io/whosajid/pen/poXgZVp
+
+Icons
+https://fonts.google.com/icons?icon.query=dashboard&icon.size=24&icon.color=%23e3e3e3
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+Fonts
+https://fonts.google.com/?preview.size=8&icon.size=24&icon.color=%23e3e3e3
+
+Dashboard Charts
+https://codepen.io/andreic/pen/dyZyJZ
+
+
+Thesis Names
+https://codepen.io/Nidal95/pen/RNNgWNM
+
+Coding2go
+https://coding2go.com/#source-codes
+
+
+Background Beige
+
+HEX: #F9F1E8 (light cream)
+
+Dark Brown (bundle headers, icons, footer)
+
+HEX: #4A2C16 (rich dark brown)
+
+Light Brown (subheader "promo rates")
+
+HEX: #A68463 (warm medium brown)
+
+Black (main text & logo)
+
+HEX: #000000
+
+Gray (checklist text, small details)
+
+HEX: #666666 to #777777
+
+Accent Yellow (Insta360 branding in footer)
+
+HEX: #FDC500 (bright yellow)
+
+
+Montserrat Regular
+
+
+
+table name: tbl_employee
+
+employee_id
+employee_code
+qr_code
+first_name
+last_name
+email_address
+contact_number
+employee_image
+work_station
+role
+shift
+status
+
+attendance_id	employee_id	attendance_date	time_in	time_out	attendance_status	verification_type	created_at	

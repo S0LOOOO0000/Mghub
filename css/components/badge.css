@@ -1,0 +1,208 @@
+:root {
+--badge-new: #3498db;
+--badge-active: #27ae60;
+--badge-inactive: #95a5a6;
+
+
+}
+
+/* Status & Shift */
+.table-card table tr td .status, 
+.table-card table tr td .shift {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-block;
+    user-select: none;
+}
+
+
+/* Common Badge Styles */
+td.status span,
+td.emp-status span,
+td.emp-shift span.shift {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-block;
+    user-select: none;
+    text-transform: capitalize;
+}
+
+/* Attendance Status Badges */
+td.status span.present {
+  background: var(--status-present-bg);
+  color: var(--status-text-light);
+}
+
+td.status span.late {
+  background: var(--status-late-bg);
+  color: var(--status-text-dark);
+}
+
+td.status span.absent {
+  background: var(--status-absent-bg);
+  color: var(--status-text-light);
+}
+
+td.status span.on-leave {
+  background: var(--status-on-leave-bg);
+  color: var(--status-text-dark);
+}
+
+td.status span.request {
+  background: var(--status-request-bg);
+  color: var(--status-text-light);
+}
+
+/* Attendance Status Badges */
+td.status span.pending {
+  background-color: var(--badge-pending);
+  color: #3a2f1f; 
+}
+
+/* Employee Shift Badge */
+td.emp-shift span.fixed {
+  background: #8e44ad; 
+  color: #fff;
+  font-weight: 600;
+}
+
+td.emp-status span.new {
+  background: var(--badge-new);
+  color: #fff;
+}
+
+td.emp-status span.active {
+  background: var(--badge-active);
+  color: #fff;
+}
+
+td.emp-status span.inactive {
+  background: var(--badge-inactive);
+  color: #fff;
+}
+
+/* Shift Badges */
+td.emp-shift span.morning {
+  background: var(--shift-morning-bg);
+  color: var(--shift-text-dark);
+}
+
+td.emp-shift span.mid {
+  background: var(--shift-mid-bg);
+  color: var(--shift-text-dark);
+}
+
+td.emp-shift span.night {
+  background: var(--shift-night-bg);
+  color: var(--shift-text-light);
+}
+
+/* NEW: Fixed Shift Badge */
+td.emp-shift span.fixed {
+  background: #8e44ad; /* Purple */
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Inventory Status Badges */
+.status.in-stock {
+  background: #27ae60; /* green */
+  color: #fff;
+}
+
+.status.low-stock {
+  background: #f39c12; /* orange */
+  color: #fff;
+}
+
+.status.out-of-stock {
+  background: #e74c3c; /* red */
+  color: #fff;
+}
+
+.status.overstock {
+  background: #8e44ad; /* purple */
+  color: #fff;
+}
+
+/* Event Status Badges */
+.status.booked {
+  background: #3498db; /* blue */
+  color: #fff;
+}
+
+.status.cancelled {
+  background: #e74c3c; /* red */
+  color: #fff;
+}
+
+.status.completed {
+  background: #27ae60; /* green */
+  color: #fff;
+}
+
+.status.no-show {
+  background: #f39c12; /* orange */
+  color: #fff;
+}
+
+
+/* Attendance Badge Status */
+.pending {
+    background-color: var(--badge-pending);
+    color: #333; /* dark text for readability on lighter background */
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    color: #3a2f1f;
+}
+
+.present {
+    background-color: var(--badge-approved);
+    color: var(--white);
+
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.late {
+    background-color: var(--warning-bg-color);
+    color: var(--white);
+
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.absent {
+    background-color: var(--danger-bg-color);
+    color: var(--white);
+
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+
+.badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-block;
+    user-select: none;
+  color: #fff;
+
+}
+
+.role-admin { background-color: #f44336; }   /* red */
+.role-staff { background-color: #2196f3; }   /* blue */
+
+.action-add { background-color: #4caf50; }   /* green */
+.action-edit { background-color: #ff9800; }  /* orange */
+.action-delete { background-color: #9c27b0; } /* purple */

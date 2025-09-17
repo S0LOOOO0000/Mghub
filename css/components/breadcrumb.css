@@ -1,0 +1,33 @@
+.head-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	grid-gap: 16px;
+	flex-wrap: wrap;
+}
+.head-title .left h1 {
+	font-size: 36px;
+	font-weight: 600;
+	margin-bottom: 10px;
+	color: var(--font);
+}
+.head-title .left .breadcrumb {
+	display: flex;
+	align-items: center;
+	grid-gap: 16px;
+}
+.head-title .left .breadcrumb li {
+	color: var(--font);
+}
+.head-title .left .breadcrumb .right-icon {
+	color: var(--font);
+}
+.head-title .left .breadcrumb li a {
+	color: var(--font);
+	pointer-events: none;
+}
+.head-title .left .breadcrumb li a.active {
+	color: var(--active);
+	pointer-events: unset;
+	font-weight: 600;
+}

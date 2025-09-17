@@ -1,0 +1,98 @@
+/* ================================
+   Preview Modal Theme
+   File: request-preview.css
+   ================================ */
+
+.preview-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 3000;
+  justify-content: center;
+  align-items: center;
+}
+
+.preview-modal.show {
+  display: flex;
+}
+
+.preview-modal-content {
+  background: #fff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  animation: modalFadeIn 0.3s ease;
+  box-sizing: border-box;
+}
+
+.preview-modal .head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.preview-modal .head h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #0077cc;
+}
+
+.preview-modal .close-btn {
+  font-size: 26px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+}
+
+.preview-body {
+  margin-bottom: 20px;
+}
+
+.preview-section {
+  margin-bottom: 15px;
+}
+
+.preview-section h4 {
+  font-size: 16px;
+  color: #0077cc;
+  margin-bottom: 8px;
+}
+
+.preview-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.btn-approve, .btn-decline {
+  padding: 10px 18px;
+  font-size: 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-approve {
+  background: #28a745;
+  color: #fff;
+}
+
+.btn-decline {
+  background: #dc3545;
+  color: #fff;
+}
+
+.btn-approve:hover { background: #218838; }
+.btn-decline:hover { background: #c82333; }
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

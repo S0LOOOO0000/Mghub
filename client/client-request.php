@@ -1,0 +1,199 @@
+<?php
+include __DIR__ . '/../php/get-employee.php';
+$success = $_GET['success'] ?? null;
+$error = $_GET['error'] ?? null;
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Employee Requests</title>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/components/forrm-request.css">
+</head>
+<body>
+
+<section class="sidebar">
+  <?php include '../includes/client-sidebar.php'; ?>
+</section>
+
+<section class="content">
+  <nav>
+    <i class="material-icons icon-menu">menu</i>
+    <?php include '../includes/admin-navbar.php'; ?>
+  </nav>
+
+  <div class="main">
+    <div class="head-title">
+      <div class="left">
+        <h1>Employee Requests</h1>
+        <ul class="breadcrumb">
+          <li><a>Attendance Management</a></li>
+          <li><i class='material-icons right-icon'>chevron_right</i></li>
+          <li><a class="active">Home</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <?php if ($success): ?>
+      <div class="success-popup"><?= htmlspecialchars($success) ?></div>
+    <?php endif; ?>
+    <?php if ($error): ?>
+      <div class="error-popup"><?= htmlspecialchars($error) ?></div>
+    <?php endif; ?>
+
+    <div class="table-container">
+      <div class="table-card">
+        <div class="head">
+          <h2>Employee Management</h2>
+          <?php include '../includes/employee-dropdown.php'; ?>
+
+          <!-- QR Scanner Buttons -->
+          <button class="btn-time-in-icon" onclick="openQrScanner('change')">
+            <i class="material-icons">login</i> Request Change
+          </button>
+          <button class="btn-time-out-icon" onclick="openQrScanner('leave')">
+            <i class="material-icons">logout</i> Request Leave
+          </button>
+        </div>
+
+        <table id="employeeTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>ID</th>
+              <th>IMAGE</th>
+              <th>NAME</th>
+              <th>CONTACT</th>
+              <th>STATION & ROLE</th>
+              <th>SHIFT</th>
+              <th>STATUS</th>
+              <th>EMPLOYED</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php if(!empty($employees)): $counter=1; ?>
+              <?php foreach($employees as $emp): ?>
+                <tr data-employee-id="<?= $emp['employee_id'] ?>">
+                  <td><?= $counter++ ?></td>
+                  <td><?= htmlspecialchars($emp['employee_code']) ?></td>
+                  <td>
+                    <img src="<?= !empty($emp['employee_image']) ? '../images/employee-photos/' . htmlspecialchars($emp['employee_image']) : 'https://placehold.co/50x50.png' ?>" width="50">
+                  </td>
+                  <td><?= htmlspecialchars($emp['first_name'].' '.$emp['last_name']) ?><br><?= htmlspecialchars($emp['email_address']) ?></td>
+                  <td><?= htmlspecialchars($emp['contact_number']) ?></td>
+                  <td><?= htmlspecialchars($emp['work_station'].' / '.$emp['role']) ?></td>
+                  <td><span class="shift <?= strtolower($emp['shift']) ?>"><?= htmlspecialchars($emp['shift']) ?></span></td>
+                  <td><?= htmlspecialchars($emp['status']) ?></td>
+                  <td><?= date("F j, Y", strtotime($emp['created_at'])) ?></td>
+                </tr>
+              <?php endforeach; ?>
+            <?php else: ?>
+              <tr><td colspan="9">No employees found</td></tr>
+            <?php endif; ?>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-pagination-container">
+        <div class="total-rows" id="employeeTotalRows">
+          Showing 1-10 of <?= $totalEmployees ?> employees
+        </div>
+        <div class="table-pagination" id="employeePagination"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QR Scanner Modal -->
+<div id="qrModal">
+  <div class="modal-content">
+    <span id="closeQrModal" class="close">&times;</span>
+    <h3 id="qrModalTitle">Scan QR</h3>
+    <div id="qr-reader"></div>
+  </div>
+</div>
+
+<!-- Attendance/Request Result Modal -->
+<div id="attendanceModal" class="attendance-modal">
+  <div class="modal-box">
+    <h3 id="attendanceMessage"></h3>
+    <p id="attendanceDetails"></p>
+  </div>
+</div>
+
+<script src="../js/html5-qrcode.min.js"></script>
+<script>
+let html5QrCode;
+
+function openQrScanner(action) {
+  const modal = document.getElementById("qrModal");
+  const title = document.getElementById("qrModalTitle");
+  title.textContent = action === "change" ? "Scan QR to Request Change Shift" : "Scan QR to Request Leave";
+  modal.style.display = "flex";
+
+  html5QrCode = new Html5Qrcode("qr-reader");
+
+  Html5Qrcode.getCameras().then(cameras => {
+    if (!cameras.length) return alert("No camera found");
+
+    html5QrCode.start(
+      cameras[0].id,
+      { fps: 10, qrbox: 250 },
+      qrMessage => {
+        html5QrCode.stop().then(() => html5QrCode.clear());
+        modal.style.display = "none";
+
+        fetch("../php/client-request-function.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: "qr_code=" + encodeURIComponent(qrMessage) + "&action=" + action
+        })
+        .then(res => res.json())
+        .then(data => showAttendanceResult(data))
+        .catch(err => console.error(err));
+      },
+      err => {}
+    ).catch(err => console.error(err));
+  }).catch(err => { console.error(err); alert("Camera access error"); modal.style.display = "none"; });
+}
+
+function closeQrScanner() {
+  const modal = document.getElementById("qrModal");
+  modal.style.display = "none";
+  if (html5QrCode) html5QrCode.stop().then(()=> html5QrCode.clear()).catch(()=>{});
+}
+
+document.getElementById("closeQrModal")?.addEventListener("click", closeQrScanner);
+
+function showAttendanceResult(data) {
+  const modal = document.getElementById("attendanceModal");
+  const message = document.getElementById("attendanceMessage");
+  const details = document.getElementById("attendanceDetails");
+
+  modal.classList.remove("success","error");
+  modal.classList.add(data.status);
+
+  message.textContent = data.message;
+  details.innerHTML = `Name: ${data.name || '-'}<br>Type: ${data.type || '-'}<br>Date: ${data.date || '--'}`;
+  modal.style.display = "flex";
+
+  setTimeout(()=> modal.style.display="none", 4000);
+}
+</script>
+<style>
+#qrModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10000; justify-content:center; align-items:center; }
+.modal-content { background:#fff; padding:20px; border-radius:12px; width:500px; max-width:90%; text-align:center; }
+#qr-reader { width:100%; height:400px; margin:10px auto; }
+#qr-reader video { width:100% !important; height:100% !important; object-fit:cover; border-radius:8px; }
+.close { float:right; font-size:22px; cursor:pointer; }
+
+.attendance-modal { display:none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:2000; }
+.attendance-modal .modal-box { background:#fff; padding:20px; border-radius:10px; text-align:center; max-width:350px; }
+.attendance-modal.success .modal-box { border:2px solid green; }
+.attendance-modal.error .modal-box { border:2px solid red; }
+</style>
+</body>
+</html>

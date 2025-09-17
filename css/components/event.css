@@ -1,0 +1,481 @@
+/* ==============================
+   Container + Card
+============================== */
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+  background-color: var(--secondary-bg-color);
+  color: var(--text-color);
+  min-height: 770px;
+  border-radius: 20px;
+  font-family: var(--primary-font);
+}
+
+.card {
+  flex: 1;
+  background: var(--light);
+  overflow-x: auto;
+  padding: 20px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==============================
+   Calendar Layout
+============================== */
+.calendar-container {
+  display: flex;
+  flex: 1;
+  gap: 20px;
+}
+
+/* ------------------------------
+   Left Panel
+------------------------------ */
+.calendar-info {
+  flex: 1;
+  background-color: var(--secondary-bg-color);
+  padding: 1.5rem;
+  border-radius: 10px;   /* Rounded left side like a card */
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.selected-date {
+  display: flex;
+  align-items: center;      /* align all items on one line */
+  gap: 0.75rem;              /* spacing between icon and text */
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+.selected-date .calendar-icon {
+  font-size: 2rem;
+  color: var(--main-background-color);  /* you can change this color anytime */
+  flex-shrink: 0;
+}
+
+.selected-date .weekday {
+  font-weight: 700;
+  font-size: 1.8rem;
+  opacity: 0.85;
+}
+
+.selected-date .day {
+  font-size: 1.8rem;
+  font-weight: 700;   /* bold */
+  line-height: 1;
+}
+
+.selected-date .month {
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1;
+}
+/* Events Header */
+.event-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.event-header h4 { 
+  margin: 0; 
+  font-size: 1.8rem;
+  font-weight: 700;
+
+}
+
+/* Filter buttons container (but buttons styles removed) */
+.filter-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Event list (scrollable) */
+.event-list {
+  list-style: none;
+  padding: 0px;
+  border-radius: 10px;
+  margin: 0;
+  flex: 1;
+  overflow-y: auto;          /* enables scrolling */
+  max-height: 500px;          /* limit height to prevent overflow */
+  padding-right: 0.5rem;      /* space for scrollbar */
+}
+
+.event-list::-webkit-scrollbar {
+  width: 10px;
+}
+.event-list::-webkit-scrollbar-thumb {
+  background: var(--gray);
+  border-radius: 3px;
+}
+.event-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.event-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  background: rgba(0,0,0,0.03);
+  margin-bottom: 0.5rem;
+  border-radius: 0.25rem;
+  cursor: pointer;            /* Show pointer on hover */
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+.event-list li.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+.no-events {
+  text-align: center;
+  margin-top: 1rem;
+  font-style: italic;
+  color: var(--gray);
+}
+
+
+.event-list li:hover {
+    background-color: rgba(0,0,0,0.08); /* Slightly darker on hover */
+    transform: scale(1.02);              /* Optional subtle zoom effect */
+}
+
+/* ------------------------------
+   Right Panel
+------------------------------ */
+.calendar-main {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--secondary-bg-color);
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+/* Calendar Header */
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.calendar-controls-left {
+    display: flex;
+    gap: 1rem;
+}
+.calendar-controls-month {
+    position: relative;      /* container for absolute arrows */
+    width: 300px;            /* or whatever total width you want */
+    display: flex;
+    justify-content: center;  /* center the month label */
+    align-items: center;
+}
+
+#calendar-month {
+    display: inline-block;
+    width: 100px;             /* fixed width for all months */
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+    gap: 1rem;
+}
+
+#prev-month, #next-month {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+}
+
+#prev-month {
+    left: 0;
+}
+
+#next-month {
+    right: 0;
+}
+.calendar-header .month-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+/* Arrow buttons (navigation, without button styling) */
+.arrow {
+  background: var(--light);
+  border: 1px solid var(--border-line-color);
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+}
+.arrow:hover { background: var(--button-hover); color: var(--white); }
+
+/* Weekdays row */
+.weekdays {
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+.weekdays span {
+  flex: 1;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Dates grid */
+.dates {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+}
+.dates div {
+  width: calc(100% / 7);
+  text-align: center;
+  padding: 0.5rem 0;
+  border: 1px solid var(--border-line-color);
+  cursor: pointer;
+  position: relative;
+  border-radius: 5px;
+  background-color: var(--light);
+  transition: 0.3s ease;
+}
+.dates div.today { background-color: var(--orange); color: var(--white); }
+.dates div.selected { background-color: var(--button-color); color: var(--white); }
+.dates div:hover { background-color: var(--light-orange); }
+
+/* Event dot indicator */
+.dates div.has-event::after {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  background-color: var(--button-color);
+  border-radius: 50%;
+}
+
+/* ------------------------------
+   Event Items
+------------------------------ */
+.event-item {
+  padding: 0.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+/* Event Actions container (buttons removed) */
+.event-actions {
+  margin-top: 0.3rem;
+}
+
+/* ------------------------------
+   Responsive
+------------------------------ */
+@media (max-width: 768px) {
+  .calendar-container { flex-direction: column; }
+  .calendar-info, .calendar-main { width: 100%; }
+}
+
+
+
+/* =======================================
+   FOURTH BATCH: EVENT BUTTONS (Styled like global buttons)
+======================================= */
+
+/* General buttons inside event */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: var(--primary-font);
+  font-weight: 500;
+}
+
+/* Small button */
+.btn.small {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  border-radius: 10px;
+  background-color: var(--light);
+  color: var(--dark);
+  font-family: var(--primary-font);
+  box-shadow: 0 2px 5px rgba(62,44,35,0.15);
+   transition: background 0.2s ease, transform 0.15s ease;
+}
+.btn.small:hover {
+  background-color: var(--button-hover);
+  color: #fff;
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(62,44,35,0.25);
+}
+
+/* Danger / Delete button */
+.btn.danger {
+  background-color: #e74c3c;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 5px rgba(62,44,35,0.15);
+   transition: background 0.2s ease, transform 0.15s ease;
+}
+.btn.danger:hover {
+  background-color: #b22222;
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(62,44,35,0.25);
+}
+
+/* Filter buttons */
+.filter-buttons button {
+  flex: 1 1 auto; 
+  min-width: 100px; 
+  padding: 0.5rem;
+  border-radius: 10px;
+  background-color: var(--light);
+  color: var(--dark);
+  font-family: var(--primary-font);
+  box-shadow: 0 2px 5px rgba(62,44,35,0.15);
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+.filter-buttons button.active {
+  background-color: var(--button-color);
+  color: #fff;
+}
+.filter-buttons button:hover:not(.active) {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(62,44,35,0.25);
+  background-color: var(--button-hover);
+  color: #fff;
+}
+
+
+.event-actions .btn.small {
+  height: auto;             /* allow height to adjust */
+  width: auto;              /* allow width to adjust */
+  padding: 0.4rem 0.6rem;   /* responsive padding */
+  height: 30px;
+  width: 30px;
+  font-size: 0.8rem;        /* smaller text */
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+
+.event-actions .btn.small.preview-btn {
+  height: 30px;
+  width: 30px;
+  background-color: #9b59b6; /* purple tone */
+  color: #fff;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+.event-actions .btn.small.preview-btn:hover {
+  background-color: #8e44ad;
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(62,44,35,0.25);
+}
+/* Event actions buttons (edit/delete small buttons) */
+.event-actions .btn.small.edit-btn {
+  height: 30px;
+  width: 30px;
+  background-color: #3498db;
+  color: #fff;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+.event-actions .btn.small.edit-btn:hover {
+  background-color: #2a80b9;
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(62,44,35,0.25);
+}
+
+.event-actions .btn.small.danger {
+  height: 30px;
+  width: 30px;
+  background-color: #e74c3c;
+  color: #fff;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+.event-actions .btn.small.danger:hover {
+  background-color: #b22222;
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(62,44,35,0.25);
+}
+
+#year-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: var(--light);
+    color: var(--dark);
+    padding: 0.4rem 0.8rem;
+    border-radius: 10px;
+    font-family: var(--primary-font);
+    font-size: 0.85rem;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(62,44,35,0.15);
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+#year-select:hover {
+    background-color: var(--button-hover);
+    color: #fff;
+    transform: scale(1.05);
+}
+
+@media (max-width: 1400px) {
+  .filter-buttons button {
+    padding: 0.45rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 1200px) {
+  .filter-buttons button {
+    padding: 0.4rem;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 1000px) {
+  .filter-buttons button {
+    padding: 0.35rem;
+    font-size: 0.7rem;
+  }
+}
+
+/* Between 1400px and 1000px */
+@media (max-width: 1400px) {
+  .event-actions .btn.small {
+    padding: 0.35rem 0.5rem;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 1200px) {
+  .event-actions .btn.small {
+    padding: 0.3rem 0.45rem;
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 1000px) {
+  .event-actions {
+    display: flex;
+    flex-wrap: wrap;      /* wrap buttons if not enough space */
+    gap: 0.3rem;
+  }
+  .event-actions .btn.small {
+    flex: 1 1 auto;       /* allow button to grow/shrink */
+    padding: 0.25rem 0.4rem;
+    font-size: 0.65rem;
+  }
+}

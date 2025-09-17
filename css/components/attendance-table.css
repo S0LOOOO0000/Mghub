@@ -1,0 +1,358 @@
+@import url('../style.css');
+
+/* =========================
+   ATTENDANCE RECORD CONTAINER
+========================= */
+.attendance-record-container {
+    background: #fff;
+    padding: 20px 16px;
+    border-radius: 16px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    font-family: 'Poppins', sans-serif;
+}
+
+/* =========================
+   FILTER SECTION
+========================= */
+.filter-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 25px;
+    background: #fafafa;
+    padding: 12px 16px;
+    border-radius: 15px;
+    box-shadow: 0 2px 5px rgba(62,44,35,0.05);
+    align-items: center;
+}
+
+.filter-section label {
+    font-weight: 500;
+    color: #3e2c23;
+}
+
+.attendance-filter-dropdown {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 150px;
+    padding: 6px 12px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    position: relative;
+    appearance: none;
+}
+
+.attendance-filter-dropdown:hover {
+    transform: scale(1.03);
+    box-shadow: 0 2px 5px rgba(62,44,35,0.05);
+}
+
+.attendance-filter-dropdown::after {
+    content: '▼';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: #3e2c23;
+    pointer-events: none;
+}
+
+/* =========================
+   TABLE STYLING
+========================= */
+.table-responsive {
+    overflow-x: auto;
+    border-radius: 12px;
+}
+
+.table-attendance-monthly {
+    width: max-content;
+    min-width: 800px;
+    border-collapse: collapse; /* collapse borders for clean grid */
+    font-size: 13px;
+}
+
+.table-attendance-monthly th,
+.table-attendance-monthly td {
+    padding: 8px 12px;
+    text-align: center;
+    vertical-align: middle;
+    color: #3e2c23;
+    border: 1px solid #ddd; /* thin border for every cell */
+}
+
+/* Sticky header */
+.table-attendance-monthly th {
+    background: #fafafa;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+/* Employee name column */
+.table-attendance-monthly td:first-child {
+    text-align: left;
+    font-weight: 500;
+}
+
+/* Hover effect for rows (light) */
+.table-attendance-monthly tbody tr:hover {
+    background: rgba(62,44,35,0.03);
+}
+
+/* Status icons (no background color, just icon color) */
+.att-status {
+    font-size: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.att-present { color: #2e7d32; }
+.att-late    { color: #f9a825; }
+.att-absent  { color: #c62828; }
+.att-change  { color: #1565c0; }
+.att-leave   { color: #512da8; }
+
+/* Row totals & daily summary */
+.totals-row td,
+.totals-summary td {
+    font-weight: 600;
+    border: 1px solid #bbb; /* slightly darker border for totals */
+    text-align: center;
+    padding: 8px 12px;
+}
+
+/* Rounded corners for table edges */
+.table-attendance-monthly tbody tr td:first-child {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+.table-attendance-monthly tbody tr td:last-child {
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+/* =========================
+   LEGEND
+========================= */
+.attendance-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-bottom: 20px;
+    list-style: none;
+    font-size: 14px;
+    color: #3e2c23;
+}
+
+.attendance-legend li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+}
+
+/* =========================
+   MODAL
+========================= */
+.attendance-form-modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(2px);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.attendance-form-modal.active {
+    display: flex;
+}
+
+.attendance-form-modal-content {
+    background: #fff;
+    border-radius: 20px;
+    padding: 25px 30px;
+    width: 520px;
+    max-width: 95%;
+    position: relative;
+    box-shadow: 0 2px 5px rgba(62,44,35,0.1);
+}
+
+.attendance-form-modal-header h2,
+.attendance-form-modal-close {
+    color: #3e2c23;
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+.table-responsive::-webkit-scrollbar {
+    height: 8px;
+}
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #3e2c23;
+    border-radius: 10px;
+}
+.table-responsive::-webkit-scrollbar-track {
+    background: #fafafa;
+    border-radius: 10px;
+}
+
+
+/* ===============================
+   Export Attendance Modal
+================================= */
+
+
+/* Export Modal */
+#exportModal {
+  display: none; /* hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 10000;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(2px);
+  animation: fadeBg 0.3s ease-in-out;
+}
+
+/* Show modal when active */
+#exportModal.active {
+  display: flex;
+}
+
+/* Modal content box */
+.attendance-form-modal-content {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 480px;
+  max-width: 90%;
+  padding: 25px 30px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  position: relative;
+  animation: fadeIn 0.3s ease-in-out;
+  font-family: 'Poppins', sans-serif;
+  max-height: 90%; /* ensure it doesn’t overflow screen height */
+  overflow-y: auto; /* scroll if content exceeds viewport */
+}
+
+/* Modal header */
+.attendance-form-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.attendance-form-modal-header h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.attendance-form-modal-close {
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  font-weight: bold;
+  color: #2c3e50;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.attendance-form-modal-close:hover {
+  color: #e74c3c;
+  transform: scale(1.1);
+}
+
+/* Modal body */
+.attendance-form-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Labels */
+.attendance-form-modal-body label {
+  font-weight: 500;
+  color: #2c3e50;
+  margin-bottom: 5px;
+  display: block;
+  font-size: 14px;
+}
+
+/* Select dropdowns */
+.attendance-form-modal-body select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #bdc3c7;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #f9f9f9;
+  color: #2c3e50;
+  transition: all 0.2s ease-in-out;
+}
+
+.attendance-form-modal-body select:focus {
+  border-color: #3498db;
+  background: #ffffff;
+  box-shadow: 0 0 5px rgba(52,152,219,0.3);
+  outline: none;
+}
+
+/* Export button */
+.attendance-form-modal-btn {
+  margin-top: 20px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background-color: #3498db;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(62,44,35,0.15);
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.attendance-form-modal-btn:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(62,44,35,0.25);
+}
+
+/* Hide Excel/PDF filters initially */
+#filtersPDF {
+  display: none;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(-20px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+@keyframes fadeBg {
+  from {background: rgba(0,0,0,0);}
+  to {background: rgba(0,0,0,0.5);}
+}

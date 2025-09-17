@@ -1,0 +1,72 @@
+.success-popup, .error-popup {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    z-index: 1005;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.success-popup {
+    background: var(--green);
+    color: var(--white);
+}
+
+.error-popup {
+    background: var(--red);
+    color: var(--white);
+}
+
+
+/* 🔹 Small variant for confirm dialogs */
+.modal-content.small {
+  max-width: 400px;
+  text-align: center;
+}
+
+
+
+
+
+/* ------------------------ */
+/* Confirmation Modal CSS   */
+/* ------------------------ */
+
+/* Modal container */
+.confirmation-modal {
+  display: none; /* hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 3000;
+
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* Modal content */
+.confirmation-modal .modal-content {
+  background-color: var(--white);
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px; /* small size */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+/* Modal header */
+.confirmation-modal .modal-content .head h3 {
+  margin: 0 0 15px 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+

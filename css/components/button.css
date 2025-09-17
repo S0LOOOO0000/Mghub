@@ -1,0 +1,209 @@
+/* Reset default button styles */
+.btn,
+.btn-submit,
+.btn-cancel,
+.btn-danger,
+.btn-add,
+.btn-time-in-icon,
+.btn-time-out-icon,
+.tab-btn,
+.filter-buttons button,
+.event-actions .btn,
+.event-actions .btn.small,
+.custom-dropdown .dropdown-toggle {
+  border: none;            /* remove default border */
+  outline: none;           /* remove focus outline */
+  background-clip: padding-box; /* prevents border artifacts */
+  -webkit-appearance: none; /* for Safari / Chrome */
+  -moz-appearance: none;    /* for Firefox */
+  appearance: none;
+}
+
+/* Optional: remove any focus shadow on click */
+.btn:focus,
+.btn-submit:focus,
+.btn-cancel:focus,
+.btn-danger:focus,
+.btn-add:focus,
+.btn-time-in-icon:focus,
+.btn-time-out-icon:focus,
+.tab-btn:focus,
+.filter-buttons button:focus,
+.event-actions .btn:focus,
+.event-actions .btn.small:focus,
+.custom-dropdown .dropdown-toggle {
+  outline: none;
+  box-shadow: 0 1px 5px rgba(62,44,35,0.15); /* keep your hover shadow only */
+}
+
+.close-btn {
+  border: none;            /* remove default border */
+  outline: none;           /* remove focus outline */
+  background-clip: padding-box; /* prevents border artifacts */
+  -webkit-appearance: none; /* for Safari / Chrome */
+  -moz-appearance: none;    /* for Firefox */
+  appearance: none;
+}
+
+.close-btn {
+ outline: none;
+}
+
+/* =======================================
+   FOURTH BATCH: EVENT BUTTONS (Styled like global buttons)
+======================================= */
+
+.btn,
+.filter-buttons button,
+.event-actions .btn,
+.event-actions .btn.small {
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, color 0.3s ease;
+}
+
+
+/* =======================================
+   FIRST BATCH: ACTION BUTTONS
+   (Add / Time In / Time Out)
+   Slightly larger for prominence
+======================================= */
+.btn-add,
+.btn-time-in-icon,
+.btn-time-out-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: var(--primary-font);
+  font-weight: 600;
+  font-size: 17px;
+  padding: 8px 18px;       /* larger for prominence */
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(62,44,35,0.15);
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+/* Hover lift effect */
+.btn-add:hover,
+.btn-time-in-icon:hover,
+.btn-time-out-icon:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(62,44,35,0.25);
+}
+
+/* Add Button */
+.btn-add {
+  background-color: var(--light-blue);
+  color: var(--blue);
+}
+
+/* Time In Button */
+.btn-time-in-icon {
+  background-color: var(--light-green);
+  color: var(--green);
+}
+.btn-time-in-icon:hover {
+  background-color: #a5d6a7;
+}
+
+/* Time Out Button */
+.btn-time-out-icon {
+  background-color: var(--light-red);
+  color: var(--red);
+}
+.btn-time-out-icon:hover {
+  background-color: #ef9a9a;
+}
+
+/* Icon inside action buttons */
+.btn-add i,
+.btn-time-in-icon i,
+.btn-time-out-icon i {
+  font-size: 22px; /* slightly larger icons */
+  transition: color 0.3s ease;
+}
+.btn-add i { color: var(--blue); }
+.btn-time-in-icon i { color: var(--green); }
+.btn-time-out-icon i { color: var(--red); }
+
+/* =======================================
+   THIRD BATCH: FORM / MODAL BUTTONS
+   (Submit / Cancel / Delete / Close / Modal row)
+======================================= */
+/* General form/modal buttons */
+.btn-submit,
+.btn-cancel,
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: var(--primary-font);
+  font-weight: 600;
+  font-size: 16px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(62,44,35,0.15);
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, color 0.3s ease;
+}
+
+/* Hover lift effect */
+.btn-submit:hover,
+.btn-cancel:hover,
+.btn-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(62,44,35,0.25);
+}
+
+/* Submit */
+.btn-submit {
+  background-color: var(--blue);
+  color: var(--light);
+}
+.btn-submit:hover {
+  background-color: #337ab7;
+}
+
+/* Cancel */
+.btn-cancel {
+  background-color: var(--grey);
+  color: var(--dark);
+}
+.btn-cancel:hover {
+  background-color: #ccc;
+}
+
+/* Delete / Danger */
+.btn-danger {
+  background-color: var(--red);
+  color: #fff;
+}
+.btn-danger:hover {
+  background-color: #b22222;
+}
+
+/* Modal close button */
+.close-btn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 28px;
+  font-weight: bold;
+  background-color: transparent;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+.close-btn:hover {
+  color: #ff4d4d;
+  transform: scale(1.1);
+}
+
+/* Modal actions row */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}

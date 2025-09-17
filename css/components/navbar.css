@@ -1,0 +1,110 @@
+@import url('../style.css');
+
+
+/* NAVBAR */
+nav {
+	height: 56px;
+	background: var(--container-bg-color);
+	padding: 0 24px;
+	display: flex;
+	align-items: center;
+	grid-gap: 24px;
+	font-family: var(--lato);
+	position: sticky;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+
+}
+
+nav::before {
+	content: '';
+	position: absolute;
+	width: 40px;
+	height: 40px;
+	bottom: -40px;
+	left: 0;
+	border-radius: 50%;
+	box-shadow: -20px -20px 0 var(--container-bg-color);
+}
+nav a {
+	color: var(--dark);
+}
+.icon-menu{
+	cursor: pointer;
+	color: var(--dark);
+}
+.icon-notif{
+	cursor: pointer;
+	color: var(--dark);
+}
+.nav-link {
+	font-size: 16px;
+	transition: 0.3s ease;
+}
+.nav-link:hover {
+	color: var(--blue);
+}
+
+/* SEARCH FORM */
+form {
+	max-width: 400px;
+	width: 100%;
+	margin-right: auto;
+}
+
+.form-input {
+	display: flex;
+	align-items: center;
+	height: 36px;
+}
+
+/* Input with inner shadow */
+.form-input input {
+	flex-grow: 1;
+	padding: 0 16px;
+	height: 100%;
+	border: none;
+	background: var(--secondary-bg-color);
+	border-radius: 36px 0 0 36px;
+	outline: none;
+	width: 100%;
+	color: var(--dark);
+
+	/* Inner shadow */
+	box-shadow: inset 0 2px 5px rgba(0,0,0,0.01);
+	transition: box-shadow 0.3s ease;
+}
+
+.form-input input:focus {
+	box-shadow: inset 0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* Button with inner shadow */
+.form-input button {
+	width: 36px;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: var(--secondary-bg-color);
+	color: var(--dark);
+	font-size: 18px;
+	border: none;
+	outline: none;
+	border-radius: 0 36px 36px 0;
+	cursor: pointer;
+
+	/* Inner shadow */
+	box-shadow: inset 0 2px 5px rgba(0,0,0,0.08);
+	transition: box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.form-input button:hover {
+	box-shadow: inset 0 2px 8px rgba(0,0,0,0.12);
+	background-color: var(--button-hover);
+	color: var(--white);
+}
+
+
+

@@ -1,0 +1,129 @@
+/* ================================
+   Request Modal Theme
+   File: request-modal.css
+   ================================ */
+
+/* Theme Variables (separate from form.css) */
+:root {
+  --req-bg: #ffffff;
+  --req-dark: #222222;
+  --req-blue: #0077cc;
+  --req-grey: #dcdcdc;
+  --req-light-grey: #f5f5f5;
+  --req-shadow: rgba(0, 0, 0, 0.25);
+  --req-success: #28a745;
+  --req-error: #dc3545;
+  --req-radius: 8px;
+  --req-input-height: 42px;
+}
+
+/* ================================
+   Modal Overlay
+   ================================ */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 2000;
+
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.show {
+  display: flex;
+}
+
+/* ================================
+   Modal Content
+   ================================ */
+.modal-content {
+  background: var(--req-bg);
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px var(--req-shadow);
+  animation: modalSlideDown 0.3s ease;
+  width: 100%;
+  max-width: 650px;
+  box-sizing: border-box;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Header */
+.modal-content .head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--req-grey);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.modal-content .head h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--req-blue);
+  margin: 0;
+}
+
+
+
+/* ================================
+   Form
+   ================================ */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: var(--req-dark);
+  margin-bottom: 6px;
+  display: block;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  height: var(--req-input-height);
+  padding: 0 10px;
+  border: 1px solid var(--req-grey);
+  border-radius: var(--req-radius);
+  font-size: 15px;
+  background: var(--req-light-grey);
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group textarea {
+  width: 100%;
+  min-height: 90px;
+  padding: 10px;
+  border: 1px solid var(--req-grey);
+  border-radius: var(--req-radius);
+  font-size: 15px;
+  background: var(--req-light-grey);
+  resize: vertical;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  background: #fff;
+  border-color: var(--req-blue);
+  box-shadow: 0 0 0 3px rgba(0, 119, 204, 0.2);
+  outline: none;
+}
+
+/* ================================
+   Animation
+   ================================ */
+@keyframes modalSlideDown {
+  from { transform: translateY(-25px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}

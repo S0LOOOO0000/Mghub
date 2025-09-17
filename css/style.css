@@ -1,0 +1,285 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+@import url('./components/action.css');
+@import url('./components/alert.css');
+@import url('./components/badge.css');
+@import url('./components/breadcrumb.css');
+
+@import url('./components/button.css');
+@import url('./components/dashboard..css');
+@import url('./components/dropdown.css');
+@import url('./components/event.css');
+@import url('./components/form.css');
+@import url('./components/form2.css');
+@import url('./components/forrm-request.css');
+@import url('./components/modal.css');
+
+@import url('./components/navbar.css');
+@import url('./components/sidebar.css');
+
+@import url('./components/table.css');
+@import url('./components/attendance-table.css');
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+a {
+	text-decoration: none;
+}
+
+li {
+	list-style: none;
+}
+
+
+/* COLORS ROOT  */
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --poppins: 'Poppins', sans-serif;
+	--lato: 'Lato', sans-serif;
+
+  	--bg: #D9C99A;	
+	--font: #4B3B2B;
+	--active: #6F4E37;
+
+	--light: #F9F9F9;
+	--blue: #3C91E6;
+	--light-blue: #CFE8FF;
+	--grey: #eee;
+	--dark-grey: #AAAAAA;
+	--dark: #342E37;
+	--red: #DB504A;
+	--yellow: #FFCE26;
+	--light-yellow: #FFF2C6;
+	--orange: #FD7238;
+	--light-orange: #FFE0D3;
+	--green: #28a745;
+	--light-green: #d4edda;
+	--purple: #6f42c1;
+	--light-purple: #e6d8f7;
+
+    --shadow-color: rgba(209, 209, 209, 0.5);
+
+  /* Status Colors (warm alert tones) */
+  --status-present-bg: #6BBF59;      /* fresh leaf green */
+  --status-late-bg: #F2C94C;         /* warm golden yellow */
+  --status-absent-bg: #E07A5F;       /* terracotta / warm red */
+  --status-on-leave-bg: #F4E1C1;     /* soft cream yellow */
+  --status-request-bg: #9E768F;      /* muted purple/mauve */
+
+  --status-text-dark: #4B3B2B;       /* dark coffee brown */
+  --status-text-light: #FFFFFF;      /* white */
+
+  /* Shift Colors (cozy earthy tones) */
+  --shift-morning-bg: #D9C99A;       /* warm beige */
+  --shift-mid-bg: #A3B18A;           /* sage green */
+  --shift-night-bg: #8C6B61;         /* mocha brown */
+
+  --shift-text-dark: #4B3B2B;        /* dark coffee brown */
+  --shift-text-light: #FFFFFF;       /* white */     
+
+
+  	/* -------------------------
+	   GENERAL THEME COLORS
+	------------------------- */
+	--main-background-color: #2f2722; /* Main page background */
+	--container-bg-color: #f5f1ed; /* Card, forms, sidebar, navbar bg */
+	--secondary-bg-color: #eae2da; /* Slightly darker than container */
+
+	--primary-font: 'Poppins', sans-serif;
+	--secondary-font: 'Roboto', sans-serif;
+
+	--text-color: #3e2c23;
+	--text-hover: #5a4033;
+	--text-active: #2a1d16;
+
+	--outline-txt-color: #3e2c23;
+	--outline-txt-hover: #5a4033;
+	--outline-txt-active: #2a1d16;
+
+	/* -------------------------
+	   BUTTONS (FILLED)
+	------------------------- */
+	--button-color: #b77b57;
+	--button-hover: #c88f6d;
+	--button-active: #a0694b;
+	--button-animation: all 0.3s ease;
+
+	/* -------------------------
+	   BUTTONS (OUTLINE)
+	------------------------- */
+	--outline-btn-color: #b77b57;
+	--outline-btn-hover: #c88f6d;
+	--outline-btn-active: #a0694b;
+
+	/* -------------------------
+	   ICONS
+	------------------------- */
+	--icon-color: #3e2c23;
+	--icon-hover: #5a4033;
+	--icon-active: #2a1d16;
+	--icon-animation: transform 0.3s ease;
+
+	--second-icon-color: #b77b57;
+	--second-icon-hover: #c88f6d;
+	--second-icon-active: #a0694b;
+
+	/* -------------------------
+	   DROPDOWN
+	------------------------- */
+	--dropdown-color: #f5f1ed;
+	--dropdown-hover: #eae2da;
+	--dropdown-active: #d5c7b9;
+
+	--outline-dropdown-background-color: transparent;
+	--outline-dropdown-color: #3e2c23;
+	--outline-dropdown-hover: #5a4033;
+	--outline-dropdown-active: #2a1d16;
+
+	--dropdown-list-color: #f5f1ed;
+	--dropdown-list-hover: #eae2da;
+	--dropdown-list-active: #d5c7b9;
+
+	--open-dropdown-animation: fadeIn 0.3s ease forwards;
+	--hide-dropdown-animation: fadeOut 0.3s ease forwards;
+	--open-icon-arrow-animation: rotateUp 0.3s ease forwards;
+	--hide-icon-arrow-animation: rotateDown 0.3s ease forwards;
+
+	/* -------------------------
+	   INPUTS
+	------------------------- */
+	--input-bg-color: #ffffff;
+	--input-outline-color: #b77b57;
+	--input-hover-color: #f5f1ed;
+	--input-active-color: #ffffff;
+	--input-placeholder-color: #8d7b70;
+	--input-animation: all 0.3s ease;
+
+	/* -------------------------
+	   BORDERS & SHADOWS
+	------------------------- */
+	--border-line-color: rgba(62, 44, 35, 0.2);
+	--shadow-color: rgba(62, 44, 35, 0.5);
+
+	/* -------------------------
+	   TABLE
+	------------------------- */
+	--table-hover-color: #f0e7e1;
+	--table-datarow-animation: background-color 0.3s ease;
+
+	/* -------------------------
+	   ALERT STATES
+	------------------------- */
+	--success-bg-color: #4caf50;
+	--info-bg-color: #2196f3;
+	--warning-bg-color: #ff9800;
+	--danger-bg-color: #f44336;
+	--required-color: #e91e63;
+
+	--success-btn-color: #4caf50;
+	--success-txt-color: #ffffff;
+	--info-btn-color: #2196f3;
+	--info-txt-color: #ffffff;
+	--warning-btn-color: #ff9800;
+	--warning-txt-color: #ffffff;
+	--danger-btn-color: #f44336;
+	--danger-txt-color: #ffffff;
+
+	/* -------------------------
+	   MODALS
+	------------------------- */
+	--modal-animation-open: fadeInScale 0.3s ease forwards;
+	--modal-animation-close: fadeOutScale 0.3s ease forwards;
+	--modal-opacity: rgba(0, 0, 0, 0.4);
+
+	/* -------------------------
+	   CHECKBOX
+	------------------------- */
+	--checkbox-color: #b77b57;
+	--checkbox-checked-color: #a0694b;
+	--checkbox-animation: all 0.2s ease;
+
+	/* -------------------------
+	   BADGES
+	------------------------- */
+	--badge-pending: #d6c9b8;
+	--badge-approved: #4caf50;
+	--badge-rejected: #f44336;
+	--badge-inprogress: #2196f3;
+
+	/* Shift Badges */
+	--badge-morning: #ffc107;
+	--badge-afternoon: #ff5722;
+	--badge-night: #673ab7;
+
+	/* -------------------------
+	   COLOR PALETTE
+	------------------------- */
+	--red: #f44336; --light-red: #ffcdd2;
+	--blue: #2196f3; --light-blue: #bbdefb;
+	--green: #4caf50; --light-green: #c8e6c9;
+	--yellow: #ffeb3b; --light-yellow: #fff9c4;
+	--orange: #ff9800; --light-orange: #ffe0b2;
+	--purple: #9c27b0; --light-purple: #e1bee7;
+	--pink: #e91e63; --light-pink: #f8bbd0;
+	--brown: #795548; --light-brown: #d7ccc8;
+	--black: #000000; --light-black: #424242;
+	--white: #ffffff; --light-white: #f5f5f5;
+	--gray: #9e9e9e; --light-gray: #e0e0e0;
+	--cyan: #00bcd4; --light-cyan: #b2ebf2;
+	--magenta: #ff00ff; --light-magenta: #ffb3ff;
+	--beige: #f5f5dc; --light-beige: #faf9f5;
+	--teal: #009688; --light-teal: #b2dfdb;
+	--navy: #001f3f; --light-navy: #3d5a80;
+	--maroon: #800000; --light-maroon: #b23a48;
+	--olive: #808000; --light-olive: #cddc39;
+	--gold: #ffd700; --light-gold: #fff8dc;
+	--silver: #c0c0c0; --light-silver: #f2f2f2;
+
+    
+}
+
+
+
+
+body {
+  background: var(--main-background-color);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--grey);
+	overflow-x: hidden;
+}
+html {
+	overflow-x: hidden;
+}
+
+
+/* CONTENT */
+.content {
+	position: relative;
+	width: calc(100% - 220px);
+	left: 220px;
+	transition: .3s ease;
+}
+
+.sidebar.hide ~ .content {
+	width: calc(100% - 60px);
+	left: 60px;
+	
+}
+
+
+/* MAIN */
+.main {
+	background: var(--secondary-bg-color);
+	width: 100%;
+	padding: 36px 24px;
+	font-family: var(--poppins);
+	max-height: calc(100vh - 56px);
+	overflow-y: auto;
+}
+

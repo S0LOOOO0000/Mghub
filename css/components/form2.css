@@ -1,0 +1,132 @@
+/* ===============================
+   Modal Overlay
+================================= */
+/* Default: hidden */
+.modal {
+  display: none; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  animation: fadeBg 0.3s ease-in-out;
+}
+
+/* Show modal when "active" */
+.modal.show {
+  display: flex;
+}
+
+/* ===============================
+   Modal Box
+================================= */
+.modal-content {
+  background: #ffffff;
+  width: 500px;
+  max-width: 90%;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  position: relative;
+  animation: fadeIn 0.3s ease-in-out;
+}
+.modal .scrollable {
+  max-height: 700px;       /* adjust to modal size */
+  overflow-y: auto;
+  padding-right: 6px;      /* avoid content overlap with scrollbar */
+}
+.modal .scrollable::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal .scrollable::-webkit-scrollbar-thumb {
+  background: var(--gray);
+  border-radius: 4px;
+}
+
+.modal .scrollable::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ===============================
+   Modal Header
+================================= */
+.modal-content h2 {
+  margin: 0 0 15px;
+  font-size: 22px;
+  color: #2c3e50;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ===============================
+   Form Groups
+================================= */
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #bdc3c7;
+  border-radius: 6px;
+  font-size: 15px;
+  background: #f9f9f9;
+  color: #2c3e50;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Remove arrows from number input */
+.form-group input[type="number"]::-webkit-outer-spin-button,
+.form-group input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.form-group input[type="number"] {
+  appearance: textfield; /* works for Chrome, Edge, Safari */
+  -moz-appearance: textfield; /* works for Firefox */
+}
+
+/* On focus */
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #3498db;
+  outline: none;
+  background: #ffffff;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+
+
+/* ===============================
+   Animations
+================================= */
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(-20px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+@keyframes fadeBg {
+  from {background: rgba(0,0,0,0);}
+  to {background: rgba(0,0,0,0.5);}
+}
+
+#delete_item_name strong {
+  color: #e74c3c; /* Make item name red for emphasis */
+}
+#delete_item_name {
+  font-size: 16px;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  text-align: center;
+}
