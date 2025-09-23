@@ -15,37 +15,7 @@ include __DIR__ . '/../php/get-employee.php';
 	
 </head>
 <body>
-    <section class="sidebar">
-        <?php include '../includes/client-sidebar.php'; ?>
-    </section>
-
-        <section class="content" id="content">
-           <nav>
-                <!-- Menu Icon -->
-                <i class="material-icons icon-menu">menu</i>
-                <!-- Searchbar -->
-                <form action="#">
-                    <div class="form-input">
-                        <input type="search" placeholder="Search...">
-                        <button type="submit" class="search-btn"><i class='material-icons search-icon' >search</i></button>
-                    </div>
-                </form>
-                <!-- Notification Bell and Profile -->
-                <?php include '../includes/admin-navbar.php'; ?>
-            </nav>
-            <!-- Main Layout -->    
             <div class="main">
-                    <!-- Breadcrumb -->
-                    <div class="head-title">
-                        <div class="left">
-                            <h1>Bookings</h1>
-                            <ul class="breadcrumb">
-                                <li> <a>Bookings Management</a> </li>
-                                <li> <i class='material-icons right-icon'>chevron_right</i></li>
-                                <li> <a class="active">Home</a> </li>
-                            </ul>
-                        </div>
-                    </div>
 
                            <div class="container">
                             <div class="card calendar-wrapper">
@@ -71,12 +41,12 @@ include __DIR__ . '/../php/get-employee.php';
                                     </header>
 
                                     <!-- Filters -->
-                                  <div class="filter-buttons">
-                                    <button data-filter="all" class="active">All</button>
-                                    <button data-filter="booked">Booked</button>
-                                    <button data-filter="completed">Completed</button>
-                                    <button data-filter="cancelled">Cancelled</button>
-                                  </div>
+                                    <div class="filter-buttons">
+                                      <button data-filter="all" class="active">All</button>
+                                      <button data-filter="completed">Completed</button>
+                                      <button data-filter="active">Active</button>
+                                      <button data-filter="cancelled">Cancelled</button>
+                                    </div>
                                     
                                     <!-- Event List -->
                                     <ul id="event-list" class="event-list"></ul>
@@ -127,7 +97,6 @@ include __DIR__ . '/../php/get-employee.php';
                     <?php include '../includes/event-modal.php'; ?>
 
     </div>
-    </section>
 
 	
 
