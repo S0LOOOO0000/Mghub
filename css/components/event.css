@@ -248,6 +248,34 @@
 .dates div.selected { background-color: var(--button-color); color: var(--white); }
 .dates div:hover { background-color: var(--light-orange); }
 
+/* Event dot indicator using ::after */
+.dates div.has-event::after {
+  content: "";
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2;
+  background-color: gray; /* default if no status */
+}
+
+/* Status colors */
+.dates div.has-event.completed::after {
+  background-color: blue;
+}
+
+.dates div.has-event.booked::after {
+  background-color: green;
+}
+
+.dates div.has-event.cancelled::after {
+  background-color: red;
+}
+
 
 /* ------------------------------
    Event Items
@@ -418,74 +446,104 @@
     transform: scale(1.05);
 }
 
-@media (max-width: 1400px) {
-  .filter-buttons button {
-    padding: 0.45rem;
-    font-size: 0.8rem;
-  }
-}
 
-@media (max-width: 1200px) {
+
+/* ===============================
+   LAPTOP RESPONSIVE ADJUSTMENTS
+   Target: 1024px - 1440px
+=============================== */
+@media (min-width: 1024px) and (max-width: 1440px) {
+
+  /* Container + Card */
+  .container {
+    margin-top: 20px;
+    min-height: 720px;
+    padding: 1rem;
+  }
+
+  .card {
+    padding: 18px;
+    border-radius: 18px;
+  }
+
+  /* Calendar Layout */
+  .calendar-container {
+    gap: 18px;
+  }
+
+  /* Left Panel */
+  .calendar-info {
+    padding: 1.25rem;
+    border-radius: 10px;
+  }
+
+  .selected-date .weekday,
+  .selected-date .day,
+  .selected-date .month {
+    font-size: 1.6rem;
+  }
+
+  .event-header h4 {
+    font-size: 1.6rem;
+  }
+
+  .filter-buttons {
+    gap: 0.45rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .event-list {
+    max-height: 450px;
+    padding-right: 0.4rem;
+  }
+
+  .event-list li {
+    padding: 0.85rem;
+  }
+
+  /* Right Panel */
+  .calendar-main {
+    padding: 0.9rem;
+    border-radius: 10px;
+  }
+
+  #calendar-month {
+    width: 90px;
+    font-size: 1.1rem;
+  }
+
+  .arrow {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+
+  .weekdays span {
+    font-size: 0.85rem;
+  }
+
+  .dates div {
+    padding: 0.4rem 0;
+  }
+
+  /* Event Actions buttons */
+  .event-actions .btn.small,
+  .event-actions .btn.small.preview-btn,
+  .event-actions .btn.small.edit-btn,
+  .event-actions .btn.small.danger {
+    height: 28px;
+    width: 28px;
+    font-size: 0.75rem;
+    padding: 0.3rem 0.5rem;
+  }
+
   .filter-buttons button {
+    min-width: 90px;
     padding: 0.4rem;
     font-size: 0.75rem;
   }
-}
 
-@media (max-width: 1000px) {
-  .filter-buttons button {
-    padding: 0.35rem;
-    font-size: 0.7rem;
+  #year-select {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.8rem;
   }
-}
-
-/* Between 1400px and 1000px */
-@media (max-width: 1400px) {
-  .event-actions .btn.small {
-    padding: 0.35rem 0.5rem;
-    font-size: 0.75rem;
-  }
-}
-
-@media (max-width: 1200px) {
-  .event-actions .btn.small {
-    padding: 0.3rem 0.45rem;
-    font-size: 0.7rem;
-  }
-}
-
-@media (max-width: 1000px) {
-  .event-actions {
-    display: flex;
-    flex-wrap: wrap;      /* wrap buttons if not enough space */
-    gap: 0.3rem;
-  }
-  .event-actions .btn.small {
-    flex: 1 1 auto;       /* allow button to grow/shrink */
-    padding: 0.25rem 0.4rem;
-    font-size: 0.65rem;
-  }
-}
-
-
-.date-cell {
-  position: relative;
-}
-
-.event-dots {
-  display: flex;
-  justify-content: center;
-  gap: 2px;
-  position: absolute;
-  bottom: 4px;
-  left: 50%;
-  width: 20px;
-  height: 20px;
-  transform: translateX(-50%);
-}
-
-.event-dots .dot {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
 }

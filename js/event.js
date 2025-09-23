@@ -38,47 +38,55 @@ document.addEventListener("DOMContentLoaded", () => {
   let selectedDate = new Date(currentDate);
   let currentFilter = "all";
 
-  // ---------- Helpers ----------
-  const isoDate = d => d.toISOString().split("T")[0];
-  const isSameDate = (a, b) =>
-    a.getFullYear() === b.getFullYear() &&
-    a.getMonth() === b.getMonth() &&
-    a.getDate() === b.getDate();
+ // ---------- Helpers ----------
+const isoDate = d =>
+  d.getFullYear() + '-' +
+  String(d.getMonth() + 1).padStart(2, '0') + '-' +
+  String(d.getDate()).padStart(2, '0');
 
-  const escapeHtml = str =>
-    str ? String(str).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])) : "";
+const isSameDate = (a, b) =>
+  a.getFullYear() === b.getFullYear() &&
+  a.getMonth() === b.getMonth() &&
+  a.getDate() === b.getDate();
 
-  const formatTime12 = t => {
-    if (!t) return "";
-    const [h, m] = t.split(":").map(Number);
-    const ampm = h >= 12 ? "PM" : "AM";
-    const h12 = h % 12 || 12;
-    return `${h12}:${m.toString().padStart(2, "0")} ${ampm}`;
-  };
+const escapeHtml = str =>
+  str ? String(str).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])) : "";
 
-  const showPopup = (msg, type = "success") => {
-    if (!msg) return;
-    const popup = document.createElement("div");
-    popup.className = type === "success" ? "success-popup" : "error-popup";
-    popup.textContent = msg;
-    document.body.appendChild(popup);
-    requestAnimationFrame(() => (popup.style.opacity = "1"));
-    setTimeout(() => {
-      popup.style.opacity = "0";
-      setTimeout(() => popup.remove(), 500);
-    }, 3000);
-  };
+const formatTime12 = t => {
+  if (!t) return "";
+  const [h, m] = t.split(":").map(Number);
+  const ampm = h >= 12 ? "PM" : "AM";
+  const h12 = h % 12 || 12;
+  return `${h12}:${m.toString().padStart(2, "0")} ${ampm}`;
+};
 
-  const parseServerResponse = text => {
-    try {
-      const obj = JSON.parse(text);
-      if (obj && typeof obj === "object") {
-        return { ok: obj.status?.toLowerCase() === "success" || obj.success === true, message: obj.message || text };
-      }
-    } catch (e) {}
-    const trimmed = (text || "").trim();
-    return { ok: trimmed.toLowerCase().includes("success"), message: trimmed };
-  };
+const showPopup = (msg, type = "success") => {
+  if (!msg) return;
+  const popup = document.createElement("div");
+  popup.className = type === "success" ? "success-popup" : "error-popup";
+  popup.textContent = msg;
+  document.body.appendChild(popup);
+  requestAnimationFrame(() => (popup.style.opacity = "1"));
+  setTimeout(() => {
+    popup.style.opacity = "0";
+    setTimeout(() => popup.remove(), 500);
+  }, 3000);
+};
+
+const parseServerResponse = text => {
+  try {
+    const obj = JSON.parse(text);
+    if (obj && typeof obj === "object") {
+      return {
+        ok: obj.status?.toLowerCase() === "success" || obj.success === true,
+        message: obj.message || text
+      };
+    }
+  } catch (e) {}
+  const trimmed = (text || "").trim();
+  return { ok: trimmed.toLowerCase().includes("success"), message: trimmed };
+};
+
 
   // ---------- Fetch events ----------
   const fetchEvents = async () => {
@@ -102,67 +110,61 @@ document.addEventListener("DOMContentLoaded", () => {
     calendarMonthEl.textContent = selectedDate.toLocaleString("default", { month: "long" });
   };
 
-  const renderDates = () => {
-    datesEl.innerHTML = "";
-    const year = selectedDate.getFullYear();
-    const month = selectedDate.getMonth();
-    const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
-    const lastDate = new Date(year, month + 1, 0).getDate();
+const renderDates = () => {
+  datesEl.innerHTML = "";
+  const year = selectedDate.getFullYear();
+  const month = selectedDate.getMonth();
+  const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
+  const lastDate = new Date(year, month + 1, 0).getDate();
 
-    // Empty slots
-    for (let i = 0; i < firstDay; i++) {
-      const blank = document.createElement("div");
-      blank.className = "empty";
-      datesEl.appendChild(blank);
-    }
+  // Empty slots
+  for (let i = 0; i < firstDay; i++) {
+    const blank = document.createElement("div");
+    blank.className = "empty";
+    datesEl.appendChild(blank);
+  }
 
-    for (let d = 1; d <= lastDate; d++) {
-      const dateObj = new Date(year, month, d);
-      const dayIso = isoDate(dateObj);
-      const div = document.createElement("div");
-      div.className = "date-cell";
-      div.textContent = d;
+  for (let d = 1; d <= lastDate; d++) {
+    const dateObj = new Date(year, month, d);
+    const dayIso = isoDate(dateObj);
+    const div = document.createElement("div");
+    div.className = "date-cell";
+    div.textContent = d;
 
-      if (isSameDate(dateObj, currentDate)) div.classList.add("today");
-      if (isSameDate(dateObj, selectedDate)) div.classList.add("selected");
+    if (isSameDate(dateObj, currentDate)) div.classList.add("today");
+    if (isSameDate(dateObj, selectedDate)) div.classList.add("selected");
 
-      const dayEvents = events.filter(ev => ev.event_date === dayIso);
-      if (dayEvents.length) {
-        div.classList.add("has-event");
+    const dayEvents = events.filter(ev => ev.event_date === dayIso);
+    if (dayEvents.length) {
+      div.classList.add("has-event");
 
-        // Unique statuses only
-        const statuses = [...new Set(dayEvents.map(e => e.event_status))];
-
-        const dotWrap = document.createElement("div");
-        dotWrap.className = "event-dots";
-
-        statuses.forEach(status => {
-          const dot = document.createElement("span");
-          dot.className = "dot";
-          if (status === "Booked") dot.style.background = "green";
-          if (status === "Completed") dot.style.background = "blue";
-          if (status === "Cancelled") dot.style.background = "red";
-          dotWrap.appendChild(dot);
-        });
-
-        div.appendChild(dotWrap);
-        div.title = dayEvents.map(e => `${e.event_name} (${e.event_status})`).join("\n");
+      // Determine status priority: Completed > Booked > Cancelled
+      if (dayEvents.some(e => e.event_status === "Completed")) {
+        div.classList.add("completed");
+      } else if (dayEvents.some(e => e.event_status === "Booked")) {
+        div.classList.add("booked");
+      } else if (dayEvents.some(e => e.event_status === "Cancelled")) {
+        div.classList.add("cancelled");
       }
 
-      div.addEventListener("click", () => {
-        selectedDate = dateObj;
-        renderHeader();
-        renderDates();
-        // reset to ALL filter when clicking a date
-        currentFilter = "all";
-        filterBtns.forEach(b => b.classList.remove("active"));
-        document.querySelector('[data-filter="all"]')?.classList.add("active");
-        renderEvents(true);
-      });
-
-      datesEl.appendChild(div);
+      // Tooltip shows all events for that day
+      div.title = dayEvents.map(e => `${e.event_name} (${e.event_status})`).join("\n");
     }
-  };
+
+    div.addEventListener("click", () => {
+      selectedDate = dateObj;
+      renderHeader();
+      renderDates();
+      currentFilter = "all";
+      filterBtns.forEach(b => b.classList.remove("active"));
+      document.querySelector('[data-filter="all"]')?.classList.add("active");
+      renderEvents(true);
+    });
+
+    datesEl.appendChild(div);
+  }
+};
+
 
   const renderEvents = (filterByDay = false) => {
     const today = new Date();
@@ -371,10 +373,14 @@ document.addEventListener("DOMContentLoaded", () => {
     selectedDate.setMonth(selectedDate.getMonth() + 1);
     await refresh();
   });
-  goTodayBtn?.addEventListener("click", async () => {
-    selectedDate = new Date(currentDate);
-    await refresh();
-  });
+goTodayBtn?.addEventListener("click", async () => {
+  selectedDate = new Date(currentDate);
+
+  // Update the year dropdown to current year
+  if (yearSelect) yearSelect.value = selectedDate.getFullYear();
+
+  await refresh();
+});
 
   searchInput?.addEventListener("input", () => renderEvents());
 
@@ -449,3 +455,4 @@ document.addEventListener("DOMContentLoaded", () => {
   // ---------- Init ----------
   refresh();
 });
+

@@ -1,7 +1,3 @@
-<?php
-
-include __DIR__ . '/../php/get-employee.php';
-?>
 
 <!DOCTYPE html>
 <html lang="en">

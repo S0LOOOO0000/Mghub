@@ -34,10 +34,11 @@
   position: relative;
   animation: fadeIn 0.3s ease-in-out;
 }
+/*
 .modal .scrollable {
-  max-height: 700px;       /* adjust to modal size */
+  max-height: 700px;       
   overflow-y: auto;
-  padding-right: 6px;      /* avoid content overlap with scrollbar */
+  padding-right: 6px;      
 }
 .modal .scrollable::-webkit-scrollbar {
   width: 8px;
@@ -50,7 +51,7 @@
 
 .modal .scrollable::-webkit-scrollbar-track {
   background: transparent;
-}
+}*/
 
 /* ===============================
    Modal Header
@@ -129,4 +130,67 @@
   color: #2c3e50;
   margin-bottom: 20px;
   text-align: center;
+}
+
+
+/* ===============================
+   LAPTOP RESPONSIVE MODAL ADJUSTMENTS
+   Target: 1024px - 1440px
+=============================== */
+@media (min-width: 1024px) and (max-width: 1440px) {
+
+  /* Modal Box */
+  .modal-content {
+    max-height: 500px;
+    width: 450px;          /* slightly smaller for laptop */
+    max-width: 85%;
+    padding: 20px 25px;    /* reduce padding */
+    border-radius: 10px;
+  }
+
+  /* Scrollable inside modal */
+  .modal .scrollable {
+    max-height: 500px;     /* adjust height */
+    padding-right: 5px;
+  }
+
+  /* Scrollbar (same style, but optional slightly smaller) */
+  .modal .scrollable::-webkit-scrollbar {
+    width: 6px;           /* smaller scrollbar for laptop */
+  }
+  .modal .scrollable::-webkit-scrollbar-thumb {
+    background: var(--gray);
+    border-radius: 3px;
+  }
+  .modal .scrollable::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Modal header */
+  .modal-content h2 {
+    font-size: 20px;       /* slightly smaller */
+    margin-bottom: 12px;
+  }
+
+  /* Form inputs & labels */
+  .form-group label {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+
+  .form-group input,
+  .form-group select {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+
+  /* Delete confirmation text */
+  #delete_item_name {
+    font-size: 15px;
+    margin-bottom: 15px;
+  }
+
+  #delete_item_name strong {
+    font-size: 15px;
+  }
 }

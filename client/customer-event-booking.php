@@ -1,5 +1,4 @@
 <?php
-
 include __DIR__ . '/../php/get-employee.php';
 ?>
 
@@ -8,16 +7,16 @@ include __DIR__ . '/../php/get-employee.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bookings</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<!-- My CSS -->
-	<link rel="stylesheet" href="../css/style.css">
-	
+    <title>Event Calendar</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
 </head>
-<body>
-            <div class="main">
+<body>        
 
-                           <div class="container">
+                        <div class="main">
+
+                          <div class="container">
                             <div class="card calendar-wrapper">
 
                               <!-- Calendar Content -->
@@ -37,16 +36,16 @@ include __DIR__ . '/../php/get-employee.php';
                                   <!-- Event Management -->
                                   <section class="event-section">
                                     <header class="event-header">
-                                    <h4>Events</h4>
+                                    <h4>Event List</h4>
                                     </header>
 
                                     <!-- Filters -->
-                                    <div class="filter-buttons">
-                                      <button data-filter="all" class="active">All</button>
-                                      <button data-filter="completed">Completed</button>
-                                      <button data-filter="active">Active</button>
-                                      <button data-filter="cancelled">Cancelled</button>
-                                    </div>
+                                  <div class="filter-buttons">
+                                    <button data-filter="all" class="active">All</button>
+                                    <button data-filter="booked">Booked</button>
+                                    <button data-filter="completed">Completed</button>
+                                    <button data-filter="cancelled">Cancelled</button>
+                                  </div>
                                     
                                     <!-- Event List -->
                                     <ul id="event-list" class="event-list"></ul>
@@ -60,7 +59,7 @@ include __DIR__ . '/../php/get-employee.php';
                                   <!-- Calendar Controls -->
                                   <header class="calendar-header">
                                       <div class="calendar-controls-left">
-                                                                              <button id="add-event" class="btn-add">
+                                      <button id="add-event" class="btn-add">
                                         <i class="material-icons">add</i> Add Event
                                       </button>
                                           <button id="go-today" class="btn small go-today">Today</button>
@@ -95,14 +94,17 @@ include __DIR__ . '/../php/get-employee.php';
                           </div>
 
                     <?php include '../includes/event-modal.php'; ?>
+                    <?php include '../includes/preview-modal.php'; ?>
 
     </div>
 
 	
 
     <!-- Custom JS -->
+   
     <script src="../js/event.js"></script>
     <script src="../js/dashboard.js"></script>
 	<script src="../js/employee.js"> </script>
+  <script src="../js/export-booking.js"> </script>
 </body>
 </html>

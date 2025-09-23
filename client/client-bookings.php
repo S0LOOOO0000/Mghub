@@ -1,7 +1,3 @@
-<?php
-
-include __DIR__ . '/../php/get-employee.php';
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -125,6 +121,7 @@ include __DIR__ . '/../php/get-employee.php';
                           </div>
 
                     <?php include '../includes/event-modal.php'; ?>
+                    <?php include '../includes/preview-modal.php'; ?>
 
     </div>
     </section>
@@ -135,5 +132,6 @@ include __DIR__ . '/../php/get-employee.php';
     <script src="../js/event.js"></script>
     <script src="../js/dashboard.js"></script>
 	<script src="../js/employee.js"> </script>
+  <script src="../js/export-booking.js"> </script>
 </body>
 </html>
