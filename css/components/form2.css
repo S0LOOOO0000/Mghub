@@ -34,24 +34,7 @@
   position: relative;
   animation: fadeIn 0.3s ease-in-out;
 }
-/*
-.modal .scrollable {
-  max-height: 700px;       
-  overflow-y: auto;
-  padding-right: 6px;      
-}
-.modal .scrollable::-webkit-scrollbar {
-  width: 8px;
-}
 
-.modal .scrollable::-webkit-scrollbar-thumb {
-  background: var(--gray);
-  border-radius: 4px;
-}
-
-.modal .scrollable::-webkit-scrollbar-track {
-  background: transparent;
-}*/
 
 /* ===============================
    Modal Header
@@ -152,6 +135,7 @@
   .modal .scrollable {
     max-height: 500px;     /* adjust height */
     padding-right: 5px;
+    overflow-y: auto;
   }
 
   /* Scrollbar (same style, but optional slightly smaller) */
@@ -165,6 +149,8 @@
   .modal .scrollable::-webkit-scrollbar-track {
     background: transparent;
   }
+
+
 
   /* Modal header */
   .modal-content h2 {
