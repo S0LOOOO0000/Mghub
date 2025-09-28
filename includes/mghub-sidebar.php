@@ -5,23 +5,23 @@
 
         <a class="brand">
             <i class="material-icons icon-logo">coffee</i>
-            <span class="text title">MGCafe</span>
+            <span class="text title">MG hub</span>
         </a>
         <ul class="side-menu top">
             <li>
-                <a href="../client/client-dashboard.php">
+                <a href="../client-mghub/mghub-dashboard.php">
                     <i class="material-icons icon-btn">dashboard</i>
                     <span class="text">Dashboard</span>
                 </a>
             </li>
             <li>
-                <a href="../client/client-request.php">
+                <a href="../client-mghub/mghub-request-shift.php">
                     <i class="material-icons icon-btn">assignment</i>
                     <span class="text">Requests</span>
                 </a>
             </li>
             <li>
-                <a href="../client/client-inventory.php">
+                <a href="../client-mghub/mghub-inventory.php">
                     <i class="material-icons icon-btn">inventory_2</i>
                     <span class="text">Inventory</span>
                 </a>

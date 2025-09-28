@@ -19,18 +19,40 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if (password_verify($password, $user['password'])) {
             $_SESSION['user_id']    = $user['user_id'];
             $_SESSION['user_email'] = $user['email'];
-            $_SESSION['user_role']  = $user['user_role']; // ✅ consistent
+            $_SESSION['user_role']  = $user['user_role']; 
 
+            // Admin login
             if ($user['user_role'] === 'admin') {
                 header("Location: ../admin/admin-dashboard.php");
                 exit();
-            } elseif ($user['user_role'] === 'staff') {
-                header("Location: ../client/client-dashboard.php");
+            }
+
+            // Staff login - redirect by email (establishment)
+            elseif ($user['user_role'] === 'staff') {
+                switch ($user['email']) {
+                    case 'mgcafe123@gmail.com':
+                        header("Location: ../client/client-dashboard.php");
+                        break;
+
+                    case 'mghub123@gmail.com':
+                        header("Location: ../client-mghub/mghub-dashboard.php");
+                        break;
+
+                    case 'mgspa123@gmail.com':
+                        header("Location: ../client-spa/spa-dashboard.php");
+                        break;
+
+                    default:
+                        echo "<script>alert('Unknown staff account.'); window.location.href='../index.php';</script>";
+                        exit();
+                }
                 exit();
-            } else {
+            } 
+            else {
                 echo "<script>alert('Invalid user role.'); window.location.href='../index.php';</script>";
                 exit();
             }
+
         } else {
             echo "<script>alert('Invalid email or password.'); window.location.href='../index.php';</script>";
             exit();

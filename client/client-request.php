@@ -195,5 +195,7 @@ function showAttendanceResult(data) {
 .attendance-modal.success .modal-box { border:2px solid green; }
 .attendance-modal.error .modal-box { border:2px solid red; }
 </style>
+
+<script src="../js/dashboard.js"></script>
 </body>
 </html>

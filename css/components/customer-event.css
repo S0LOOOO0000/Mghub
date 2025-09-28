@@ -1,0 +1,126 @@
+/* Container + Card */
+.customer-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+  background-color: var(--secondary-bg-color);
+  color: var(--text-color);
+  min-height: 770px;
+  border-radius: 20px;
+  font-family: var(--primary-font);
+}
+
+.customer-card {
+  flex: 1;
+  background: var(--light);
+  overflow-x: auto;
+  padding: 20px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Calendar Header */
+.customer-calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.customer-calendar-controls-left {
+  display: flex;
+  gap: 1rem;
+}
+
+.customer-calendar-controls-month {
+  position: relative;
+  width: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#customer-calendar-month {
+  width: 100px;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.customer-arrow {
+  background: var(--light);
+  border: 1px solid var(--border-line-color);
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+}
+.customer-arrow:hover {
+  background: var(--button-hover);
+  color: #fff;
+}
+
+/* Weekdays row */
+.customer-weekdays {
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+.customer-weekdays span {
+  flex: 1;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Dates grid */
+.customer-dates {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.customer-dates div {
+  width: calc(100% / 7);
+  text-align: center;
+  padding: 0.5rem 0;
+  border: 1px solid var(--border-line-color);
+  cursor: pointer;
+  position: relative;
+  border-radius: 5px;
+  background-color: var(--light);
+  transition: 0.3s ease;
+}
+
+.customer-dates div.today {
+  background-color: var(--orange);
+  color: var(--white);
+}
+.customer-dates div.selected {
+  background-color: var(--button-color);
+  color: var(--white);
+}
+.customer-dates div:hover {
+  background-color: var(--light-orange);
+}
+
+/* Event dot indicator */
+.customer-dates div.has-event::after {
+  content: "";
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  pointer-events: none;
+  background-color: gray;
+}
+.customer-dates div.has-event.completed::after { background-color: blue; }
+.customer-dates div.has-event.booked::after { background-color: green; }
+.customer-dates div.has-event.cancelled::after { background-color: red; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .customer-calendar-main { width: 100%; }
+}
