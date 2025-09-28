@@ -2,7 +2,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "mg_hub";
+$dbname = "mgcafe_db";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 

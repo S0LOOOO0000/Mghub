@@ -8,7 +8,7 @@
             <span class="text title">MGCafe</span>
         </a>
         <ul class="side-menu top">
-            <li >
+            <li>
                 <a href="../client/client-dashboard.php">
                     <i class="material-icons icon-btn">dashboard</i>
                     <span class="text">Dashboard</span>
@@ -26,12 +26,6 @@
                     <span class="text">Inventory</span>
                 </a>
             </li>
-            <li>
-                <a href="../client/client-bookings.php">
-                    <i class="material-icons icon-btn">event</i>
-                    <span class="text">Bookings</span>
-                </a>
-            </li>
         </ul>
         <ul class="side-menu bottom">
             <li>
@@ -41,4 +35,3 @@
                 </a>
             </li>
         </ul>
-

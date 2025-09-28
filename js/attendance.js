@@ -1,8 +1,9 @@
 let html5QrCode;
-
 // =========================
 // Open QR Scanner
 // =========================
+
+
 function openQrScanner(action) {
   const modal = document.getElementById("qrModal");
   const title = document.getElementById("qrModalTitle");
