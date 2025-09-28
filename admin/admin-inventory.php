@@ -123,5 +123,6 @@ include __DIR__ . '/../php/get-inventory.php';
 <script src="../js/dropdown.js"></script>
 <script src="../js/dashboard.js"></script>
 <script src="../js/inventory.js"></script>
+
 </body>
 </html>
