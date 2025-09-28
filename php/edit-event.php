@@ -36,7 +36,7 @@ function sendStatusEmail($toEmail, $toName, $eventName, $eventDate, $eventTime, 
         $mail->addAddress($toEmail, $toName);
         $mail->isHTML(true);
 
-        $subject = ($status === "Booked") 
+        $subject = ($status === "Booked")
             ? "Booking Confirmation: $eventName"
             : "Event Status Update: $eventName";
 

@@ -121,7 +121,7 @@
       <div class="form-group form-switch">
         <label class="switch-label" for="send_email">Send Email Notification:</label>
         <label class="switch">
-          <input type="checkbox" id="send_email" name="send_email" value="1">
+          <input type="checkbox" id="edit_send_email" name="send_email" value="1">
           <span class="slider round"></span>
         </label>
       </div>
