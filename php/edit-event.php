@@ -27,8 +27,8 @@ function sendStatusEmail($toEmail, $toName, $eventName, $eventDate, $eventTime, 
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'mgcafe2025@gmail.com';
-        $mail->Password = 'dwifxyttemtgrsjr';
+        $mail->Username = 'mgcafe.adm2025@gmail.com';
+        $mail->Password = 'ypcf mqee nath emtn'; // ideally use env variable
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
 
