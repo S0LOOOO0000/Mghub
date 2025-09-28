@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Customer Event Booking</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" href="../css/style.css"> <!-- global styles -->
-  <link rel="stylesheet" href="../css/customer-event.css"> <!-- dedicated calendar CSS -->
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 
@@ -15,29 +14,31 @@
     <h1>Book an Event</h1>
   </div>
 
-  <div class="customer-container">
-    <div class="customer-card">
-      <section class="customer-calendar-main">
+  <div class="container">
+    <div class="card calendar-wrapper">
+      <section class="calendar-main">
 
-        <!-- Calendar Header -->
-        <header class="customer-calendar-header">
-          <div class="customer-calendar-controls-left">
-            <button id="add-event" class="btn-add">
-              <i class="material-icons">add</i> Book Event
-            </button>
-            <button id="go-today" class="btn small go-today">Today</button>
-            <select id="year-select" class="btn small"></select>
-          </div>
+        <!-- Calendar Controls -->
+      <header class="calendar-header">
+        <div class="calendar-controls-left">
+          <button id="add-event" class="btn-add">
+            <i class="material-icons">add</i> Book Event
+          </button>
+          <button id="go-today" class="btn small go-today">Today</button>
+          <select id="year-select" class="btn small">
+            <!-- Options will be populated via JS -->
+          </select>
+        </div>
 
-          <div class="customer-calendar-controls-month">
-            <button id="prev-month" class="customer-arrow">&lt;</button>
-            <span id="customer-calendar-month" class="month-name">August</span>
-            <button id="next-month" class="customer-arrow">&gt;</button>
-          </div>
-        </header>
+        <div class="calendar-controls-month">
+          <button id="prev-month" class="btn small arrow">&lt;</button>
+          <span id="calendar-month" class="month-name">August</span>
+          <button id="next-month" class="btn small arrow">&gt;</button>
+        </div>
+      </header>
 
         <!-- Weekday Labels -->
-        <div class="customer-weekdays">
+        <div class="weekdays">
           <span>Mon</span>
           <span>Tue</span>
           <span>Wed</span>
@@ -48,8 +49,7 @@
         </div>
 
         <!-- Dates Grid -->
-        <div id="customer-dates" class="customer-dates"></div>
-
+        <div id="dates" class="dates"></div>
       </section>
     </div>
   </div>
