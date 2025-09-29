@@ -1,41 +1,26 @@
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+include 'db_connect.php';
 
-require __DIR__ . '/../config/phpmailer/src/PHPMailer.php';
-require __DIR__ . '/../config/phpmailer/src/SMTP.php';
-require __DIR__ . '/../config/phpmailer/src/Exception.php';
-require __DIR__ . '/../config/database-connection.php';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name    = $_POST['name'];
+    $email   = $_POST['email'];
+    $contact = $_POST['contact'];
+    $event   = $_POST['event'];
+    $date    = $_POST['date'];
+    $time    = $_POST['time'];
+    $desc    = $_POST['description'];
 
-header('Content-Type: application/json; charset=utf-8');
+    $stmt = $conn->prepare("INSERT INTO tbl_event_pending
+        (customer_name, customer_email, customer_contact, event_name, event_date, event_time, event_description, event_status)
+        VALUES (?, ?, ?, ?, ?, ?, ?, 'Pending')");
+    $stmt->bind_param("sssssss", $name, $email, $contact, $event, $date, $time, $desc);
 
-try{
-    if($_SERVER['REQUEST_METHOD']!=='POST') throw new Exception("Invalid request");
-
-    $name = trim($_POST['customer_name']);
-    $email = trim($_POST['customer_email']);
-    $contact = trim($_POST['customer_contact']);
-    $event = trim($_POST['event_name']);
-    $date = $_POST['event_date'];
-    $time = $_POST['event_time'];
-    $desc = trim($_POST['event_description']);
-
-    if(!$name || !$email || !$contact || !$event || !$date || !$time) throw new Exception("All fields are required");
-
-    $today = date("Y-m-d");
-    if($date <= $today) throw new Exception("Cannot book past or same-day events");
-
-    $stmt = $conn->prepare("INSERT INTO tbl_event_booking(customer_name,customer_email,customer_contact,event_name,event_date,event_time,event_description,event_status) VALUES(?,?,?,?,?,?,?,?)");
-    $status = 'Pending Approval';
-    $stmt->bind_param("ssssssss",$name,$email,$contact,$event,$date,$time,$desc,$status);
-    $stmt->execute();
+    if ($stmt->execute()) {
+        echo "success";
+    } else {
+        echo "error";
+    }
     $stmt->close();
-
-    echo json_encode(['status'=>'success','message'=>'Booking submitted! Pending approval.']);
-
-}catch(Exception $e){
-    echo json_encode(['status'=>'error','message'=>$e->getMessage()]);
-}finally{
-    if(isset($conn)) $conn->close();
+    $conn->close();
 }
 ?>

@@ -1,13 +1,13 @@
 <?php
 require __DIR__ . '/../config/database-connection.php';
 
-// Fetch all bookings
-$bookings = [];
-$sql = "SELECT * FROM tbl_event_booking ORDER BY event_date DESC, event_time DESC";
+// Fetch all pending + declined requests
+$requests = [];
+$sql = "SELECT * FROM tbl_event_pending ORDER BY event_date DESC, event_time DESC";
 $result = $conn->query($sql);
 if($result){
     while($row = $result->fetch_assoc()){
-        $bookings[] = $row;
+        $requests[] = $row;
     }
 }
 $conn->close();
@@ -42,7 +42,7 @@ $conn->close();
 
     <div class="main">
         <div class="head-title">
-            <h1>Customer Bookings</h1>
+            <h1>Customer Booking Requests</h1>
         </div>
 
         <div class="table-container">
@@ -60,19 +60,19 @@ $conn->close();
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if(!empty($bookings)): $counter=1; ?>
-                        <?php foreach($bookings as $row): ?>
+                        <?php if(!empty($requests)): $counter=1; ?>
+                        <?php foreach($requests as $row): ?>
                         <tr>
                             <td><?= $counter++; ?></td>
                             <td><strong><?= htmlspecialchars($row['customer_name']); ?></strong><br><?= htmlspecialchars($row['customer_email']); ?></td>
                             <td><?= htmlspecialchars($row['customer_contact']); ?></td>
                             <td><?= htmlspecialchars($row['event_name']); ?></td>
                             <td><?= date("F j, Y h:i A", strtotime($row['event_date'].' '.$row['event_time'])); ?></td>
-                            <td class="status <?= strtolower(str_replace(' ','-',$row['event_status'])); ?>"><?= htmlspecialchars($row['event_status']); ?></td>
+                            <td class="status <?= strtolower($row['event_status']); ?>"><?= htmlspecialchars($row['event_status']); ?></td>
                             <td>
-                                <?php if($row['event_status']=='Pending Approval'): ?>
-                                    <button class="action-btn approve" data-id="<?= $row['booking_id']; ?>">Approve</button>
-                                    <button class="action-btn decline" data-id="<?= $row['booking_id']; ?>">Decline</button>
+                                <?php if($row['event_status']=='Pending'): ?>
+                                    <button class="action-btn approve" data-id="<?= $row['pending_id']; ?>">Approve</button>
+                                    <button class="action-btn decline" data-id="<?= $row['pending_id']; ?>">Decline</button>
                                 <?php else: ?>
                                     <span>-</span>
                                 <?php endif; ?>
@@ -80,7 +80,7 @@ $conn->close();
                         </tr>
                         <?php endforeach; ?>
                         <?php else: ?>
-                        <tr><td colspan="7">No bookings found</td></tr>
+                        <tr><td colspan="7">No booking requests found</td></tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
