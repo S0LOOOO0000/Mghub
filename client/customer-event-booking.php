@@ -31,9 +31,9 @@
           </div>
 
           <div class="calendar-controls-month">
-            <button id="btn-prev-month" class="btn small arrow">&lt;</button>
-            <span id="calendar-month" class="month-name">August</span>
-            <button id="btn-next-month" class="btn small arrow">&gt;</button>
+              <button id="prev-month" class="btn small arrow">&lt;</button>
+              <span id="calendar-month" class="month-name">August</span>
+              <button id="next-month" class="btn small arrow">&gt;</button>
           </div>
         </header>
 
