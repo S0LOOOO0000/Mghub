@@ -1,5 +1,7 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="../css/components/sidebar.css">
+<link rel="stylesheet" href="../css/components/account-modal.css">
+<script src="../js/account-modal.js"></script>
 
  <!-- SIDEBAR -->
 
@@ -53,10 +55,43 @@
         </ul>
         <ul class="side-menu bottom">
             <li>
+                <a href="" class="logout" id="accountBtn">
+                    <i class="material-icons icon-btn">person</i>
+                    <span class="text">Account</span>
+                </a>
+            </li>
+            <li>
                 <a href="../logout.php" class="logout">
                     <i class="material-icons icon-btn">logout</i>
                     <span class="text">Logout</span>
                 </a>
             </li>
         </ul>
+
+
+    <div class="modal-overlay" id="accountModal">
+        <div class="modal">
+            <h2 class="modal-title">Change Password</h2>
+
+            <div class="input-group">
+            <input type="password" id="currentPassword" required>
+            <label for="currentPassword">Current Password</label>
+            </div>
+
+            <div class="input-group">
+            <input type="password" id="newPassword" required>
+            <label for="newPassword">New Password</label>
+            </div>
+
+            <div class="input-group">
+            <input type="password" id="confirmPassword" required>
+            <label for="confirmPassword">Confirm Password</label>
+            </div>
+
+            <div class="modal-footer">
+            <button class="btn cancel" id="closeModalBtn">Cancel</button>
+            <button class="btn save" id="saveModalBtn">Save</button>
+            </div>
+        </div>
+    </div>
 
