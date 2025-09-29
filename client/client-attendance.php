@@ -10,6 +10,7 @@ include __DIR__ . '/../php/get-event.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance</title>
+    <?php include '../includes/favicon.php'; ?>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<!-- My CSS -->
 	<link rel="stylesheet" href="../css/style.css">
