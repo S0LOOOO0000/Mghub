@@ -245,6 +245,13 @@ $user_role = $_SESSION['user_role'];
 						</li>
 					</ul>
 					
+					<!-- Add Button at Bottom Right -->
+					<div class="todo-add-button">
+						<button class="add-todo-btn" title="Add New Todo">
+							<i class='material-icons'>add</i>
+						</button>
+					</div>
+					
     
         </div>
     </section>

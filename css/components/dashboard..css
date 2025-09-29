@@ -65,11 +65,10 @@
 	display: flex;
 	flex-wrap: wrap;
 	grid-gap: 24px;
-	margin-top: 24px;
+	margin-top: 16px;
 	width: 100%;
 	color: var(--dark);
-	min-height: 600px;
-	
+	height: calc(100vh - 280px);
 }
 .table-data > div {
 	box-shadow: 0 4px 12px var(--opacity-50);
@@ -84,6 +83,64 @@
 	grid-gap: 16px;
 	margin-bottom: 24px;
 }
+
+/* Modern Filter Styling */
+.table-data .head .form-input {
+	border-radius: 20px;
+	overflow: hidden;
+}
+
+.table-data .head .form-input input {
+	border-radius: 20px;
+	border: 1px solid #e0e0e0;
+	padding: 12px 16px;
+	font-size: 14px;
+	transition: all 0.3s ease;
+}
+
+.table-data .head .form-input input:focus {
+	outline: none;
+	border-color: var(--blue);
+	box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.table-data .head .form-input .search-btn {
+	border-radius: 0 20px 20px 0;
+	background: var(--blue);
+	border: none;
+	padding: 12px 16px;
+	transition: all 0.3s ease;
+}
+
+.table-data .head .form-input .search-btn:hover {
+	background: #2980b9;
+	transform: translateY(-1px);
+}
+
+.table-data .head .filterStatus,
+.table-data .head .filterType {
+	border-radius: 20px;
+	border: 1px solid #e0e0e0;
+	padding: 12px 16px;
+	font-size: 14px;
+	background: white;
+	transition: all 0.3s ease;
+	cursor: pointer;
+}
+
+.table-data .head .filterStatus:focus,
+.table-data .head .filterType:focus {
+	outline: none;
+	border-color: var(--blue);
+	box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.table-data .head .filterStatus:hover,
+.table-data .head .filterType:hover {
+	border-color: var(--blue);
+	transform: translateY(-1px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
 .table-data .head h3 {
 	margin-right: auto;
 	font-size: 24px;
@@ -94,35 +151,300 @@
 }
 
 .table-data .order {
-	flex-grow: 1;
-	flex-basis: 500px;
+	flex-grow: 3;
+	flex-basis: 70%;
+	overflow-x: visible;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
 }
 .table-data .order table {
 	width: 100%;
-	border-collapse: collapse;
+	border-collapse: separate;
+	border-spacing: 0;
+	border-radius: 12px;
+	overflow: hidden;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+	table-layout: fixed;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+.table-data .order table thead {
+	display: block;
+	width: 100%;
+}
+
+.table-data .order table tbody {
+	display: block;
+	width: 100%;
+	max-height: 400px;
+	overflow-y: auto;
+	flex: 1;
+}
+
+.table-data .order table tbody tr {
+	display: table;
+	width: 100%;
+	table-layout: fixed;
 }
 .table-data .order table th {
-	padding-bottom: 12px;
-	font-size: 13px;
+	background: var(--blue);
+	color: white;
+	font-weight: 600;
+	padding: 10px 6px;
+	text-align: center;
+	border: none;
+	font-size: 14px;
+	vertical-align: middle;
+	white-space: nowrap;
+	line-height: 1.3;
+}
+
+/* Requests Table Column Widths - Optimized for no scrolling */
+.table-data .order table th:nth-child(1) { width: 3%; } /* # */
+.table-data .order table th:nth-child(2) { width: 16%; } /* Employee */
+.table-data .order table th:nth-child(3) { width: 10%; } /* Station & Role */
+.table-data .order table th:nth-child(4) { width: 7%; } /* Shift */
+.table-data .order table th:nth-child(5) { width: 9%; } /* Request Type */
+.table-data .order table th:nth-child(6) { width: 13%; } /* Details */
+.table-data .order table th:nth-child(7) { width: 18%; } /* Reason */
+.table-data .order table th:nth-child(8) { 
+	width: 8%; 
 	text-align: left;
-	border-bottom: 1px solid var(--grey);
+	padding: 10px 20px 10px 4px !important;
+	padding-left: 4px !important;
+} /* Target Date */
+.table-data .order table th:nth-child(9) { 
+	width: 8%; 
+	text-align: left;
+} /* Status */
+.table-data .order table th:nth-child(10) { 
+	width: 6%; 
+	text-align: left;
+} /* Action */
+
+.table-data .order table th:first-child {
+	text-align: center;
+	padding-left: 4px;
+}
+
+.table-data .order table th:nth-child(2) {
+	text-align: center;
+	padding-left: 8px;
 }
 .table-data .order table td {
-	padding: 16px 0;
+	padding: 10px 8px;
+	font-size: 13px;
+	border: none;
+	border-bottom: 1px solid var(--grey);
+	border-right: 1px solid #e0e0e0;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 1.4;
 }
-.table-data .order table tr td:first-child {
-	align-items: center; 
-    position: relative; 
-	grid-gap: 12px;
-	padding-left: 6px;
-	object-fit: cover;
+
+.table-data .order table td:last-child {
+	border-right: none;
 }
+/* Requests Table Cell Styling - Optimized for no scrolling */
+.table-data .order table td:nth-child(1) { 
+	text-align: center; 
+	font-weight: 600;
+	width: 3%;
+}
+
+.table-data .order table td:nth-child(2) { 
+	text-align: center; 
+	padding-left: 8px;
+	width: 16%;
+	white-space: normal;
+	word-wrap: break-word;
+	line-height: 1.2;
+}
+
+.table-data .order table td:nth-child(3) { 
+	width: 10%;
+	text-align: center;
+}
+
+.table-data .order table td:nth-child(4) { 
+	width: 7%;
+	text-align: center;
+}
+
+.table-data .order table td:nth-child(5) { 
+	width: 9%;
+	text-align: center;
+}
+
+.table-data .order table td:nth-child(6) { 
+	width: 13%;
+	text-align: center;
+	white-space: normal;
+	word-wrap: break-word;
+}
+
+.table-data .order table td:nth-child(7) { 
+	width: 18%;
+	text-align: center;
+	white-space: normal;
+	word-wrap: break-word;
+}
+
+.table-data .order table td:nth-child(8) { 
+	width: 8%;
+	text-align: center;
+}
+
+.table-data .order table td:nth-child(9) { 
+	width: 8%;
+	text-align: center;
+}
+
+.table-data .order table td:nth-child(10) { 
+	width: 6%;
+	text-align: center;
+}
+
+/* Employee Cell (2nd column) Styling */
+.table-data .order table td:nth-child(2) span strong {
+	font-weight: 600;
+	display: block;
+	margin-bottom: 2px;
+	font-size: 13px;
+}
+
+.table-data .order table td:nth-child(2) p {
+	margin: 0;
+	font-size: 11px;
+	color: #666;
+	word-break: break-word;
+}
+
+/* Station & Role Cell (3rd column) Styling */
+.table-data .order table td.req-station span {
+	font-weight: 600;
+	display: block;
+	margin-bottom: 2px;
+	font-size: 13px;
+}
+
+.table-data .order table td.req-station p {
+	margin: 0;
+	font-size: 11px;
+	color: #666;
+	font-style: italic;
+}
+
+/* Shift Cell Styling */
+.table-data .order table td.emp-shift {
+	font-weight: 600;
+	font-size: 12px;
+	text-transform: uppercase;
+}
+
+/* Request Type Cell Styling */
+.table-data .order table td.req-type span {
+	font-weight: 600;
+	font-size: 13px;
+}
+
+/* Reason Text Styling */
+.table-data .order table .reason-text {
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: 13px;
+	line-height: 1.4;
+	text-align: center;
+}
+
+/* Status Cell Styling */
+.table-data .order table td.req-status .status {
+	padding: 4px 8px;
+	border-radius: 8px;
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: uppercase;
+}
+
+.table-data .order table td.req-status .status.pending {
+	background: #fff3cd;
+	color: #856404;
+}
+
+.table-data .order table td.req-status .status.approved {
+	background: #d4edda;
+	color: #155724;
+}
+
+.table-data .order table td.req-status .status.declined {
+	background: #f8d7da;
+	color: #721c24;
+}
+
+/* Action Buttons Styling */
+.table-data .order table .action-buttons {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	justify-content: center;
+	align-items: center;
+}
+
+.table-data .order table .action-buttons button {
+	padding: 4px;
+	border: none;
+	border-radius: 4px;
+	font-size: 12px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	min-width: 24px;
+	height: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	white-space: nowrap;
+}
+
+.table-data .order table .btn-approve {
+	background: #00b894;
+	color: white;
+}
+
+.table-data .order table .btn-approve:hover {
+	background: #00a085;
+	transform: translateY(-1px);
+}
+
+.table-data .order table .btn-reject {
+	background: #e74c3c;
+	color: white;
+}
+
+.table-data .order table .btn-reject:hover {
+	background: #c0392b;
+	transform: translateY(-1px);
+}
+
+.table-data .order table .btn-view {
+	background: #3498db;
+	color: white;
+}
+
+.table-data .order table .btn-view:hover {
+	background: #2980b9;
+	transform: translateY(-1px);
+}
+
+/* Optimized for no scrolling - table always fits container */
 .table-data .order table tr td:last-child {
-	align-items: center; 
-    position: relative; 
-	grid-gap: 12px;
-	padding-left: 6px;
-	object-fit: cover;
+	text-align: center;
+	padding: 16px 12px;
 }
 .table-data .order table td img {
 	width: 36px;
@@ -131,71 +453,115 @@
 	object-fit: cover;
 }
 .table-data .order table tbody tr:hover {
-	background: var(--grey);
+	background: var(--light-blue);
+	transform: translateY(-2px);
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+	transition: all 0.3s ease;
 }
 .table-data .order table tr td .status {
-	font-size: 12px;
-	padding: 6px 16px;
-	color: var(--light);
-	border-radius: 20px;
-	font-weight: 700;
+	font-size: 13px;
+	padding: 0;
+	font-weight: 600;
 }
 .table-data .order table tr td .status.present {
-	background: var(--green);
+	color: var(--green);
 }
 .table-data .order table tr td .status.late {
-	background: var(--yellow);
+	color: var(--yellow);
 }
 .table-data .order table tr td .status.absent {
-	background: var(--orange);
+	color: var(--orange);
 }
 
 .todo-filters button {
-	padding: 8px;
-	border-radius: 8px;
+	padding: 6px 12px;
+	border-radius: 6px;
 	border: none;
-	background: none;
 	cursor: pointer;
-	margin-right: 10px;
-	color: var(--foreground);
-	background: var(--background);
+	font-size: 12px;
+	font-weight: 500;
+	color: var(--dark);
+	background: var(--light);
+	transition: all 0.2s ease;
+}
+
+.todo-filters button:hover {
+	background: var(--blue);
+	color: white;
 }
 
 
 .todo-filters button.completed {
 	background: var(--blue);
+	color: white;
 }
 .todo-filters button.pending {
 	background: var(--orange);
+	color: white;
 }
-.table-data .todo {
+.table-data .todo,
+.table-data .inventory {
 	flex-grow: 1;
-	flex-basis: 300px;
+	flex-basis: 30%;
+	height: 100%;
+	max-width: 350px;
+	overflow: hidden;
+	position: relative;
+	display: flex;
+	flex-direction: column;
 }
-.table-data .todo .todo-list {
-	width: 100%;
-}
-.table-data .todo .todo-list li {
-	width: 100%;
-	margin-bottom: 16px;
-	background: var(--grey);
-	border-radius: 10px;
-	padding: 24px 20px;
+
+.table-data .todo .head {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	margin-bottom: 20px;
+}
+
+.table-data .todo .head h3 {
+	margin: 0;
+	flex: 0 0 auto;
+}
+
+.table-data .todo .head .todo-filters {
+	display: flex;
+	gap: 8px;
+	flex: 1;
+	justify-content: flex-end;
+	margin-right: 20px;
+}
+
+.table-data .todo .head .icon {
+	flex: 0 0 auto;
+	cursor: pointer;
+}
+.table-data .todo .todo-list {
+	width: 100%;
+	overflow: hidden;
+}
+.table-data .todo .todo-list li {
+	width: 100%;
+	margin-bottom: 12px;
+	background: white;
+	border-radius: 8px;
+	padding: 12px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+	overflow: hidden;
 }
 .table-data .todo .todo-list li .bx {
 	cursor: pointer;
 }
 
 .table-data .todo .todo-list li.completed {
-    border-left: 10px solid var(--blue);
+    border-left: 4px solid var(--blue);
     position: relative;
 }
 
 .table-data .todo .todo-list li.not-completed {
-    border-left: 10px solid var(--orange);
+    border-left: 4px solid var(--orange);
     position: relative;
 }
 
@@ -361,3 +727,464 @@ dt.menu-icon:hover dt.content-menu {
 		min-width: 420px;
 	}
 }*/
+
+/* Simple User-Friendly Action Buttons */
+.btn-approve, .btn-reject, .btn-view {
+	padding: 6px 12px;
+	border: none;
+	border-radius: 6px;
+	font-size: 11px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	margin: 1px 2px;
+	min-width: 60px;
+	text-align: center;
+}
+
+.btn-approve {
+	background: #28a745;
+	color: white;
+}
+
+.btn-approve:hover {
+	background: #218838;
+	opacity: 0.9;
+}
+
+.btn-reject {
+	background: #dc3545;
+	color: white;
+}
+
+.btn-reject:hover {
+	background: #c82333;
+	opacity: 0.9;
+}
+
+.btn-view {
+	background: #007bff;
+	color: white;
+}
+
+.btn-view:hover {
+	background: #0056b3;
+	opacity: 0.9;
+}
+
+/* Stack buttons vertically for better mobile view */
+.action-buttons {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	align-items: center;
+}
+
+@media (min-width: 768px) {
+	.action-buttons {
+		flex-direction: row;
+		justify-content: center;
+	}
+}
+
+/* Enhanced Status Text */
+.status.pending {
+	color: var(--orange) !important;
+	background: none !important;
+	padding: 0 !important;
+	border-radius: 0 !important;
+}
+
+.status.approved {
+	color: var(--green) !important;
+	background: none !important;
+	padding: 0 !important;
+	border-radius: 0 !important;
+}
+
+.status.rejected {
+	color: var(--red) !important;
+	background: none !important;
+	padding: 0 !important;
+	border-radius: 0 !important;
+}
+
+.status.declined {
+	color: var(--red) !important;
+	background: none !important;
+	padding: 0 !important;
+	border-radius: 0 !important;
+}
+
+/* Layout for Dashboard Title with Cards */
+.head-title-with-cards {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	margin-bottom: 20px;
+	gap: 24px;
+}
+
+.head-title-with-cards .head-title {
+	flex: 0 0 auto;
+}
+
+.head-title-with-cards .box-info {
+	display: flex;
+	grid-gap: 12px;
+	margin: 0;
+	flex: 1;
+	justify-content: stretch;
+}
+
+.head-title-with-cards .box-info li {
+	padding: 20px;
+	background: var(--light);
+	border-radius: 20px;
+	display: flex;
+	align-items: center;
+	grid-gap: 16px;
+	cursor: pointer;
+	min-width: 160px;
+	flex: 1;
+	max-width: none;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 1024px) {
+	.head-title-with-cards {
+		flex-direction: column;
+		align-items: stretch;
+	}
+	
+	.head-title-with-cards .box-info {
+		justify-content: center;
+		margin-top: 20px;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.head-title-with-cards .box-info {
+		flex-wrap: wrap;
+		grid-gap: 8px;
+	}
+	
+	.head-title-with-cards .box-info li {
+		min-width: calc(50% - 4px);
+		max-width: none;
+	}
+}
+
+/* Todo Actions Container */
+.todo-actions {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	flex-shrink: 0;
+}
+
+.todo-actions .progress-text {
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--dark);
+	min-width: 35px;
+	text-align: right;
+	position: static !important;
+	bottom: auto !important;
+	left: auto !important;
+	padding-left: 0 !important;
+}
+
+.todo-actions .menu-icon {
+	cursor: pointer;
+	font-size: 18px;
+}
+
+/* Todo task text styling */
+.table-data .todo .todo-list li p {
+	margin: 0;
+	flex: 1;
+	font-size: 12px;
+	font-weight: 500;
+	color: var(--dark);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/* Todo Add Button - Bottom Right */
+.todo-add-button {
+	position: absolute;
+	bottom: 16px;
+	right: 16px;
+	z-index: 10;
+}
+
+.add-todo-btn {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	background: var(--blue);
+	color: white;
+	border: none;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	transition: all 0.3s ease;
+}
+
+.add-todo-btn:hover {
+	background: #2980b9;
+	transform: scale(1.1);
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.add-todo-btn i {
+	font-size: 24px;
+}
+
+/* Table Pagination Styling */
+.table-pagination-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 16px 0;
+	margin-top: 16px;
+	border-top: 1px solid #e0e0e0;
+}
+
+.pagination-info {
+	font-size: 14px;
+	color: #666;
+}
+
+.pagination-controls {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.pagination-btn {
+	width: 32px;
+	height: 32px;
+	border: 1px solid #e0e0e0;
+	background: white;
+	border-radius: 6px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+	background: var(--blue);
+	color: white;
+	border-color: var(--blue);
+}
+
+.pagination-btn:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.current-page {
+	font-weight: 600;
+	font-size: 14px;
+	color: var(--blue);
+	min-width: 20px;
+	text-align: center;
+}
+
+/* Inventory Section Styling */
+.table-data .inventory .head {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	margin-bottom: 20px;
+	flex-wrap: wrap;
+	gap: 12px;
+	flex-shrink: 0;
+}
+
+.table-data .inventory .head h3 {
+	margin: 0;
+	flex: 0 0 auto;
+	font-size: 20px;
+	font-weight: 600;
+	color: var(--dark);
+}
+
+.inventory-filters {
+	display: flex;
+	gap: 6px;
+	flex-wrap: wrap;
+}
+
+.inventory-filters button {
+	padding: 8px 14px;
+	border-radius: 8px;
+	border: none;
+	cursor: pointer;
+	font-size: 12px;
+	font-weight: 500;
+	color: var(--dark);
+	background: #f5f5f5;
+	transition: all 0.2s ease;
+	white-space: nowrap;
+	min-width: fit-content;
+}
+
+.inventory-filters button:hover,
+.inventory-filters button.active {
+	background: var(--blue);
+	color: white;
+}
+
+.inventory-list {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	flex: 1;
+	overflow-y: auto;
+	padding-right: 4px;
+}
+
+.inventory-list::-webkit-scrollbar {
+	width: 4px;
+}
+
+.inventory-list::-webkit-scrollbar-track {
+	background: #f1f1f1;
+	border-radius: 4px;
+}
+
+.inventory-list::-webkit-scrollbar-thumb {
+	background: #c1c1c1;
+	border-radius: 4px;
+}
+
+.inventory-list::-webkit-scrollbar-thumb:hover {
+	background: #a8a8a8;
+}
+
+.inventory-item {
+	background: white;
+	border-radius: 10px;
+	padding: 16px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	transition: all 0.2s ease, opacity 0.3s ease;
+	border: 1px solid #f0f0f0;
+	margin-bottom: 4px;
+	opacity: 1;
+}
+
+.inventory-item:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+	border-color: #e0e0e0;
+}
+
+.item-info h4 {
+	margin: 0 0 4px 0;
+	font-size: 15px;
+	font-weight: 600;
+	color: var(--dark);
+	line-height: 1.2;
+}
+
+.item-info .item-category {
+	margin: 0;
+	font-size: 12px;
+	color: #888;
+	text-transform: capitalize;
+	font-weight: 500;
+}
+
+.item-details {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 4px;
+}
+
+.item-details .quantity {
+	font-size: 14px;
+	font-weight: 700;
+	color: var(--dark);
+	margin-bottom: 4px;
+}
+
+.status-badge {
+	padding: 4px 10px;
+	border-radius: 14px;
+	font-size: 10px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	white-space: nowrap;
+}
+
+.status-badge.status-in_stock {
+	background: #d4edda;
+	color: #155724;
+}
+
+.status-badge.status-low_stock {
+	background: #fff3cd;
+	color: #856404;
+}
+
+.status-badge.status-out_of_stock {
+	background: #f8d7da;
+	color: #721c24;
+}
+
+.status-badge.status-overstock {
+	background: #cce5ff;
+	color: #0066cc;
+}
+
+.inventory-footer {
+	margin-top: auto;
+	text-align: center;
+	padding-top: 16px;
+	flex-shrink: 0;
+}
+
+.view-all-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 16px;
+	background: var(--blue);
+	color: white;
+	text-decoration: none;
+	border-radius: 6px;
+	font-size: 13px;
+	font-weight: 500;
+	transition: all 0.2s ease;
+}
+
+.view-all-btn:hover {
+	background: #2980b9;
+	transform: translateY(-1px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.no-items {
+	text-align: center;
+	padding: 40px 20px;
+	color: #999;
+}
+
+
+
+.table-data {
+	margin-bottom: 0;
+}
