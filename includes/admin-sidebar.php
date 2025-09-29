@@ -55,7 +55,7 @@
         </ul>
         <ul class="side-menu bottom">
             <li>
-                <a href="" class="logout" id="accountBtn">
+                <a class="logout" id="accountBtn">
                     <i class="material-icons icon-btn">person</i>
                     <span class="text">Account</span>
                 </a>
@@ -72,25 +72,31 @@
     <div class="modal-overlay" id="accountModal">
         <div class="modal">
             <h2 class="modal-title">Change Password</h2>
+            <p class="modal-description">
+                To change your password, please enter your current password and then provide a new one. 
+                Your new password must be at least 8 characters long and confirmed in the field below.
+            </p>
 
             <div class="input-group">
-            <input type="password" id="currentPassword" required>
-            <label for="currentPassword">Current Password</label>
+                <input type="password" id="currentPassword" name="currentPassword" placeholder=" " required>
+                <label for="currentPassword">Current Password</label>
             </div>
 
             <div class="input-group">
-            <input type="password" id="newPassword" required>
-            <label for="newPassword">New Password</label>
+                <input type="password" id="newPassword" name="newPassword" placeholder=" " required minlength="8">
+                <label for="newPassword">New Password</label>
             </div>
 
             <div class="input-group">
-            <input type="password" id="confirmPassword" required>
-            <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder=" " required minlength="8">
+                <label for="confirmPassword">Confirm Password</label>
             </div>
+
+            <p class="modal-alert" id="alert-text">Your new password must be at least 8 characters long.</p>
 
             <div class="modal-footer">
-            <button class="btn cancel" id="closeModalBtn">Cancel</button>
-            <button class="btn save" id="saveModalBtn">Save</button>
+                <button type="button" class="btn cancel" id="closeModalBtn">Cancel</button>
+                <button type="submit" class="btn save" id="saveModalBtn">Save</button>
             </div>
         </div>
     </div>
