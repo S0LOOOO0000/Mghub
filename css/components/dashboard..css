@@ -583,18 +583,7 @@
     background-color: var(--orange); 
 }
 
-.table-data .todo .todo-list li span {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-	padding-left: -30px;
-}
-.table-data .todo .todo-list li.not-completed span {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-	padding-left: -30px;
-}
+/* Removed old progress text positioning */
 
 .table-data .todo .todo-list li:last-child {
 	margin-bottom: 0;
@@ -646,8 +635,51 @@ dt.menu-item a:hover, dt.menu-item:hover *{
 }
 
 
-dt.menu-icon:hover dt.content-menu {
+dt.menu-icon:hover dt.content-menu,
+.menu-icon:hover .content-menu {
     display: block;
+}
+
+/* Todo Actions Container */
+.todo-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Adjust todo list item positioning */
+.table-data .todo .todo-list li {
+    position: relative;
+    padding-right: 80px; /* Space for actions */
+}
+
+/* Progress text styling beside three dots */
+.todo-actions .progress-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--dark);
+    background: var(--grey);
+    padding: 4px 8px;
+    border-radius: 8px;
+    min-width: 35px;
+    text-align: center;
+}
+
+/* Three dots menu icon */
+.todo-actions .menu-icon {
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+.todo-actions .menu-icon:hover {
+    background: var(--grey);
 }
 
 

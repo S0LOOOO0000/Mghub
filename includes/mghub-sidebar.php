@@ -5,7 +5,7 @@
 
         <a class="brand">
             <i class="material-icons icon-logo">coffee</i>
-            <span class="text title">MG hub</span>
+            <span class="text title">MG Hub</span>
         </a>
         <ul class="side-menu top">
             <li>

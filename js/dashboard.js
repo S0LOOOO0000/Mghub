@@ -44,17 +44,19 @@ const searchButton = document.querySelector('.content nav form .form-input butto
 const searchButtonIcon = document.querySelector('.content nav form .form-input button .material-icon');
 const searchForm = document.querySelector('.content nav form');
 
-searchButton.addEventListener('click', function (e) {
-    if (window.innerWidth < 768) {
-        e.preventDefault();
-        searchForm.classList.toggle('show');
-        if (searchForm.classList.contains('show')) {
-            searchButtonIcon.classList.replace('search-icon');
-        } else {
-            searchButtonIcon.classList.replace('search-icon');
+if (searchButton && searchButtonIcon && searchForm) {
+    searchButton.addEventListener('click', function (e) {
+        if (window.innerWidth < 768) {
+            e.preventDefault();
+            searchForm.classList.toggle('show');
+            if (searchForm.classList.contains('show')) {
+                searchButtonIcon.classList.replace('search-icon');
+            } else {
+                searchButtonIcon.classList.replace('search-icon');
+            }
         }
-    }
-})
+    });
+}
 
 
 
@@ -161,20 +163,20 @@ function updateNotificationCount() {
     document.querySelector('.notification .num').textContent = unreadNotifications;
 }
 
-// Dashboard Requests Filtering
+// Admin Dashboard Requests Filtering
 document.addEventListener('DOMContentLoaded', function() {
     const statusFilter = document.querySelector('.table-data .order .filterStatus');
     const typeFilter = document.querySelector('.table-data .order .filterType');
     
     if (statusFilter) {
-        statusFilter.addEventListener('change', filterRequests);
+        statusFilter.addEventListener('change', filterAdminRequests);
     }
     if (typeFilter) {
-        typeFilter.addEventListener('change', filterRequests);
+        typeFilter.addEventListener('change', filterAdminRequests);
     }
 });
 
-function filterRequests() {
+function filterAdminRequests() {
     const statusFilter = document.querySelector('.table-data .order .filterStatus')?.value || 'all';
     const typeFilter = document.querySelector('.table-data .order .filterType')?.value || 'all';
 
@@ -332,4 +334,43 @@ function filterInventory(status) {
         }, index * 50);
     });
 }
+
+// Todo dropdown functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle todo dropdown menus
+    const menuIcons = document.querySelectorAll('.todo-actions .menu-icon');
+    
+    menuIcons.forEach(icon => {
+        icon.addEventListener('click', function(e) {
+            e.stopPropagation();
+            
+            // Close all other open dropdowns
+            document.querySelectorAll('.content-menu').forEach(menu => {
+                if (menu !== this.querySelector('.content-menu')) {
+                    menu.style.display = 'none';
+                }
+            });
+            
+            // Toggle current dropdown
+            const dropdown = this.querySelector('.content-menu');
+            if (dropdown) {
+                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            }
+        });
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function() {
+        document.querySelectorAll('.content-menu').forEach(menu => {
+            menu.style.display = 'none';
+        });
+    });
+    
+    // Prevent dropdown from closing when clicking inside it
+    document.querySelectorAll('.content-menu').forEach(menu => {
+        menu.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    });
+});
 

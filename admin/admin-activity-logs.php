@@ -71,7 +71,7 @@ $conn->close();
     <?php include '../includes/favicon.php'; ?>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
-<link rel="stylesheet" href="../css/table.css">
+<link rel="stylesheet" href="../css/components/table.css">
 </head>
 <body data-role="<?= $_SESSION['user_role'] ?>">
 
@@ -140,11 +140,11 @@ $conn->close();
                                 $detailsText = $log['details'];
                             }
                         ?>
-                        <tr>
+                        <tr class="activity-log-row" data-log-id="<?= $log['log_id']; ?>" data-role="<?= htmlspecialchars($log['user_role']); ?>" data-action="<?= htmlspecialchars($log['action']); ?>" data-details="<?= htmlspecialchars($detailsText); ?>" data-date="<?= date("F j, Y", strtotime($log['log_timestamp'])); ?>" data-time="<?= date("g:i A", strtotime($log['log_timestamp'])); ?>">
                             <td><?= $counter++; ?></td>
                             <td><?= htmlspecialchars($log['user_role']); ?></td>
                             <td><?= htmlspecialchars($log['action']); ?></td>
-                            <td class="reason-text" title="<?= htmlspecialchars($detailsText); ?>"><?= htmlspecialchars($detailsText); ?></td>
+                            <td class="reason-text truncated" title="Click to view full details"><?= htmlspecialchars(strlen($detailsText) > 50 ? substr($detailsText, 0, 50) . '...' : $detailsText); ?></td>
                             <td><?= date("F j, Y", strtotime($log['log_timestamp'])); ?></td>
                             <td><?= date("g:i A", strtotime($log['log_timestamp'])); ?></td>
                         </tr>
@@ -164,6 +164,8 @@ $conn->close();
 
 </div>
 </section>
+
+<?php include '../includes/activity-log-modal.php'; ?>
 
 <script src="../js/dropdown.js"></script>
 <script src="../js/dashboard.js"></script>

@@ -18,7 +18,7 @@ include __DIR__ . '/../php/get-inventory.php';
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
 </head>
-<body data-role="<?= $_SESSION['user_role'] ?>">
+<body class="client-mghub" data-role="<?= $_SESSION['user_role'] ?>">
 <section class="sidebar">
     <?php include '../includes/mghub-sidebar.php'; ?>
 </section>

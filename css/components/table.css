@@ -191,4 +191,100 @@
     cursor: pointer;           /* optional: indicate hover */
 }
 
+/* Activity Log Row Styles */
+.activity-log-row {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.activity-log-row:hover {
+    background-color: #f8f9fa !important;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.activity-log-row:hover td:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.activity-log-row:hover td:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.reason-text.truncated {
+    position: relative;
+}
+
+.reason-text.truncated::after {
+    content: "Click to view full details";
+    position: absolute;
+    right: -120px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 11px;
+    color: #666;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+}
+
+.activity-log-row:hover .reason-text.truncated::after {
+    opacity: 1;
+}
+
+/* Client Dashboard Status Styling - Text Only (No Background) */
+.booking-status .status.booked {
+    color: var(--blue) !important;
+    background: none !important;
+    background-color: transparent !important;
+    padding: 0 !important;
+    font-weight: 600;
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+.booking-status .status.completed {
+    color: var(--green) !important;
+    background: none !important;
+    background-color: transparent !important;
+    padding: 0 !important;
+    font-weight: 600;
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+.booking-status .status.cancelled {
+    color: var(--red) !important;
+    background: none !important;
+    background-color: transparent !important;
+    padding: 0 !important;
+    font-weight: 600;
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+.booking-status .status.pending {
+    color: var(--orange) !important;
+    background: none !important;
+    background-color: transparent !important;
+    padding: 0 !important;
+    font-weight: 600;
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+/* Override any badge styles for client dashboards */
+.client-dashboard .booking-status .status,
+.client-mghub .booking-status .status,
+.client-spa .booking-status .status {
+    background: none !important;
+    background-color: transparent !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    font-weight: 600;
+}
+
 

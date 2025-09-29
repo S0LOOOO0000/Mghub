@@ -16,7 +16,7 @@ include __DIR__ . '/../php/get-event.php';
 	<link rel="stylesheet" href="../css/style.css">
 	
 </head>
-<body>
+<body class="client-dashboard">
     <section class="sidebar">
         <?php include '../includes/client-sidebar.php'; ?>
     </section>
