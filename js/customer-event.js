@@ -1,3 +1,4 @@
+// customer-event-pending.js
 document.addEventListener("DOMContentLoaded", () => {
   const calendarMonthEl = document.getElementById("calendar-month");
   const datesEl = document.getElementById("dates");
@@ -35,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 3000);
   };
 
-  // Fetch events from backend
+  // Fetch events from backend (including only approved + pending if needed)
   const fetchEvents = async () => {
     try {
       const res = await fetch("../php/get-events.php", { cache: "no-store" });
@@ -147,22 +148,29 @@ document.addEventListener("DOMContentLoaded", () => {
   closeBtn.addEventListener("click", () => addModal.classList.remove("show"));
   window.addEventListener("click", e => { if(e.target===addModal) addModal.classList.remove("show"); });
 
-  // Submit booking
+  // Submit booking → now adds only to pending for admin approval
   addForm.addEventListener("submit", async e => {
     e.preventDefault();
-    try{
-      const res = await fetch("../php/customer-add-event.php", { method:"POST", body:new FormData(addForm) });
-      const text = await res.text();
-      if(text.toLowerCase().includes("success")){
-        showPopup("Booking submitted! Pending approval.","success");
+    try {
+      // Send to pending table or JSON, not main tbl_event
+      const res = await fetch("../php/customer-add-event.php", {
+        method: "POST",
+        body: new FormData(addForm)
+      });
+
+      // Expect JSON response: {status:"success", message:"Pending approval"}
+      const data = await res.json();
+
+      if(data.status === "success") {
+        showPopup(data.message || "Booking submitted! Pending approval.", "success");
         addModal.classList.remove("show");
-        await refresh();
+        await refresh(); // refresh calendar with pending events
       } else {
-        showPopup("Failed: "+text,"error");
+        showPopup(data.message || "Failed to submit booking.", "error");
       }
-    }catch(err){
+    } catch(err) {
       console.error(err);
-      showPopup("Error while submitting booking.","error");
+      showPopup("Error while submitting booking.", "error");
     }
   });
 

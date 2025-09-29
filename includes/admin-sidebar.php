@@ -20,18 +20,6 @@
                     <span class="text">Employees</span>
                 </a>
             </li>
-<!--            <li>
-                <a href="../admin/admin-attendance.php">
-                    <i class="material-icons icon-btn">event</i>
-                    <span class="text">Attendances</span>
-                </a>
-            </li>
-            <li>
-                <a href="../admin/admin-attendance-record.php">
-                    <i class="material-icons icon-btn">assignment</i>
-                    <span class="text">Records</span>
-                </a>
-            </li>-->
             <li>
                 <a href="../admin/admin-request.php">
                     <i class="material-icons icon-btn">mark_email_read</i>
@@ -48,6 +36,12 @@
                 <a href="../admin/admin-bookings.php">
                     <i class="material-icons icon-btn">event</i>
                     <span class="text">Bookings</span>
+                </a>
+            </li>
+            <li>
+                <a href="../admin/admin-booking-approval.php">
+                    <i class="material-icons icon-btn">event_available</i>
+                    <span class="text">Booking Approval</span>
                 </a>
             </li>
             <li>

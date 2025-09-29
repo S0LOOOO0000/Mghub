@@ -125,64 +125,7 @@ $error = $_GET['error'] ?? null;
 </div>
 
 <script src="../js/html5-qrcode.min.js"></script>
-<script>
-let html5QrCode;
 
-function openQrScanner(action) {
-  const modal = document.getElementById("qrModal");
-  const title = document.getElementById("qrModalTitle");
-  title.textContent = action === "change" ? "Scan QR to Request Change Shift" : "Scan QR to Request Leave";
-  modal.style.display = "flex";
-
-  html5QrCode = new Html5Qrcode("qr-reader");
-
-  Html5Qrcode.getCameras().then(cameras => {
-    if (!cameras.length) return alert("No camera found");
-
-    html5QrCode.start(
-      cameras[0].id,
-      { fps: 10, qrbox: 250 },
-      qrMessage => {
-        html5QrCode.stop().then(() => html5QrCode.clear());
-        modal.style.display = "none";
-
-        fetch("../php/client-request-function.php", {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: "qr_code=" + encodeURIComponent(qrMessage) + "&action=" + action
-        })
-        .then(res => res.json())
-        .then(data => showAttendanceResult(data))
-        .catch(err => console.error(err));
-      },
-      err => {}
-    ).catch(err => console.error(err));
-  }).catch(err => { console.error(err); alert("Camera access error"); modal.style.display = "none"; });
-}
-
-function closeQrScanner() {
-  const modal = document.getElementById("qrModal");
-  modal.style.display = "none";
-  if (html5QrCode) html5QrCode.stop().then(()=> html5QrCode.clear()).catch(()=>{});
-}
-
-document.getElementById("closeQrModal")?.addEventListener("click", closeQrScanner);
-
-function showAttendanceResult(data) {
-  const modal = document.getElementById("attendanceModal");
-  const message = document.getElementById("attendanceMessage");
-  const details = document.getElementById("attendanceDetails");
-
-  modal.classList.remove("success","error");
-  modal.classList.add(data.status);
-
-  message.textContent = data.message;
-  details.innerHTML = `Name: ${data.name || '-'}<br>Type: ${data.type || '-'}<br>Date: ${data.date || '--'}`;
-  modal.style.display = "flex";
-
-  setTimeout(()=> modal.style.display="none", 4000);
-}
-</script>
 <style>
 #qrModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10000; justify-content:center; align-items:center; }
 .modal-content { background:#fff; padding:20px; border-radius:12px; width:500px; max-width:90%; text-align:center; }
