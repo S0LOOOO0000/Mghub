@@ -5,15 +5,15 @@ $error = $_GET['error'] ?? null;
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Employee Requests</title>
-<?php include '../includes/favicon.php'; ?>
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css">
-<link rel="stylesheet" href="../css/components/forrm-request.css">
-</head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Requests</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components/forrm-request.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js" integrity="sha512-r6rDA7W6ZeQhvl8S7yRVQUKVHdexq+GAlNkNNqVC7YyIV+NwqCTJe2hDWCiffTyRNOeGEzRRJ9ifvRm/HCzGYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  </head>
 <body>
 
 <section class="sidebar">
@@ -125,8 +125,6 @@ $error = $_GET['error'] ?? null;
   </div>
 </div>
 
-<script src="../js/html5-qrcode.min.js"></script>
-
 <style>
 #qrModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10000; justify-content:center; align-items:center; }
 .modal-content { background:#fff; padding:20px; border-radius:12px; width:500px; max-width:90%; text-align:center; }
@@ -140,6 +138,7 @@ $error = $_GET['error'] ?? null;
 .attendance-modal.error .modal-box { border:2px solid red; }
 </style>
 
-<script src="../js/dashboard.js"></script>
+    <script src="../js/dashboard.js"></script>
+    <script src="../js/request.js"></script>
 </body>
 </html>

@@ -9,22 +9,22 @@ require __DIR__ . '/../config/database-connection.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
-function sendStatusEmail($toEmail,$toName,$eventName,$eventDate,$eventTime,$eventDescription,$status){
+function sendStatusEmail($toEmail, $toName, $eventName, $eventDate, $eventTime, $eventDescription, $status) {
     try {
         $mail = new PHPMailer(true);
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'mgcafe.adm2025@gmail.com';
-        $mail->Password = 'ypcf mqee nath emtn'; // Use env variable in production
+        $mail->Password = 'ypcf mqee nath emtn'; // ⚠️ store securely in production
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
 
-        $mail->setFrom('mgcafe2025@gmail.com','MG Cafe');
-        $mail->addAddress($toEmail,$toName);
+        $mail->setFrom('mgcafe2025@gmail.com', 'MG Cafe');
+        $mail->addAddress($toEmail, $toName);
         $mail->isHTML(true);
 
-        $subject = ($status==="Booked") ? "Booking Confirmed: $eventName" : "Booking Status Updated: $eventName";
+        $subject = ($status === "Booked") ? "Booking Confirmed: $eventName" : "Booking Declined: $eventName";
         $formattedDate = date("F j, Y", strtotime($eventDate));
         $formattedTime = date("h:i A", strtotime($eventTime));
 
@@ -39,49 +39,88 @@ function sendStatusEmail($toEmail,$toName,$eventName,$eventDate,$eventTime,$even
             <p>Thank you for choosing MG Cafe!</p>
         </div>";
         $mail->send();
-    } catch(Exception $e){
-        error_log("Email failed: ".$e->getMessage());
+    } catch (Exception $e) {
+        error_log("Email failed: " . $e->getMessage());
     }
 }
 
-try{
-    if($_SERVER['REQUEST_METHOD']!=='POST') throw new Exception("Invalid request");
+try {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') throw new Exception("Invalid request");
 
-    $bookingId = intval($_POST['booking_id'] ?? 0);
+    $pendingId = intval($_POST['booking_id'] ?? 0); // note: booking_id is actually pending_id
     $action = $_POST['action'] ?? '';
-    if(!$bookingId || !in_array($action,['approve','decline'])) throw new Exception("Invalid data");
+    if (!$pendingId || !in_array($action, ['approve', 'decline'])) throw new Exception("Invalid data");
 
-    $stmt = $conn->prepare("SELECT * FROM tbl_event_booking WHERE booking_id=?");
-    $stmt->bind_param("i",$bookingId);
+    // Fetch from pending table
+    $stmt = $conn->prepare("SELECT * FROM tbl_event_pending WHERE pending_id=?");
+    $stmt->bind_param("i", $pendingId);
     $stmt->execute();
     $result = $stmt->get_result();
-    $booking = $result->fetch_assoc();
-    $stmt->close();
-    if(!$booking) throw new Exception("Booking not found");
-
-    $newStatus = ($action==='approve') ? 'Booked' : 'Declined';
-    $stmt = $conn->prepare("UPDATE tbl_event_booking SET event_status=? WHERE booking_id=?");
-    $stmt->bind_param("si",$newStatus,$bookingId);
-    $stmt->execute();
+    $request = $result->fetch_assoc();
     $stmt->close();
 
-    if($action==='approve'){
-        sendStatusEmail(
-            $booking['customer_email'],
-            $booking['customer_name'],
-            $booking['event_name'],
-            $booking['event_date'],
-            $booking['event_time'],
-            $booking['event_description'],
-            $newStatus
+    if (!$request) throw new Exception("Pending booking not found");
+
+    if ($action === 'approve') {
+        // Move to confirmed bookings
+        $stmt = $conn->prepare("
+            INSERT INTO tbl_event_booking (customer_name, customer_email, customer_contact, event_name, event_date, event_time, event_description, event_status, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 'Booked', NOW())
+        ");
+        $stmt->bind_param("sssssss",
+            $request['customer_name'],
+            $request['customer_email'],
+            $request['customer_contact'],
+            $request['event_name'],
+            $request['event_date'],
+            $request['event_time'],
+            $request['event_description']
         );
+        $stmt->execute();
+        $stmt->close();
+
+        // Delete from pending after approval
+        $stmt = $conn->prepare("DELETE FROM tbl_event_pending WHERE pending_id=?");
+        $stmt->bind_param("i", $pendingId);
+        $stmt->execute();
+        $stmt->close();
+
+        // Send email
+        sendStatusEmail(
+            $request['customer_email'],
+            $request['customer_name'],
+            $request['event_name'],
+            $request['event_date'],
+            $request['event_time'],
+            $request['event_description'],
+            "Booked"
+        );
+
+        echo json_encode(['status' => 'success', 'message' => "Booking Approved & Moved to Confirmed."]);
+
+    } else {
+        // Decline: just update status
+        $stmt = $conn->prepare("UPDATE tbl_event_pending SET event_status='Declined' WHERE pending_id=?");
+        $stmt->bind_param("i", $pendingId);
+        $stmt->execute();
+        $stmt->close();
+
+        // Send email
+        sendStatusEmail(
+            $request['customer_email'],
+            $request['customer_name'],
+            $request['event_name'],
+            $request['event_date'],
+            $request['event_time'],
+            $request['event_description'],
+            "Declined"
+        );
+
+        echo json_encode(['status' => 'success', 'message' => "Booking Declined."]);
     }
 
-    echo json_encode(['status'=>'success','message'=>"Booking $newStatus."]);
-
-}catch(Exception $e){
-    echo json_encode(['status'=>'error','message'=>$e->getMessage()]);
-}finally{
-    if(isset($conn)) $conn->close();
+} catch (Exception $e) {
+    echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+} finally {
+    if (isset($conn)) $conn->close();
 }
-?>

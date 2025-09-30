@@ -1,12 +1,12 @@
 // customer-event-pending.js
 document.addEventListener("DOMContentLoaded", () => {
   const calendarMonthEl = document.getElementById("calendar-month");
-  const datesEl = document.getElementById("dates");
-  const prevMonthBtn = document.getElementById("prev-month");
-  const nextMonthBtn = document.getElementById("next-month");
-  const goTodayBtn = document.getElementById("go-today");
-  const yearSelect = document.getElementById("year-select");
-  const addEventBtn = document.getElementById("add-event");
+  const datesEl = document.getElementById("calendar-dates"); // fixed
+  const prevMonthBtn = document.getElementById("btn-prev-month"); // fixed
+  const nextMonthBtn = document.getElementById("btn-next-month"); // fixed
+  const goTodayBtn = document.getElementById("btn-go-today"); // fixed
+  const yearSelect = document.getElementById("select-year"); // fixed
+  const addEventBtn = document.getElementById("btn-add-event"); // fixed
   const addModal = document.getElementById("customerEventModal");
   const addForm = document.getElementById("customerEventForm");
   const closeBtn = addModal.querySelector(".close-btn");

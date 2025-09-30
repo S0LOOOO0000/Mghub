@@ -1,18 +1,66 @@
-document.addEventListener("DOMContentLoaded", () => {
-    /** -------------------- UTILITIES -------------------- **/
-    function showPopup(message, type = "success") {
-        if (!message) return;
-        const popup = document.createElement("div");
-        popup.className = type === "success" ? "success-popup" : "error-popup";
-        popup.textContent = message;
-        document.body.appendChild(popup);
-        requestAnimationFrame(() => (popup.style.opacity = "1"));
-        setTimeout(() => {
-            popup.style.opacity = "0";
-            setTimeout(() => popup.remove(), 500);
-        }, 3000);
-    }
+let html5QrCode = null;
 
+function openQrScanner(action) {
+    const modal = document.getElementById("qrModal");
+    const title = document.getElementById("qrModalTitle");
+    title.textContent = action === "change" ? "Request Change - Scan QR" : "Request Leave - Scan QR";
+    modal.style.display = "flex";
+
+    if (html5QrCode) {
+        closeQrScanner();
+    }
+    
+    html5QrCode = new Html5Qrcode("qr-reader");
+
+    Html5Qrcode.getCameras()
+        .then(cameras => {
+            if (cameras.length > 0) {
+                html5QrCode.start(
+                    cameras[0].id,
+                    { fps: 10, qrbox: 250 },
+                    qrMessage => {
+                        closeQrScanner();
+                        showPopup(`QR Scanned successfully for ${action}: ${qrMessage}`, 'success');
+                    },
+                    errorMessage => {
+                        console.warn("QR Scan error:", errorMessage);
+                    }
+                );
+            }
+        })
+        .catch(err => console.error("Camera error:", err));
+}
+
+function closeQrScanner() {
+    const modal = document.getElementById("qrModal");
+    modal.style.display = "none";
+
+    if (html5QrCode) {
+        const instanceToStop = html5QrCode;
+        html5QrCode = null;
+
+        instanceToStop.stop()
+            .then(() => instanceToStop.clear())
+            .catch(err => console.error("Stop error:", err));
+    }
+}
+
+function showPopup(message, type = "success") {
+    if (!message) return;
+    const popup = document.createElement("div");
+    popup.className = type === "success" ? "success-popup" : "error-popup";
+    popup.textContent = message;
+    document.body.appendChild(popup);
+    requestAnimationFrame(() => (popup.style.opacity = "1"));
+    setTimeout(() => {
+        popup.style.opacity = "0";
+        setTimeout(() => popup.remove(), 500);
+    }, 3000);
+}
+
+document.getElementById("closeQrModal")?.addEventListener("click", closeQrScanner);
+
+document.addEventListener("DOMContentLoaded", () => {
     function postData(url, data) {
         return fetch(url, {
             method: "POST",
@@ -28,10 +76,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    /** -------------------- MODALS -------------------- **/
     const modals = {
         changeShift: document.getElementById("changeShiftModal"),
         leaveRequest: document.getElementById("leaveRequestModal"),
+        preview: document.getElementById("requestPreviewModal"),
+        decline: document.getElementById("declineModal"),
     };
 
     function openModal(modal) { if (modal) modal.classList.add("show"); }
@@ -43,7 +92,6 @@ document.addEventListener("DOMContentLoaded", () => {
         window.addEventListener("click", e => { if (e.target === modal) closeModal(modal); });
     });
 
-    /** -------------------- MODAL POPULATORS -------------------- **/
     function populateChangeShiftModal(btn) {
         const empId = btn.dataset.employeeId || btn.closest("tr")?.dataset.employeeId;
         if (!empId) { showPopup("Missing employee ID for change shift request", "error"); return; }
@@ -85,7 +133,6 @@ document.addEventListener("DOMContentLoaded", () => {
         openModal(modals.leaveRequest);
     }
 
-    /** -------------------- REQUEST STATUS UPDATE -------------------- **/
     function updateRequestStatus(btn, status) {
         const requestId = btn.dataset.id;
         postData("../php/update-request-status.php", { request_id: requestId, status })
@@ -102,7 +149,6 @@ document.addEventListener("DOMContentLoaded", () => {
             .catch(err => showPopup("Error: " + err, "error"));
     }
 
-    /** -------------------- EVENT LISTENERS -------------------- **/
     document.addEventListener("click", e => {
         if (e.target.closest(".request-btn")) populateChangeShiftModal(e.target.closest(".request-btn"));
         if (e.target.closest(".leave-btn")) populateLeaveModal(e.target.closest(".leave-btn"));
@@ -110,7 +156,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.target.closest(".btn-decline")) updateRequestStatus(e.target.closest(".btn-decline"), "Declined");
     });
 
-    /** -------------------- FILTERS & PAGINATION -------------------- **/
     const selectedFilters = { status: "all", shift: "all", station: "all", type: "all" };
     const tbody = document.querySelector("table tbody");
     const totalRowsEl = document.getElementById("totalRows");
@@ -170,99 +215,86 @@ document.addEventListener("DOMContentLoaded", () => {
     renderTable();
     new MutationObserver(() => renderTable()).observe(tbody, { childList: true });
 
-    /** -------------------- POPUP FROM URL PARAMS -------------------- **/
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has("success")) { showPopup(urlParams.get("success"), "success"); clearUrlParams(); }
     if (urlParams.has("error")) { showPopup(urlParams.get("error"), "error"); clearUrlParams(); }
-});
 
-document.addEventListener("DOMContentLoaded", () => {
-  const previewModal = document.getElementById("requestPreviewModal");
-  const declineModal = document.getElementById("declineModal");
+    const previewModal = document.getElementById("requestPreviewModal");
+    const declineModal = document.getElementById("declineModal");
 
-  const closeBtns = document.querySelectorAll(".preview-modal .close-btn");
+    const closeBtns = document.querySelectorAll(".preview-modal .close-btn");
 
-  // Fields
-  const nameEl = document.getElementById("previewName");
-  const stationEl = document.getElementById("previewStation");
-  const roleEl = document.getElementById("previewRole");
-  const fromShiftEl = document.getElementById("previewFromShift");
-  const toShiftEl = document.getElementById("previewToShift");
-  const swapNameEl = document.getElementById("previewSwapName");
-  const dateEl = document.getElementById("previewDate");
-  const leaveTypeEl = document.getElementById("previewLeaveType");
-  const dateLeaveEl = document.getElementById("previewDateLeave");
-  const reasonEl = document.getElementById("previewReason");
+    const nameEl = document.getElementById("previewName");
+    const stationEl = document.getElementById("previewStation");
+    const roleEl = document.getElementById("previewRole");
+    const fromShiftEl = document.getElementById("previewFromShift");
+    const toShiftEl = document.getElementById("previewToShift");
+    const swapNameEl = document.getElementById("previewSwapName");
+    const dateEl = document.getElementById("previewDate");
+    const leaveTypeEl = document.getElementById("previewLeaveType");
+    const dateLeaveEl = document.getElementById("previewDateLeave");
+    const reasonEl = document.getElementById("previewReason");
 
-  // Open preview
-  document.querySelectorAll(".action-btn.preview").forEach(btn => {
-    btn.addEventListener("click", () => {
-      // Get dataset (expand with PHP if needed)
-      const requester = btn.dataset.requester;
-      const station = btn.dataset.station;
-      const role = btn.dataset.role;
-      const type = btn.dataset.type;
-      const reason = btn.dataset.reason;
-      const targetDate = btn.dataset.date;
-      const fromShift = btn.dataset.fromshift;
-      const toShift = btn.dataset.toshift;
-      const swapName = btn.dataset.swapname;
-      const leaveType = btn.dataset.leavetype;
+    document.querySelectorAll(".action-btn.preview").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const requester = btn.dataset.requester;
+            const station = btn.dataset.station;
+            const role = btn.dataset.role;
+            const type = btn.dataset.type;
+            const reason = btn.dataset.reason;
+            const targetDate = btn.dataset.date;
+            const fromShift = btn.dataset.fromshift;
+            const toShift = btn.dataset.toshift;
+            const swapName = btn.dataset.swapname;
+            const leaveType = btn.dataset.leavetype;
 
-      // Reset
-      document.querySelector(".change-shift").style.display = "none";
-      document.querySelector(".leave-request").style.display = "none";
+            document.querySelector(".change-shift").style.display = "none";
+            document.querySelector(".leave-request").style.display = "none";
 
-      // Fill general
-      nameEl.textContent = requester;
-      stationEl.textContent = station;
-      roleEl.textContent = role;
+            nameEl.textContent = requester;
+            stationEl.textContent = station;
+            roleEl.textContent = role;
 
-      if (type === "Change Shift") {
-        document.querySelector(".change-shift").style.display = "block";
-        fromShiftEl.textContent = fromShift;
-        toShiftEl.textContent = toShift;
-        swapNameEl.textContent = swapName;
-        dateEl.textContent = targetDate;
-      } else if (type === "On Leave") {
-        document.querySelector(".leave-request").style.display = "block";
-        leaveTypeEl.textContent = leaveType;
-        dateLeaveEl.textContent = targetDate;
-        reasonEl.textContent = reason;
-      }
+            if (type === "Change Shift") {
+                document.querySelector(".change-shift").style.display = "block";
+                fromShiftEl.textContent = fromShift;
+                toShiftEl.textContent = toShift;
+                swapNameEl.textContent = swapName;
+                dateEl.textContent = targetDate;
+            } else if (type === "On Leave") {
+                document.querySelector(".leave-request").style.display = "block";
+                leaveTypeEl.textContent = leaveType;
+                dateLeaveEl.textContent = targetDate;
+                reasonEl.textContent = reason;
+            }
 
-      previewModal.classList.add("show");
+            previewModal.classList.add("show");
+        });
     });
-  });
 
-  // Close modals
-  closeBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      btn.closest(".preview-modal").classList.remove("show");
+    closeBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            btn.closest(".preview-modal").classList.remove("show");
+        });
     });
-  });
 
-  // Approve
-  document.getElementById("approveRequest").addEventListener("click", () => {
-    alert("Request approved! (connect AJAX here)");
-    previewModal.classList.remove("show");
-  });
+    document.getElementById("approveRequest").addEventListener("click", () => {
+        showPopup("Request approved! (connect AJAX here)", 'success');
+        previewModal.classList.remove("show");
+    });
 
-  // Decline
-  document.getElementById("declineRequest").addEventListener("click", () => {
-    previewModal.classList.remove("show");
-    declineModal.classList.add("show");
-  });
+    document.getElementById("declineRequest").addEventListener("click", () => {
+        previewModal.classList.remove("show");
+        declineModal.classList.add("show");
+    });
 
-  // Confirm Decline
-  document.getElementById("confirmDecline").addEventListener("click", () => {
-    const reason = document.getElementById("declineReason").value;
-    if (!reason.trim()) {
-      alert("Please provide a decline reason.");
-      return;
-    }
-    alert("Declined with reason: " + reason + " (connect AJAX here)");
-    declineModal.classList.remove("show");
-  });
+    document.getElementById("confirmDecline").addEventListener("click", () => {
+        const reason = document.getElementById("declineReason").value;
+        if (!reason.trim()) {
+            showPopup("Please provide a decline reason.", 'error');
+            return;
+        }
+        showPopup("Declined with reason: " + reason + " (connect AJAX here)", 'error');
+        declineModal.classList.remove("show");
+    });
 });
-

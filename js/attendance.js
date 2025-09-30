@@ -3,20 +3,22 @@ let html5QrCode;
 // Open QR Scanner
 // =========================
 
-
 function openQrScanner(action) {
   const modal = document.getElementById("qrModal");
   const title = document.getElementById("qrModalTitle");
-  title.textContent = action === "time_in" ? "Scan QR to Time In" : "Scan QR to Time Out";
+  title.textContent = action === "change" ? "Request Change - Scan QR"
+                    : "Request Leave - Scan QR";
   modal.style.display = "flex";
 
+  // ✅ Create scanner instance
   html5QrCode = new Html5Qrcode("qr-reader");
 
+  // ✅ Use static getCameras
   Html5Qrcode.getCameras()
     .then(cameras => {
-      if (cameras.length) {
+      if (cameras.length > 0) {
         html5QrCode.start(
-          cameras[0].id,
+          cameras[0].id, // first camera
           { fps: 10, qrbox: 250 },
           qrMessage => {
             fetch("../php/attendance-function.php", {
@@ -28,13 +30,14 @@ function openQrScanner(action) {
               .then(data => {
                 closeQrScanner();
                 showAttendanceResult(data);
-                loadAttendanceTable();
-                updatePresentToday();
               })
               .catch(err => {
                 closeQrScanner();
                 console.error("Fetch error:", err);
               });
+          },
+          errorMessage => {
+            console.warn("QR Scan error:", errorMessage);
           }
         );
       }
@@ -78,22 +81,6 @@ function showAttendanceResult(data) {
 
   modal.style.display = "flex";
   setTimeout(() => { modal.style.display = "none"; }, 4000);
-}
-
-
-
-// =========================
-// Update "Present Today" Counter
-// =========================
-function updatePresentToday() {
-  fetch("../php/get-attendance-dashboard.php")
-    .then(res => res.json())
-    .then(data => {
-      if (data.status === "success") {
-        document.getElementById("presentToday").textContent = data.present_today;
-      }
-    })
-    .catch(err => console.error("Error fetching attendance count:", err));
 }
 
 // =========================
@@ -185,16 +172,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Delegated click for attendance actions
   document.addEventListener("click", handleAttendanceActions);
-
-  // Initial load
-  loadAttendanceTable();
-  updatePresentToday();
 });
 
 // =========================
 // Auto Refresh Every 30 Seconds
 // =========================
 setInterval(() => {
-  loadAttendanceTable();
   updatePresentToday();
 }, 30000);
