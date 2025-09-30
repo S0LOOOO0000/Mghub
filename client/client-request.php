@@ -125,6 +125,78 @@ $error = $_GET['error'] ?? null;
   </div>
 </div>
 
+<!-- 🔹 Change Shift Modal -->
+<div id="changeShiftModal" class="request-modal">
+  <div class="modal-content">
+    <div class="head">
+      <h3>Request Change Shift</h3>
+      <span class="close-btn">&times;</span>
+    </div>
+
+    <form method="POST" action="../php/request-change-shift.php">
+      <input type="hidden" id="change_request_employee_id" name="employee_id">
+
+      <div class="form-group">
+        <label>Target Employee</label>
+        <select id="target_employee_id" name="target_employee_id" required>
+          <option value="">-- Select Employee --</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Target Shift Date</label>
+        <input type="date" name="target_shift_date" required>
+      </div>
+
+      <div class="form-group">
+        <label>Reason</label>
+        <textarea name="reason" rows="3" placeholder="Enter reason..." required></textarea>
+      </div>
+
+      <div class="modal-actions"> 
+      <button type="submit" class="btn-submit">Submit Request</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 🔹 Leave Request Modal -->
+<div id="leaveRequestModal" class="request-modal">
+  <div class="modal-content">
+    <div class="head">
+      <h3>Request Leave</h3>
+      <span class="close-btn" id="closeLeaveRequest">&times;</span>
+    </div>
+
+    <form class="form-container" method="POST" action="../php/request-leave.php">
+      <input type="hidden" id="leave_request_employee_id" name="employee_id">
+
+      <div class="form-group">
+        <label>Leave Date</label>
+        <input type="date" id="leave_date" name="target_date" required>
+      </div>
+
+      <div class="form-group">
+        <label>Leave Type</label>
+        <select id="leave_type" name="leave_type" required>
+          <option value="">-- Select Leave Type --</option>
+          <option value="Vacation">Vacation</option>
+          <option value="Sick">Sick</option>
+          <option value="Emergency">Emergency</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Reason</label>
+        <textarea id="leave_reason" name="reason" rows="3" placeholder="Enter reason" required></textarea>
+      </div>
+
+      <button type="submit" class="btn-submit">Submit Leave</button>
+    </form>
+  </div>
+</div>
+
 <style>
 #qrModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10000; justify-content:center; align-items:center; }
 .modal-content { background:#fff; padding:20px; border-radius:12px; width:500px; max-width:90%; text-align:center; }

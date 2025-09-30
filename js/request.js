@@ -1,5 +1,35 @@
 let html5QrCode = null;
 
+// --- Helper Functions (Defined in global scope for access by openQrScanner and other event handlers) ---
+
+function showPopup(message, type = "success") {
+    if (!message) return;
+    const popup = document.createElement("div");
+    popup.className = type === "success" ? "success-popup" : "error-popup";
+    popup.textContent = message;
+    document.body.appendChild(popup);
+    requestAnimationFrame(() => (popup.style.opacity = "1"));
+    setTimeout(() => {
+        popup.style.opacity = "0";
+        setTimeout(() => popup.remove(), 500);
+    }, 3000);
+}
+
+function postData(url, data) {
+    return fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(data).toString(),
+    }).then(res => res.text());
+}
+
+// Stubs for functions defined later in DOMContentLoaded, needed here by openQrScanner
+let populateChangeShiftModal = () => showPopup("System loading...", 'error');
+let populateLeaveModal = () => showPopup("System loading...", 'error');
+
+
+// --- QR Scanner Functions ---
+
 function openQrScanner(action) {
     const modal = document.getElementById("qrModal");
     const title = document.getElementById("qrModalTitle");
@@ -20,7 +50,12 @@ function openQrScanner(action) {
                     { fps: 10, qrbox: 250 },
                     qrMessage => {
                         closeQrScanner();
-                        showPopup(`QR Scanned successfully for ${action}: ${qrMessage}`, 'success');
+                        showPopup(`QR Scanned: ${qrMessage}. Opening form...`, 'success');
+                        if (action === 'change') {
+                            populateChangeShiftModal(qrMessage);
+                        } else if (action === 'leave') {
+                            populateLeaveModal(qrMessage);
+                        }
                     },
                     errorMessage => {
                         console.warn("QR Scan error:", errorMessage);
@@ -45,30 +80,13 @@ function closeQrScanner() {
     }
 }
 
-function showPopup(message, type = "success") {
-    if (!message) return;
-    const popup = document.createElement("div");
-    popup.className = type === "success" ? "success-popup" : "error-popup";
-    popup.textContent = message;
-    document.body.appendChild(popup);
-    requestAnimationFrame(() => (popup.style.opacity = "1"));
-    setTimeout(() => {
-        popup.style.opacity = "0";
-        setTimeout(() => popup.remove(), 500);
-    }, 3000);
-}
-
 document.getElementById("closeQrModal")?.addEventListener("click", closeQrScanner);
 
-document.addEventListener("DOMContentLoaded", () => {
-    function postData(url, data) {
-        return fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: new URLSearchParams(data).toString(),
-        }).then(res => res.text());
-    }
 
+// --- DOMContentLoaded Setup ---
+
+document.addEventListener("DOMContentLoaded", () => {
+    
     function clearUrlParams() {
         if (window.history.replaceState) {
             const cleanUrl = window.location.origin + window.location.pathname;
@@ -91,47 +109,68 @@ document.addEventListener("DOMContentLoaded", () => {
         modal.querySelector(".close-btn")?.addEventListener("click", () => closeModal(modal));
         window.addEventListener("click", e => { if (e.target === modal) closeModal(modal); });
     });
+    
+    // --- Change Shift Modal ---
+    populateChangeShiftModal = (empCode) => {
+        if (!empCode) {
+            showPopup("Missing employee code for change shift request", "error");
+            return;
+        }
 
-    function populateChangeShiftModal(btn) {
-        const empId = btn.dataset.employeeId || btn.closest("tr")?.dataset.employeeId;
-        if (!empId) { showPopup("Missing employee ID for change shift request", "error"); return; }
-
-        document.getElementById("change_request_employee_id").value = empId;
-        const select = document.getElementById("target_employee_id");
-        select.innerHTML = "<option>Loading employees...</option>";
-
-        fetch(`../php/get-target-employees.php?employee_id=${empId}`)
+        fetch(`../php/get-target-employees.php?employee_id=${encodeURIComponent(empCode)}`)
             .then(res => res.json())
             .then(data => {
-                select.innerHTML = "";
-                if (!data || data.length === 0) { select.innerHTML = "<option value=''>No employees available</option>"; return; }
+                if (!data || data.status !== "success") {
+                    showPopup(data?.message || "Employee not found", "error");
+                    return;
+                }
 
-                let currentShift = null, currentGroup = null;
-                data.forEach(emp => {
-                    if (emp.shift !== currentShift) {
-                        currentShift = emp.shift;
-                        currentGroup = document.createElement("optgroup");
-                        currentGroup.label = currentShift + " Shift";
-                        select.appendChild(currentGroup);
-                    }
-                    const option = document.createElement("option");
-                    option.value = emp.employee_id;
-                    option.textContent = `${emp.first_name} ${emp.last_name} (${emp.shift})`;
-                    currentGroup.appendChild(option);
-                });
+                const emp = data.employee;
+                document.getElementById("change_request_employee_id").value = emp.employee_code;
+
+                // For now, just fetch targets and print them
+                fetch(`../php/get-target-employees.php?employee_id=${encodeURIComponent(emp.employee_code)}`)
+                    .then(res => res.json())
+                    .then(targets => {
+                        console.log("Swap targets:", targets);
+                    });
             })
-            .catch(err => { console.error("Error fetching employees:", err); select.innerHTML = "<option value=''>Error loading employees</option>"; });
+            .catch(err => {
+                console.error("Error:", err);
+                showPopup("Failed to load employee", "error");
+            });
 
         openModal(modals.changeShift);
-    }
+    };
 
-    function populateLeaveModal(btn) {
-        const empId = btn.dataset.employeeId || btn.closest("tr")?.dataset.employeeId;
-        if (!empId) { showPopup("Missing employee ID for leave request", "error"); return; }
 
-        document.getElementById("leave_request_employee_id").value = empId;
-        openModal(modals.leaveRequest);
-    }
+    // --- Leave Request Modal ---
+    populateLeaveModal = (empCode) => {
+        if (!empCode) {
+            showPopup("Missing employee code for leave request", "error");
+            return;
+        }
+
+        fetch(`../php/get-target-employees.php?employee_id=${encodeURIComponent(empCode)}`)
+            .then(res => res.json())
+            .then(data => {
+                if (!data || data.status !== "success") {
+                    showPopup(data?.message || "Employee not found", "error");
+                    return;
+                }
+
+                const emp = data.employee;
+                document.getElementById("leave_request_employee_id").value = emp.employee_code;
+
+                console.log("Employee leave request:", emp);
+
+                openModal(modals.leaveRequest);
+            })
+            .catch(err => {
+                console.error("Error:", err);
+                showPopup("Failed to load employee", "error");
+            });
+    };
 
     function updateRequestStatus(btn, status) {
         const requestId = btn.dataset.id;
@@ -150,16 +189,38 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     document.addEventListener("click", e => {
-        if (e.target.closest(".request-btn")) populateChangeShiftModal(e.target.closest(".request-btn"));
-        if (e.target.closest(".leave-btn")) populateLeaveModal(e.target.closest(".leave-btn"));
+        // Handle table button clicks (extract ID from button/row)
+        
+        // Shift Change Request (non-QR)
+        if (e.target.closest(".request-btn")) {
+            const btn = e.target.closest(".request-btn");
+            const empId = btn.dataset.employeeId || btn.closest("tr")?.dataset.employeeId;
+            populateChangeShiftModal(empId);
+        }
+        
+        // Leave Request (non-QR)
+        if (e.target.closest(".leave-btn")) {
+            const btn = e.target.closest(".leave-btn");
+            const empId = btn.dataset.employeeId || btn.closest("tr")?.dataset.employeeId;
+            populateLeaveModal(empId);
+        }
+        
+        // Status Update (no change needed here as logic is contained and uses the button)
         if (e.target.closest(".btn-approve")) updateRequestStatus(e.target.closest(".btn-approve"), "Approved");
         if (e.target.closest(".btn-decline")) updateRequestStatus(e.target.closest(".btn-decline"), "Declined");
     });
 
+    // --- Table Filtering and Pagination Logic ---
+
     const selectedFilters = { status: "all", shift: "all", station: "all", type: "all" };
     const tbody = document.querySelector("table tbody");
-    const totalRowsEl = document.getElementById("totalRows");
-    const paginationContainer = document.getElementById("pagination");
+    
+    // FIX: Updated element ID to match the HTML (employeeTotalRows)
+    const totalRowsEl = document.getElementById("employeeTotalRows"); 
+    
+    // FIX: Updated element ID to match the HTML (employeePagination)
+    const paginationContainer = document.getElementById("employeePagination");
+    
     const rowsPerPage = 10;
     let currentPage = 1;
 
@@ -168,14 +229,13 @@ document.addEventListener("DOMContentLoaded", () => {
         return rows.filter(row => {
             const rowStatus = row.querySelector(".status")?.textContent.trim().toLowerCase() || "";
             const rowShift = row.querySelector(".shift")?.textContent.trim().toLowerCase() || "";
-            const rowStation = row.querySelector("td:nth-child(4) span")?.textContent.trim().toLowerCase() || "";
-            const rowType = row.querySelector("td:nth-child(5)")?.textContent.trim().toLowerCase() || "";
+            const rowStation = row.querySelector("td:nth-child(6)")?.textContent.trim().toLowerCase() || ""; // Changed index to target station/role column
+            const rowType = "employee"; // Assuming this table is always showing employees, not a request type
 
             return (
                 (selectedFilters.status === "all" || rowStatus === selectedFilters.status.toLowerCase()) &&
                 (selectedFilters.shift === "all" || rowShift === selectedFilters.shift.toLowerCase()) &&
-                (selectedFilters.station === "all" || rowStation === selectedFilters.station.toLowerCase()) &&
-                (selectedFilters.type === "all" || rowType === selectedFilters.type.toLowerCase())
+                (selectedFilters.station === "all" || rowStation.includes(selectedFilters.station.toLowerCase())) // Use includes since station/role is combined
             );
         });
     }
@@ -190,12 +250,18 @@ document.addEventListener("DOMContentLoaded", () => {
         const pageRows = filteredRows.slice(start, end);
 
         pageRows.forEach(row => (row.style.display = ""));
-        totalRowsEl.textContent = `Showing ${start + 1}-${start + pageRows.length} of ${filteredRows.length} requests`;
+        
+        // FIX: Check if the element exists and update text to reflect "employees"
+        if (totalRowsEl) {
+            totalRowsEl.textContent = `Showing ${start + 1}-${start + pageRows.length} of ${filteredRows.length} employees`;
+        }
 
         renderPagination(totalPages);
     }
 
     function renderPagination(totalPages) {
+        if (!paginationContainer) return;
+
         paginationContainer.innerHTML = "";
         const createButton = (label, disabled, handler, active = false) => {
             const btn = document.createElement("button");
@@ -213,7 +279,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     renderTable();
-    new MutationObserver(() => renderTable()).observe(tbody, { childList: true });
+    // Added null check for tbody observer in case the table body is also missing
+    if (tbody) {
+        new MutationObserver(() => renderTable()).observe(tbody, { childList: true });
+    }
 
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has("success")) { showPopup(urlParams.get("success"), "success"); clearUrlParams(); }
@@ -276,25 +345,5 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.addEventListener("click", () => {
             btn.closest(".preview-modal").classList.remove("show");
         });
-    });
-
-    document.getElementById("approveRequest").addEventListener("click", () => {
-        showPopup("Request approved! (connect AJAX here)", 'success');
-        previewModal.classList.remove("show");
-    });
-
-    document.getElementById("declineRequest").addEventListener("click", () => {
-        previewModal.classList.remove("show");
-        declineModal.classList.add("show");
-    });
-
-    document.getElementById("confirmDecline").addEventListener("click", () => {
-        const reason = document.getElementById("declineReason").value;
-        if (!reason.trim()) {
-            showPopup("Please provide a decline reason.", 'error');
-            return;
-        }
-        showPopup("Declined with reason: " + reason + " (connect AJAX here)", 'error');
-        declineModal.classList.remove("show");
     });
 });
