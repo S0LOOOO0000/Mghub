@@ -73,6 +73,23 @@ INSERT INTO `activity_log` (`log_id`, `user_id`, `user_role`, `module`, `record_
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_todo`
+--
+
+CREATE TABLE `tbl_todo` (
+  `todo_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `station` enum('Cafe','MG Hub','Spa') NOT NULL,
+  `todo_text` varchar(255) NOT NULL,
+  `progress` int(11) DEFAULT 0,
+  `is_completed` tinyint(1) DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_attendance`
 --
 
@@ -438,6 +455,13 @@ ALTER TABLE `tbl_request`
   ADD KEY `target_employee_id` (`target_employee_id`);
 
 --
+-- Indexes for table `tbl_todo`
+--
+ALTER TABLE `tbl_todo`
+  ADD PRIMARY KEY (`todo_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -490,6 +514,12 @@ ALTER TABLE `tbl_request`
   MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `tbl_todo`
+--
+ALTER TABLE `tbl_todo`
+  MODIFY `todo_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
@@ -517,6 +547,12 @@ ALTER TABLE `tbl_attendance`
 ALTER TABLE `tbl_request`
   ADD CONSTRAINT `fk_request_employee` FOREIGN KEY (`employee_id`) REFERENCES `tbl_employee` (`employee_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_request_target` FOREIGN KEY (`target_employee_id`) REFERENCES `tbl_employee` (`employee_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `tbl_todo`
+--
+ALTER TABLE `tbl_todo`
+  ADD CONSTRAINT `fk_todo_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

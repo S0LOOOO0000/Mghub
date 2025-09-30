@@ -474,31 +474,45 @@
 	color: var(--orange);
 }
 
-.todo-filters button {
-	padding: 6px 12px;
-	border-radius: 6px;
+.table-data .todo .todo-filters {
+	display: flex;
+	gap: 8px;
+	margin-bottom: 16px;
+	justify-content: flex-start;
+}
+
+.table-data .todo .todo-filters button {
+	padding: 8px 14px;
+	border-radius: 8px;
 	border: none;
 	cursor: pointer;
 	font-size: 12px;
 	font-weight: 500;
 	color: var(--dark);
-	background: var(--light);
+	background: #f5f5f5;
 	transition: all 0.2s ease;
+	white-space: nowrap;
 }
 
-.todo-filters button:hover {
+.table-data .todo .todo-filters button:hover {
+	background: var(--blue);
+	color: white;
+	transform: translateY(-1px);
+}
+
+.table-data .todo .todo-filters button.active {
 	background: var(--blue);
 	color: white;
 }
 
-
-.todo-filters button.completed {
-	background: var(--blue);
-	color: white;
+.table-data .todo .todo-filters button.completed:not(.active) {
+	background: #f5f5f5;
+	color: var(--dark);
 }
-.todo-filters button.pending {
-	background: var(--orange);
-	color: white;
+
+.table-data .todo .todo-filters button.pending:not(.active) {
+	background: #f5f5f5;
+	color: var(--dark);
 }
 .table-data .todo,
 .table-data .inventory {
@@ -524,21 +538,16 @@
 	flex: 0 0 auto;
 }
 
-.table-data .todo .head .todo-filters {
-	display: flex;
-	gap: 8px;
-	flex: 1;
-	justify-content: flex-end;
-	margin-right: 20px;
-}
-
 .table-data .todo .head .icon {
 	flex: 0 0 auto;
 	cursor: pointer;
+	margin-left: auto;
 }
 .table-data .todo .todo-list {
 	width: 100%;
-	overflow: hidden;
+	overflow-y: auto;
+	overflow-x: visible;
+	flex: 1;
 }
 .table-data .todo .todo-list li {
 	width: 100%;
@@ -550,7 +559,8 @@
 	justify-content: space-between;
 	align-items: center;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-	overflow: hidden;
+	overflow: visible;
+	position: relative;
 }
 .table-data .todo .todo-list li .bx {
 	cursor: pointer;
@@ -609,30 +619,35 @@ dl.content-menu {
     top: 100%;
     background-color: var(--light);
     border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 10;
-    width: 150px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    width: 160px;
+    margin: 0;
+    padding: 4px 0;
+    margin-top: 4px;
 }
 
 
 dt.menu-item {
-    padding: 10px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
 }
-
 
 dt.menu-item a {
     text-decoration: none;
     display: block;
+    padding: 10px 16px;
+    background: var(--light);
+    color: var(--dark);
+    font-size: 13px;
+    transition: all 0.2s ease;
 }
-dt.menu-item a, dt.menu-item {
-	background: var(--light);
-	color: var(--dark);
-    
-}	
-dt.menu-item a:hover, dt.menu-item:hover *{
+
+dt.menu-item a:hover {
     background-color: var(--light-blue);
-	color: var(--light);
+    color: var(--dark);
 }
 
 
@@ -645,18 +660,14 @@ dt.menu-icon:hover dt.content-menu,
 .todo-actions {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 10px;
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
+    flex-shrink: 0;
+    position: relative;
 }
 
 /* Adjust todo list item positioning */
 .table-data .todo .todo-list li {
     position: relative;
-    padding-right: 80px; /* Space for actions */
 }
 
 /* Progress text styling beside three dots */
@@ -677,6 +688,11 @@ dt.menu-icon:hover dt.content-menu,
     padding: 4px;
     border-radius: 4px;
     transition: background 0.2s ease;
+    position: relative;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .todo-actions .menu-icon:hover {
@@ -937,12 +953,11 @@ dt.menu-icon:hover dt.content-menu,
 .table-data .todo .todo-list li p {
 	margin: 0;
 	flex: 1;
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: 500;
 	color: var(--dark);
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+	padding-right: 12px;
+	word-break: break-word;
 }
 
 /* Todo Add Button - Bottom Right */

@@ -196,71 +196,8 @@ $user_role = $_SESSION['user_role'];
 					<button onclick="filterTodos('pending')" class="pending">Pending</button>
 				</div>
 				<ul class="todo-list">
-					<li class="completed" data-progress="100">
-						<p>Prepare event setup checklist</p>
-						<div class="todo-actions">
-							<span class="progress-text">100%</span>
-							<i class='bx bx-dots-vertical-rounded menu-icon'>
-								<dl class="content-menu">
-									<dt class="menu-item"><a href="#">Edit</a></dt>
-									<dt class="menu-item"><a href="#">Delete</a></dt>
-									<dt class="menu-item"><a href="#">Mark as Pending</a></dt>
-								</dl>
-							</i>
-						</div>
-					</li>
-					<li class="completed" data-progress="100">
-						<p>Check inventory for today's events</p>
-						<div class="todo-actions">
-							<span class="progress-text">100%</span>
-							<i class='bx bx-dots-vertical-rounded menu-icon'>
-								<dl class="content-menu">
-									<dt class="menu-item"><a href="#">Edit</a></dt>
-									<dt class="menu-item"><a href="#">Delete</a></dt>
-									<dt class="menu-item"><a href="#">Mark as Pending</a></dt>
-								</dl>
-							</i>
-						</div>
-					</li>
-					<li class="not-completed" data-progress="75">
-						<p>Confirm catering arrangements</p>
-						<div class="todo-actions">
-							<span class="progress-text">75%</span>
-							<i class='bx bx-dots-vertical-rounded menu-icon'>
-								<dl class="content-menu">
-									<dt class="menu-item"><a href="#">Edit</a></dt>
-									<dt class="menu-item"><a href="#">Delete</a></dt>
-									<dt class="menu-item"><a href="#">Mark as Completed</a></dt>
-								</dl>
-							</i>
-						</div>
-					</li>
-					<li class="not-completed" data-progress="50">
-						<p>Update event timeline sheet</p>
-						<div class="todo-actions">
-							<span class="progress-text">50%</span>
-							<i class='bx bx-dots-vertical-rounded menu-icon'>
-								<dl class="content-menu">
-									<dt class="menu-item"><a href="#">Edit</a></dt>
-									<dt class="menu-item"><a href="#">Delete</a></dt>
-									<dt class="menu-item"><a href="#">Mark as Completed</a></dt>
-								</dl>
-							</i>
-						</div>
-					</li>
-					<li class="not-completed" data-progress="25">
-						<p>Follow up with venue suppliers</p>
-						<div class="todo-actions">
-							<span class="progress-text">25%</span>
-							<i class='bx bx-dots-vertical-rounded menu-icon'>
-								<dl class="content-menu">
-									<dt class="menu-item"><a href="#">Edit</a></dt>
-									<dt class="menu-item"><a href="#">Delete</a></dt>
-									<dt class="menu-item"><a href="#">Mark as Completed</a></dt>
-								</dl>
-							</i>
-						</div>
-					</li>
+					<!-- Todos will be loaded dynamically via JavaScript -->
+					<li style="text-align: center; padding: 20px; color: #999;">Loading todos...</li>
 				</ul>
 				
 				<!-- Add Button at Bottom Right -->
@@ -274,11 +211,18 @@ $user_role = $_SESSION['user_role'];
         </div>
     </section>
 
+	<!-- Todo Modal -->
+	<?php include '../includes/todo-modal.php'; ?>
 
+	<script>
+		// Set station for this dashboard
+		window.TODO_STATION = 'Cafe';
+	</script>
 	<script src="../js/dropdown.js"> </script>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <script src="../js/client-dashboard.js"></script>
     <script src="../js/attendance.js"></script>
     <script src="../js/employee.js"></script>
+    <script src="../js/todo.js"></script>
 </body>
 </html>
