@@ -159,7 +159,7 @@ $error = $_GET['error'] ?? null;
       <h3>Request Leave</h3>
       <span class="close-btn" id="closeLeaveRequest">&times;</span>
     </div>
-              
+
     <form class="form-container" method="POST" action="../php/request-leave.php">
       <input type="hidden" id="leave_request_employee_id" name="employee_id">
 

@@ -82,14 +82,12 @@ function closeQrScanner() {
 
 function openModal(modal) {
   if (!modal) return;
-  modal.classList.remove("hide");
   modal.classList.add("show");
 }
 
 function closeModal(modal) {
   if (!modal) return;
   modal.classList.remove("show");
-  modal.classList.add("hide");
 }
 
 document.querySelectorAll(".request-modal .close-btn").forEach(btn => {
