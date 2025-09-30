@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Close modals when clicking outside
-    const modals = document.querySelectorAll('.modal');
+    const modals = document.querySelectorAll('.todo-modal');
     modals.forEach(modal => {
         modal.addEventListener('click', function(e) {
             if (e.target === modal) {

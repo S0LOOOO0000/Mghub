@@ -1,6 +1,6 @@
 <!-- Add Todo Modal -->
-<div id="addTodoModal" class="modal" style="display: none;">
-    <div class="modal-content">
+<div id="addTodoModal" class="todo-modal" style="display: none;">
+    <div class="todo-modal-content">
         <div class="modal-header">
             <h2>Add New Todo</h2>
             <span class="close-modal" onclick="closeAddTodoModal()">&times;</span>
@@ -25,8 +25,8 @@
 </div>
 
 <!-- Update Progress Modal -->
-<div id="updateProgressModal" class="modal" style="display: none;">
-    <div class="modal-content">
+<div id="updateProgressModal" class="todo-modal" style="display: none;">
+    <div class="todo-modal-content">
         <div class="modal-header modal-header-green">
             <h2>Update Progress</h2>
             <span class="close-modal" onclick="closeUpdateProgressModal()">&times;</span>
@@ -52,8 +52,8 @@
 </div>
 
 <!-- Delete Confirmation Modal -->
-<div id="deleteConfirmModal" class="modal" style="display: none;">
-    <div class="modal-content modal-small">
+<div id="deleteConfirmModal" class="todo-modal" style="display: none;">
+    <div class="todo-modal-content todo-modal-small">
         <div class="modal-header modal-header-red">
             <h2>Delete Todo</h2>
             <span class="close-modal" onclick="closeDeleteConfirmModal()">&times;</span>
@@ -71,8 +71,8 @@
 </div>
 
 <!-- Toggle Status Confirmation Modal -->
-<div id="toggleStatusModal" class="modal" style="display: none;">
-    <div class="modal-content modal-small">
+<div id="toggleStatusModal" class="todo-modal" style="display: none;">
+    <div class="todo-modal-content todo-modal-small">
         <div class="modal-header">
             <h2>Change Todo Status</h2>
             <span class="close-modal" onclick="closeToggleStatusModal()">&times;</span>
@@ -91,7 +91,7 @@
 
 <style>
 /* Todo Modal Styles */
-.modal {
+.todo-modal {
     position: fixed;
     z-index: 9999;
     left: 0;
@@ -116,7 +116,7 @@
     }
 }
 
-.modal-content {
+.todo-modal-content {
     background-color: #ffffff;
     border-radius: 20px;
     width: 90%;
@@ -321,7 +321,7 @@
     box-shadow: 0 8px 20px rgba(33, 147, 176, 0.5);
 }
 
-.modal-small {
+.todo-modal-small {
     max-width: 450px;
 }
 
