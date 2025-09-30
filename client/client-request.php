@@ -117,14 +117,6 @@ $error = $_GET['error'] ?? null;
   </div>
 </div>
 
-<!-- Attendance/Request Result Modal -->
-<div id="attendanceModal" class="attendance-modal">
-  <div class="modal-box">
-    <h3 id="attendanceMessage"></h3>
-    <p id="attendanceDetails"></p>
-  </div>
-</div>
-
 <!-- 🔹 Change Shift Modal -->
 <div id="changeShiftModal" class="request-modal">
   <div class="modal-content">
@@ -167,7 +159,7 @@ $error = $_GET['error'] ?? null;
       <h3>Request Leave</h3>
       <span class="close-btn" id="closeLeaveRequest">&times;</span>
     </div>
-
+              
     <form class="form-container" method="POST" action="../php/request-leave.php">
       <input type="hidden" id="leave_request_employee_id" name="employee_id">
 

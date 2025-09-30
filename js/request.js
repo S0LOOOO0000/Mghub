@@ -80,6 +80,31 @@ function closeQrScanner() {
     }
 }
 
+function openModal(modal) {
+  if (!modal) return;
+  modal.classList.remove("hide");
+  modal.classList.add("show");
+}
+
+function closeModal(modal) {
+  if (!modal) return;
+  modal.classList.remove("show");
+  modal.classList.add("hide");
+}
+
+document.querySelectorAll(".request-modal .close-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const modal = btn.closest(".request-modal");
+    if (modal) closeModal(modal);
+  });
+});
+
+document.querySelectorAll(".request-modal").forEach(modal => {
+  modal.addEventListener("click", e => {
+    if (e.target === modal) closeModal(modal);
+  });
+});
+
 document.getElementById("closeQrModal")?.addEventListener("click", closeQrScanner);
 
 
@@ -126,23 +151,43 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 const emp = data.employee;
+                // Fill hidden input
                 document.getElementById("change_request_employee_id").value = emp.employee_code;
 
-                // For now, just fetch targets and print them
+                // ✅ Open modal using the helper
+                const modal = document.getElementById("changeShiftModal");
+                openModal(modal);
+
+                const header = modal.querySelector("h3");
+                if (header) {
+                    header.textContent = `Request Change Shift for ${emp.first_name} ${emp.last_name}`;
+                }
+
+                // Fetch possible swap targets and fill dropdown
+                const select = document.getElementById("target_employee_id");
                 fetch(`../php/get-target-employees.php?employee_id=${encodeURIComponent(emp.employee_code)}`)
                     .then(res => res.json())
                     .then(targets => {
-                        console.log("Swap targets:", targets);
+                        select.innerHTML = "<option value=''>-- Select Employee --</option>";
+
+                        if (!Array.isArray(targets) || targets.length === 0) {
+                            select.innerHTML = "<option value=''>No employees available</option>";
+                            return;
+                        }
+
+                        targets.forEach(t => {
+                            const option = document.createElement("option");
+                            option.value = t.employee_code;
+                            option.textContent = `${t.first_name} ${t.last_name} (${t.shift})`;
+                            select.appendChild(option);
+                        });
                     });
             })
             .catch(err => {
                 console.error("Error:", err);
                 showPopup("Failed to load employee", "error");
             });
-
-        openModal(modals.changeShift);
     };
-
 
     // --- Leave Request Modal ---
     populateLeaveModal = (empCode) => {
@@ -160,55 +205,24 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 const emp = data.employee;
+                // Fill hidden input
                 document.getElementById("leave_request_employee_id").value = emp.employee_code;
 
-                console.log("Employee leave request:", emp);
+                // ✅ Open modal using helper
+                const modal = document.getElementById("leaveRequestModal");
+                openModal(modal);
 
-                openModal(modals.leaveRequest);
+                // Pre-fill modal title
+                const header = modal.querySelector("h3");
+                if (header) {
+                    header.textContent = `Request Leave for ${emp.first_name} ${emp.last_name}`;
+                }
             })
             .catch(err => {
                 console.error("Error:", err);
                 showPopup("Failed to load employee", "error");
             });
     };
-
-    function updateRequestStatus(btn, status) {
-        const requestId = btn.dataset.id;
-        postData("../php/update-request-status.php", { request_id: requestId, status })
-            .then(data => {
-                if (data.trim() === "success") {
-                    const row = btn.closest("tr");
-                    const statusCell = row.querySelector(".status");
-                    statusCell.textContent = status;
-                    statusCell.className = `status ${status.toLowerCase()}`;
-                    btn.closest("td").innerHTML = "<span>-</span>";
-                    showPopup(`Request ${status.toLowerCase()}!`, "success");
-                } else showPopup("Failed: " + data, "error");
-            })
-            .catch(err => showPopup("Error: " + err, "error"));
-    }
-
-    document.addEventListener("click", e => {
-        // Handle table button clicks (extract ID from button/row)
-        
-        // Shift Change Request (non-QR)
-        if (e.target.closest(".request-btn")) {
-            const btn = e.target.closest(".request-btn");
-            const empId = btn.dataset.employeeId || btn.closest("tr")?.dataset.employeeId;
-            populateChangeShiftModal(empId);
-        }
-        
-        // Leave Request (non-QR)
-        if (e.target.closest(".leave-btn")) {
-            const btn = e.target.closest(".leave-btn");
-            const empId = btn.dataset.employeeId || btn.closest("tr")?.dataset.employeeId;
-            populateLeaveModal(empId);
-        }
-        
-        // Status Update (no change needed here as logic is contained and uses the button)
-        if (e.target.closest(".btn-approve")) updateRequestStatus(e.target.closest(".btn-approve"), "Approved");
-        if (e.target.closest(".btn-decline")) updateRequestStatus(e.target.closest(".btn-decline"), "Declined");
-    });
 
     // --- Table Filtering and Pagination Logic ---
 
