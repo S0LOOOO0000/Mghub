@@ -179,9 +179,10 @@
 .table-data .order table tbody {
 	display: block;
 	width: 100%;
-	max-height: 400px;
+	max-height: calc(100vh - 450px);
 	overflow-y: auto;
 	flex: 1;
+	min-height: 400px;
 }
 
 .table-data .order table tbody tr {
