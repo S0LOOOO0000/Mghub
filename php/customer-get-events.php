@@ -1,14 +1,14 @@
 <?php
 require __DIR__ . '/../config/database-connection.php';
 
-$sql = "SELECT * FROM tbl_event_pending WHERE event_status IN ('Booked','Completed')";
+$sql = "SELECT * FROM tbl_event_booking WHERE event_status IN ('Booked','Completed')";
 $result = $conn->query($sql);
 
 $events = [];
 if ($result) {
     while ($row = $result->fetch_assoc()) {
         $events[] = [
-            'id'     => $row['pending_id'],
+            'id'     => $row['event_id'],
             'event_name' => $row['event_name'],
             'event_date' => $row['event_date'],
             'event_time' => $row['event_time'],
