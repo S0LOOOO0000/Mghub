@@ -105,6 +105,45 @@ document.querySelectorAll(".request-modal").forEach(modal => {
 
 document.getElementById("closeQrModal")?.addEventListener("click", closeQrScanner);
 
+function submitLeaveRequest(e) {
+  e.preventDefault();
+
+  const employeeId = document.getElementById("leave_request_employee_id").value;
+  const leaveDate  = document.getElementById("leave_date").value;
+  const leaveType  = document.getElementById("leave_type").value;
+  const reason     = document.getElementById("leave_reason").value;
+
+  if (!employeeId || !leaveDate || !leaveType || !reason) {
+    showPopup("All fields are required", "error");
+    return;
+  }
+
+  // build form data
+  const formData = new FormData();
+  formData.append("employee_id", employeeId);
+  formData.append("target_date", leaveDate);
+  formData.append("leave_type", leaveType);
+  formData.append("reason", reason);
+
+  fetch("../php/request-leave.php", {
+    method: "POST",
+    body: formData
+  })
+    .then(res => {
+      if (!res.ok) throw new Error("Network error");
+      return res.text();
+    })
+    .then(() => {
+      showPopup("Leave request submitted", "success");
+      const modal = document.getElementById("leaveRequestModal");
+      closeModal(modal); // use your helper
+    })
+    .catch(err => {
+      console.error("Submit leave error:", err);
+      showPopup("Failed to submit leave request", "error");
+    });
+}
+
 
 // --- DOMContentLoaded Setup ---
 
@@ -215,6 +254,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (header) {
                     header.textContent = `Request Leave for ${emp.first_name} ${emp.last_name}`;
                 }
+                
+                document.querySelector("#leaveRequestModal form")
+                .addEventListener("submit", submitLeaveRequest);
             })
             .catch(err => {
                 console.error("Error:", err);
