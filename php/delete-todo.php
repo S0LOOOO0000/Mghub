@@ -25,20 +25,14 @@ if (!isset($data['todo_id'])) {
 $todo_id = intval($data['todo_id']);
 
 try {
-    // Verify todo belongs to user before deleting
-    $verify = $conn->prepare("SELECT user_id FROM tbl_todo WHERE todo_id = ?");
+    // Verify todo exists (no user ownership check - todos are station-wide)
+    $verify = $conn->prepare("SELECT todo_id FROM tbl_todo WHERE todo_id = ?");
     $verify->bind_param("i", $todo_id);
     $verify->execute();
     $result = $verify->get_result();
     
     if ($result->num_rows === 0) {
         echo json_encode(['success' => false, 'message' => 'Todo not found']);
-        exit();
-    }
-    
-    $row = $result->fetch_assoc();
-    if ($row['user_id'] !== $user_id) {
-        echo json_encode(['success' => false, 'message' => 'Unauthorized']);
         exit();
     }
     

@@ -73,17 +73,31 @@ document.addEventListener('DOMContentLoaded', function() {
 // Update slider background based on value
 function updateSliderBackground(slider) {
     const value = (slider.value / slider.max) * 100;
-    slider.style.background = `linear-gradient(to right, var(--blue) 0%, var(--blue) ${value}%, #ddd ${value}%, #ddd 100%)`;
+    // Create gradient that fills from left to right based on progress
+    if (value === 0) {
+        slider.style.background = '#e2e8f0';
+    } else {
+        slider.style.background = `linear-gradient(to right, #2193b0 0%, #6dd5ed ${value}%, #e2e8f0 ${value}%, #e2e8f0 100%)`;
+    }
 }
 
 // Load todos from database
 function loadTodos() {
-    const station = window.TODO_STATION || 'Cafe'; // Default to Cafe if not set
-    
     // Show loading state
     const todoList = document.querySelector('.todo-list');
     if (todoList) {
         todoList.innerHTML = '<li style="text-align: center; padding: 20px; color: #999;">Loading todos...</li>';
+    }
+    
+    // Check if station is defined
+    const station = typeof DASHBOARD_STATION !== 'undefined' ? DASHBOARD_STATION : null;
+    const userId = typeof DASHBOARD_USER_ID !== 'undefined' ? DASHBOARD_USER_ID : null;
+    
+    if (!station) {
+        if (todoList) {
+            todoList.innerHTML = '<li style="text-align: center; padding: 20px; color: #e74c3c;">Error: Dashboard station not configured</li>';
+        }
+        return;
     }
     
     fetch('../php/get-todo.php', {
@@ -92,7 +106,8 @@ function loadTodos() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            station: station
+            station: station,
+            user_id: userId
         })
     })
         .then(response => {
@@ -166,6 +181,8 @@ function createTodoElement(todo) {
     li.className = todo.is_completed == 1 ? 'completed' : 'not-completed';
     li.setAttribute('data-progress', todo.progress);
     li.setAttribute('data-todo-id', todo.todo_id);
+    // Set CSS variable for progress bar width
+    li.style.setProperty('--progress-width', todo.progress + '%');
     
     // Todo text
     const p = document.createElement('p');
@@ -318,7 +335,13 @@ function handleAddTodo() {
 
 // Add a new todo
 function addTodo(todoText, progress = 0) {
-    const station = window.TODO_STATION || 'Cafe'; // Default to Cafe if not set
+    const station = typeof DASHBOARD_STATION !== 'undefined' ? DASHBOARD_STATION : null;
+    const userId = typeof DASHBOARD_USER_ID !== 'undefined' ? DASHBOARD_USER_ID : null;
+    
+    if (!station) {
+        alert('Error: Dashboard station not configured');
+        return;
+    }
     
     fetch('../php/add-todo.php', {
         method: 'POST',
@@ -328,7 +351,8 @@ function addTodo(todoText, progress = 0) {
         body: JSON.stringify({
             todo_text: todoText,
             progress: progress,
-            station: station
+            station: station,
+            user_id: userId
         })
     })
     .then(response => response.json())
@@ -343,7 +367,6 @@ function addTodo(todoText, progress = 0) {
         }
     })
     .catch(error => {
-        console.error('Error adding todo:', error);
         alert('An error occurred while adding the todo');
     });
 }
@@ -409,7 +432,6 @@ function handleUpdateProgress() {
         }
     })
     .catch(error => {
-        console.error('Error updating todo:', error);
         alert('An error occurred while updating the todo');
     });
 }
@@ -469,7 +491,6 @@ function confirmToggleStatus() {
         }
     })
     .catch(error => {
-        console.error('Error updating todo:', error);
         alert('An error occurred while updating the todo');
     });
 }
@@ -516,7 +537,6 @@ function confirmDeleteTodo() {
         }
     })
     .catch(error => {
-        console.error('Error deleting todo:', error);
         alert('An error occurred while deleting the todo');
     });
 }

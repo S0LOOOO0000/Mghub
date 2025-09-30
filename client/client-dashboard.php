@@ -13,6 +13,9 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 $user_role = $_SESSION['user_role'];
+
+// Station is now handled by JavaScript to support multiple tabs
+// Each dashboard sends its own station identifier via AJAX requests
 ?>
 
 <!DOCTYPE html>
@@ -188,7 +191,6 @@ $user_role = $_SESSION['user_role'];
 			<div class="todo">
 				<div class="head">
 					<h3>To-Do List</h3>
-					<i class='bx bx-plus icon'></i>
 				</div>
 				<div class="todo-filters">
 					<button onclick="filterTodos('all')" class="active">All</button>
@@ -214,10 +216,12 @@ $user_role = $_SESSION['user_role'];
 	<!-- Todo Modal -->
 	<?php include '../includes/todo-modal.php'; ?>
 
+	<!-- Set Dashboard Station for Todo System -->
 	<script>
-		// Set station for this dashboard
-		window.TODO_STATION = 'Cafe';
+		const DASHBOARD_STATION = 'Cafe';
+		const DASHBOARD_USER_ID = <?php echo $_SESSION['user_id']; ?>;
 	</script>
+
 	<script src="../js/dropdown.js"> </script>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <script src="../js/client-dashboard.js"></script>

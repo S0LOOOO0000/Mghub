@@ -581,17 +581,20 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    width: var(--progress-width, 100%); 
-    height: 3px;
-    background-color: #ddd; 
+    width: var(--progress-width, 0%); 
+    height: 4px;
+    background: linear-gradient(90deg, #2193b0 0%, #6dd5ed 100%);
+    border-radius: 0 0 8px 8px;
+    transition: width 0.3s ease;
 }
 
 .table-data .todo .todo-list li.completed::before {
-    background-color: var(--blue);
+    background: linear-gradient(90deg, #2193b0 0%, #6dd5ed 100%);
+    width: 100%;
 }
 
 .table-data .todo .todo-list li.not-completed::before {
-    background-color: var(--orange); 
+    background: linear-gradient(90deg, #f39c12 0%, #f8b739 100%);
 }
 
 /* Removed old progress text positioning */

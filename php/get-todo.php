@@ -14,25 +14,27 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Get station from request
+// Get POST data from JavaScript
 $data = json_decode(file_get_contents('php://input'), true);
-$station = isset($data['station']) ? $data['station'] : null;
 
-if (!$station) {
-    echo json_encode(['success' => false, 'message' => 'Station is required']);
+// Station MUST be sent from JavaScript to support multiple simultaneous sessions
+if (!isset($data['station']) || empty($data['station'])) {
+    echo json_encode(['success' => false, 'message' => 'Station parameter is required', 'debug' => 'No station in POST data']);
     exit();
 }
 
+$station = $data['station'];
+
 try {
-    // Fetch todos for the logged-in user and specific station
+    // Fetch todos for the specific station (shared by all users at that station)
     $stmt = $conn->prepare("
         SELECT todo_id, todo_text, progress, is_completed, station, created_at, updated_at
         FROM tbl_todo
-        WHERE user_id = ? AND station = ?
+        WHERE station = ?
         ORDER BY is_completed ASC, created_at DESC
     ");
     
-    $stmt->bind_param("is", $user_id, $station);
+    $stmt->bind_param("s", $station);
     $stmt->execute();
     $result = $stmt->get_result();
     
@@ -41,7 +43,14 @@ try {
         $todos[] = $row;
     }
     
-    echo json_encode(['success' => true, 'todos' => $todos]);
+    echo json_encode([
+        'success' => true, 
+        'todos' => $todos,
+        'debug' => [
+            'station' => $station,
+            'count' => count($todos)
+        ]
+    ]);
     
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => 'Error fetching todos: ' . $e->getMessage()]);
