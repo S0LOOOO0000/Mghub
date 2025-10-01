@@ -13,7 +13,8 @@
 }
 
 /* Modal */
-.modal {
+.user-account-modal {
+  position: fixed;
   background: #fff;
   width: 450px;
   padding: 50px;

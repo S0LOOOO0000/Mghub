@@ -13,6 +13,7 @@ $error = $_GET['error'] ?? null;
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/components/forrm-request.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js" integrity="sha512-r6rDA7W6ZeQhvl8S7yRVQUKVHdexq+GAlNkNNqVC7YyIV+NwqCTJe2hDWCiffTyRNOeGEzRRJ9ifvRm/HCzGYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="../css/components/custom-dropdown.css">
   </head>
 <body>
 
@@ -117,11 +118,74 @@ $error = $_GET['error'] ?? null;
   </div>
 </div>
 
-<!-- Attendance/Request Result Modal -->
-<div id="attendanceModal" class="attendance-modal">
-  <div class="modal-box">
-    <h3 id="attendanceMessage"></h3>
-    <p id="attendanceDetails"></p>
+<!-- 🔹 Change Shift Modal -->
+<div id="changeShiftModal" class="request-modal">
+  <div class="modal-content">
+    <div class="head">
+      <h3>Request Change Shift</h3>
+      <span class="close-btn">&times;</span>
+    </div>
+
+    <form method="POST" action="../php/request-change-shift.php">
+      <input type="hidden" id="change_request_employee_id" name="employee_id">
+
+      <div class="form-group">
+        <label>Target Employee</label>
+        <div id="targetEmployeeDropdown" class="cds-container"></div>
+        <input type="hidden" id="target_employee_id" name="target_employee_id" required>
+      </div>
+
+      <div class="form-group">
+        <label>Target Shift Date</label>
+        <input type="date" id="change_shift_date" name="target_shift_date" required>
+      </div>
+
+      <div class="form-group">
+        <label>Reason</label>
+        <textarea id="change_shift_reason" name="reason" rows="3" placeholder="Enter reason..." required></textarea>
+      </div>
+
+      <div class="modal-actions"> 
+      <button type="submit" class="btn-submit">Submit Request</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 🔹 Leave Request Modal -->
+<div id="leaveRequestModal" class="request-modal">
+  <div class="modal-content">
+    <div class="head">
+      <h3>Request Leave</h3>
+      <span class="close-btn" id="closeLeaveRequest">&times;</span>
+    </div>
+
+    <form class="form-container" method="POST" action="../php/request-leave.php">
+      <input type="hidden" id="leave_request_employee_id" name="employee_id">
+
+      <div class="form-group">
+        <label>Leave Date</label>
+        <input type="date" id="leave_date" name="target_date" required>
+      </div>
+
+      <div class="form-group">
+        <label>Leave Type</label>
+        <select id="leave_type" name="leave_type" required>
+          <option value="">-- Select Leave Type --</option>
+          <option value="Vacation">Vacation</option>
+          <option value="Sick">Sick</option>
+          <option value="Emergency">Emergency</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Reason</label>
+        <textarea id="leave_reason" name="reason" rows="3" placeholder="Enter reason" required></textarea>
+      </div>
+
+      <button type="submit" class="btn-submit">Submit Leave</button>
+    </form>
   </div>
 </div>
 

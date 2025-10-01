@@ -1,0 +1,52 @@
+.cds-container {
+  position: relative;
+  width: 100%;
+  font-family: Arial, sans-serif;
+}
+
+.cds-selected {
+  border: 1px solid #ccc;
+  padding: 8px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.cds-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: none;
+  margin-top: 2px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.cds-search {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  padding: 8px 10px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.cds-options {
+  max-height: 200px; /* fits ~5 items, scrolls if more */
+  overflow-y: auto;
+}
+
+.cds-option {
+  display: flex;
+  justify-content: space-between; /* name left, code right */
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.cds-option:hover {
+  background: #f5f5f5;
+}
