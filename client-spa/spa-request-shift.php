@@ -14,10 +14,11 @@ include __DIR__ . '/../php/get-inventory.php';
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Inventory</title>
+<?php include '../includes/favicon.php'; ?>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
 </head>
-<body data-role="<?= $_SESSION['user_role'] ?>">
+<body class="client-spa" data-role="<?= $_SESSION['user_role'] ?>">
 <section class="sidebar">
     <?php include '../includes/spa-sidebar.php'; ?>
 </section>

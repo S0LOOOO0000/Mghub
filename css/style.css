@@ -277,7 +277,7 @@ html {
 .main {
 	background: var(--secondary-bg-color);
 	width: 100%;
-	padding: 36px 24px;
+	padding: 40px 30px;
 	font-family: var(--poppins);
 	max-height: calc(100vh - 56px);
 	overflow-y: auto;

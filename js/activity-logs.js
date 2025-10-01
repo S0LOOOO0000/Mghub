@@ -69,7 +69,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // --------------------
     function renderTable(tableConfig) {
         const tableEl = document.getElementById(tableConfig.id);
+        if (!tableEl) {
+            console.error(`Table element with id '${tableConfig.id}' not found`);
+            return;
+        }
+        
         const tbody = tableEl.querySelector("tbody");
+        if (!tbody) {
+            console.error(`Table body not found in table '${tableConfig.id}'`);
+            return;
+        }
+        
         const allRows = Array.from(tbody.querySelectorAll("tr"));
         
         const filteredRows = allRows.filter(row => {
@@ -101,6 +111,11 @@ document.addEventListener("DOMContentLoaded", () => {
         filteredRows.slice(start, end).forEach((row, index) => {
             row.style.display = ""; // Show the row
             row.querySelector("td:first-child").textContent = start + index + 1;
+
+            // Ensure the activity-log-row class is preserved
+            if (!row.classList.contains('activity-log-row')) {
+                row.classList.add('activity-log-row');
+            }
 
             // Apply badges
             const roleCell = row.cells[1];
@@ -164,6 +179,78 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // --------------------
+    // Activity Log Modal Functionality
+    // --------------------
+    function initializeActivityLogModal() {
+        const modal = document.getElementById('activityLogModal');
+        const closeModal = document.getElementById('closeActivityModal');
+        const closeModalBtn = document.getElementById('closeActivityModalBtn');
+        
+        // Modal initialization
+        
+        // Close modal functions
+        function closeModalFunc() {
+            modal.style.display = 'none';
+        }
+        
+        if (closeModal) {
+            closeModal.addEventListener('click', closeModalFunc);
+        }
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', closeModalFunc);
+        }
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModalFunc();
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && modal.style.display === 'block') {
+                closeModalFunc();
+            }
+        });
+    }
+    
+    // --------------------
+    // Activity Log Row Click Handler
+    // --------------------
+    function setupActivityLogRowClicks() {
+        document.addEventListener('click', (event) => {
+            const row = event.target.closest('.activity-log-row');
+            
+            if (row) {
+                const modal = document.getElementById('activityLogModal');
+                
+                if (modal) {
+                    // Populate modal with row data
+                    const logId = row.dataset.logId || '-';
+                    const role = row.dataset.role || '-';
+                    const action = row.dataset.action || '-';
+                    const date = row.dataset.date || '-';
+                    const time = row.dataset.time || '-';
+                    const details = row.dataset.details || 'No details available';
+                    
+                    document.getElementById('modalLogId').textContent = logId;
+                    document.getElementById('modalRole').textContent = role;
+                    document.getElementById('modalAction').textContent = action;
+                    document.getElementById('modalDate').textContent = date;
+                    document.getElementById('modalTime').textContent = time;
+                    document.getElementById('modalDetails').textContent = details;
+                    
+                    // Show modal
+                    modal.style.display = 'block';
+                } else {
+                    console.error('Modal element not found!');
+                }
+            }
+        });
+    }
+
+    // --------------------
     // Initialize
     // --------------------
     tables.forEach(table => {
@@ -171,4 +258,17 @@ document.addEventListener("DOMContentLoaded", () => {
         setupLiveSearch(table.id.replace('Table', 'LogSearch'), table);
         renderTable(table);
     });
+    
+    // Initialize modal functionality
+    initializeActivityLogModal();
+    setupActivityLogRowClicks();
+    
+    // Test modal functionality
+    console.log('Testing modal functionality...');
+    const testModal = document.getElementById('activityLogModal');
+    if (testModal) {
+        console.log('Modal found and ready');
+    } else {
+        console.error('Modal not found in DOM!');
+    }
 });

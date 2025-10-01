@@ -44,17 +44,19 @@ const searchButton = document.querySelector('.content nav form .form-input butto
 const searchButtonIcon = document.querySelector('.content nav form .form-input button .material-icon');
 const searchForm = document.querySelector('.content nav form');
 
-searchButton.addEventListener('click', function (e) {
-    if (window.innerWidth < 768) {
-        e.preventDefault();
-        searchForm.classList.toggle('show');
-        if (searchForm.classList.contains('show')) {
-            searchButtonIcon.classList.replace('search-icon');
-        } else {
-            searchButtonIcon.classList.replace('search-icon');
+if (searchButton && searchButtonIcon && searchForm) {
+    searchButton.addEventListener('click', function (e) {
+        if (window.innerWidth < 768) {
+            e.preventDefault();
+            searchForm.classList.toggle('show');
+            if (searchForm.classList.contains('show')) {
+                searchButtonIcon.classList.replace('search-icon');
+            } else {
+                searchButtonIcon.classList.replace('search-icon');
+            }
         }
-    }
-})
+    });
+}
 
 
 
@@ -161,25 +163,214 @@ function updateNotificationCount() {
     document.querySelector('.notification .num').textContent = unreadNotifications;
 }
 
-document.getElementById('searchUser').addEventListener('input', filterOrders);
-document.getElementById('filterStatus').addEventListener('change', filterOrders);
+// Admin Dashboard Requests Filtering
+document.addEventListener('DOMContentLoaded', function() {
+    const statusFilter = document.querySelector('.table-data .order .filterStatus');
+    const typeFilter = document.querySelector('.table-data .order .filterType');
+    
+    if (statusFilter) {
+        statusFilter.addEventListener('change', filterAdminRequests);
+    }
+    if (typeFilter) {
+        typeFilter.addEventListener('change', filterAdminRequests);
+    }
+});
 
-function filterOrders() {
-    const searchText = document.getElementById('searchUser').value.toLowerCase();
-    const statusFilter = document.getElementById('filterStatus').value;
+function filterAdminRequests() {
+    const statusFilter = document.querySelector('.table-data .order .filterStatus')?.value || 'all';
+    const typeFilter = document.querySelector('.table-data .order .filterType')?.value || 'all';
 
-    document.querySelectorAll('.order table tbody tr').forEach(row => {
-        const user = row.querySelector('td:nth-child(2) span').textContent.toLowerCase();
-        const status = row.querySelector('td:nth-child(4) .status').textContent.toLowerCase();
-
-        const matchesSearch = user.includes(searchText);
+    document.querySelectorAll('.table-data .order table tbody tr').forEach(row => {
+        // Skip empty state row
+        if (row.querySelector('td[colspan]')) return;
+        
+        const statusCell = row.querySelector('td:nth-child(9) .status');
+        const typeCell = row.querySelector('td:nth-child(5) span');
+        
+        if (!statusCell || !typeCell) return;
+        
+        const status = statusCell.textContent.toLowerCase().trim();
+        const type = typeCell.textContent.toLowerCase().trim();
+        
         const matchesStatus = statusFilter === 'all' || status === statusFilter;
+        const matchesType = typeFilter === 'all' || 
+                           (typeFilter === 'on_leave' && type === 'on leave') ||
+                           (typeFilter === 'change_shift' && type === 'change shift');
 
-        if (matchesSearch && matchesStatus) {
+        if (matchesStatus && matchesType) {
             row.style.display = '';
         } else {
             row.style.display = 'none';
         }
     });
 }
+
+// Dashboard Request Actions
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle approve button clicks
+    document.querySelectorAll('.btn-approve').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const requestId = this.dataset.id;
+            if(confirm('Approve this request?')) {
+                fetch('../php/approve-request.php', {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/x-www-form-urlencoded'},
+                    body: 'request_id=' + requestId + '&action=approve'
+                }).then(() => location.reload());
+            }
+        });
+    });
+
+    // Handle reject button clicks
+    document.querySelectorAll('.btn-reject').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const requestId = this.dataset.id;
+            if(confirm('Decline this request?')) {
+                fetch('../php/approve-request.php', {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/x-www-form-urlencoded'},
+                    body: 'request_id=' + requestId + '&action=decline'
+                }).then(() => location.reload());
+            }
+        });
+    });
+
+    // Handle view button clicks
+    document.querySelectorAll('.btn-view').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const requestId = this.dataset.id;
+            // Redirect to full requests page for detailed view
+            window.location.href = 'admin-request.php';
+        });
+    });
+
+    // Initialize pagination
+    initializePagination();
+});
+
+// Pagination functionality
+function initializePagination() {
+    const rows = document.querySelectorAll('.table-data .order table tbody tr');
+    const itemsPerPage = 5;
+    let currentPage = 1;
+    const totalPages = Math.ceil(rows.length / itemsPerPage);
+    
+    const prevBtn = document.getElementById('prevPage');
+    const nextBtn = document.getElementById('nextPage');
+    const currentPageSpan = document.getElementById('currentPage');
+    const paginationInfo = document.getElementById('paginationInfo');
+    
+    function updatePagination() {
+        // Show/hide rows based on current page
+        rows.forEach((row, index) => {
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            
+            if (index >= startIndex && index < endIndex) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+        
+        // Update pagination controls
+        currentPageSpan.textContent = currentPage;
+        prevBtn.disabled = currentPage === 1;
+        nextBtn.disabled = currentPage === totalPages;
+        
+        // Update pagination info
+        const startItem = (currentPage - 1) * itemsPerPage + 1;
+        const endItem = Math.min(currentPage * itemsPerPage, rows.length);
+        paginationInfo.textContent = `Showing ${startItem}-${endItem} of ${rows.length} requests`;
+    }
+    
+    // Event listeners
+    prevBtn.addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            updatePagination();
+        }
+    });
+    
+    nextBtn.addEventListener('click', () => {
+        if (currentPage < totalPages) {
+            currentPage++;
+            updatePagination();
+        }
+    });
+    
+    // Initialize
+    updatePagination();
+}
+
+// Inventory filtering functionality
+function filterInventory(status) {
+    const items = document.querySelectorAll('.inventory-item');
+    const buttons = document.querySelectorAll('.inventory-filters button');
+    
+    // Update active button
+    buttons.forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    // Filter items with animation
+    items.forEach((item, index) => {
+        const itemStatus = item.dataset.status;
+        
+        setTimeout(() => {
+            if (status === 'all' || 
+                (status === 'low' && itemStatus === 'low_stock') ||
+                (status === 'out' && itemStatus === 'out_of_stock')) {
+                item.style.display = 'flex';
+                item.style.opacity = '0';
+                setTimeout(() => {
+                    item.style.opacity = '1';
+                }, 50);
+            } else {
+                item.style.opacity = '0';
+                setTimeout(() => {
+                    item.style.display = 'none';
+                }, 200);
+            }
+        }, index * 50);
+    });
+}
+
+// Todo dropdown functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle todo dropdown menus
+    const menuIcons = document.querySelectorAll('.todo-actions .menu-icon');
+    
+    menuIcons.forEach(icon => {
+        icon.addEventListener('click', function(e) {
+            e.stopPropagation();
+            
+            // Close all other open dropdowns
+            document.querySelectorAll('.content-menu').forEach(menu => {
+                if (menu !== this.querySelector('.content-menu')) {
+                    menu.style.display = 'none';
+                }
+            });
+            
+            // Toggle current dropdown
+            const dropdown = this.querySelector('.content-menu');
+            if (dropdown) {
+                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            }
+        });
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function() {
+        document.querySelectorAll('.content-menu').forEach(menu => {
+            menu.style.display = 'none';
+        });
+    });
+    
+    // Prevent dropdown from closing when clicking inside it
+    document.querySelectorAll('.content-menu').forEach(menu => {
+        menu.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    });
+});
 

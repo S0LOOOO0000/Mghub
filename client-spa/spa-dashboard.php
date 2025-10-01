@@ -13,6 +13,9 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 $user_role = $_SESSION['user_role'];
+
+// Station is now handled by JavaScript to support multiple tabs
+// Each dashboard sends its own station identifier via AJAX requests
 ?>
 
 <!DOCTYPE html>
@@ -21,14 +24,16 @@ $user_role = $_SESSION['user_role'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <?php include '../includes/favicon.php'; ?>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link href='https://unpkg.com/boxicons@2.1.4/dist/boxicons.js' rel='stylesheet'>
 	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 	<!-- My CSS -->
     <link rel="stylesheet" href="../css/style.css">
 	<link rel="stylesheet" href="../css/components/sidebar.css">
+	<link rel="stylesheet" href="../css/components/table.css">
 </head>
-<body>
+<body class="client-spa">
     <section class="sidebar">
     	<?php include '../includes/spa-sidebar.php'; ?>
     </section>
@@ -48,7 +53,8 @@ $user_role = $_SESSION['user_role'];
                 <?php include '../includes/admin-navbar.php'; ?>
             </nav>
     
-    	<div class="main">
+	<div class="main">
+		<div class="head-title-with-cards">
 			<div class="head-title">
 				<div class="left">
 					<h1>Dashboard</h1>
@@ -59,7 +65,7 @@ $user_role = $_SESSION['user_role'];
 					</ul>
 				</div>
 			</div>
-
+			
 			<ul class="box-info">
 				<li>
 					<i class="material-icons icon-card one">groups</i>
@@ -69,186 +75,116 @@ $user_role = $_SESSION['user_role'];
 					</span>
 				</li>
 				<li>
-					<i class="material-icons icon-card two">how_to_reg</i>
-					<span class="text">
-						<h3>40</h3>
-						<p>Present Today</p>
-					</span>
-				</li>
-				<li>
-					<i class="material-icons icon-card three">inventory_2</i>
+					<i class="material-icons icon-card two">inventory_2</i>
 					<span class="text">
 						<h3><?= $totalInventory; ?></h3>
 						<p>Inventory</p>
 					</span>
 				</li>
 				<li>
-					<i class="material-icons icon-card four">event</i>
+					<i class="material-icons icon-card three">event</i>
 					<span class="text">
 						<h3><?= $totalReservations ?></h3>
 						<p>Reservations</p>
 					</span>
 				</li>
 				<li>
-					<i class="material-icons icon-card five">swap_horiz</i>
+					<i class="material-icons icon-card four">swap_horiz</i>
 					<span class="text">
-						<h3>5</h3>
+						<h3>4</h3>
 						<p>Shift Requests</p>
 					</span>
 				</li>
 			</ul>
+		</div>
         
-			<div class="table-data">
-				<div class="order">
-					<div class="head">
-						<h3>Attendance</h3>
-							<form action="#">
-								<div class="form-input">
-									<input type="search" placeholder="Search...">
-									<button type="submit" class="search-btn"><i class='material-icons search-icon' >search</i></button>
-								</div>
-							</form>
-						<i class="material-icons">tune</i>
-						<select class="filterStatus">
-							<option value="all">All</option>
-							<option value="present">Present</option>
-							<option value="late">Late</option>
-							<option value="Absent">Absent</option>
-						</select>
-						
-						<select class="filterStatus">
-							<option value="all">All</option>
-							<option value="present">Present</option>
-							<option value="late">Late</option>
-							<option value="Absent">Absent</option>
-						</select>
+		<div class="table-data">
+			<div class="order">
+				<div class="head">
+					<h3>Recent Inventory</h3>
+					<div class="inventory-filters">
+						<button onclick="filterInventory('all')" class="active">All</button>
+						<button onclick="filterInventory('low')">Low Stock</button>
+						<button onclick="filterInventory('out')">Out of Stock</button>
 					</div>
-					<table>
-						<thead>
-							<tr>
-								<th>Image</th>
-								<th>Name</th>
-								<th>Shift</th>
-								<th>Time in</th>
-								<th>Time Out</th>
-								<th>Status</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									<img src="https://placehold.co/50x50.png">
-								</td>
-								<td>
-									<span>Micheal John</span>
-									<p>micheal_john@mail.com</p></td>
-								<td>Morning</td>
-								<td>8:14 am</td>
-								<td>6:20 pm</td>
-								<td><span class="status late">Late</span></td>
-							</tr>
-							<tr>
-								<td>
-									<img src="https://placehold.co/50x50.png">
-								</td>
-								<td>
-									<span>Ryan Doe</span>
-									<p>riyan_doe@mail.com</p>
-								</td>
-								<td>Morning</td>
-								<td>7:50 am</td>
-								<td>6:07 pm</td>
-								<td><span class="status present">Present</span></td>
-							</tr>
-							<tr>
-								<td>
-									<img src="https://placehold.co/50x50.png">
-								</td>
-								<td>
-									<span>Tarry White</span>
-									<p>tarry_white@mail.com</p>
-								</td>
-								<td>Morning</td>
-								<td>0:00</td>
-								<td>0:00</td>
-								<td><span class="status absent">Absent</span></td>
-							</tr>
-						</tbody>
-					</table>
 				</div>
-				<div class="todo">
-						<div class="head">
-							<h3>Todos</h3>
-							<i class='bx bx-plus icon'></i>
+				
+				<div class="inventory-list">
+					<?php if (!empty($inventory)) : ?>
+						<?php 
+						// Show all inventory items for dashboard
+						$dashboardInventory = $inventory;
+						?>
+						<?php foreach ($dashboardInventory as $item): ?>
+							<div class="inventory-item" data-status="<?= strtolower(str_replace(' ', '_', $item['item_status'])); ?>">
+								<div class="item-info">
+									<h4><?= htmlspecialchars($item['item_name']); ?></h4>
+									<p class="item-category"><?= htmlspecialchars($item['item_category']); ?></p>
+								</div>
+								<div class="item-details">
+									<span class="quantity"><?= $item['item_quantity']; ?> pcs</span>
+									<span class="status-badge status-<?= strtolower(str_replace(' ', '_', $item['item_status'])); ?>">
+										<?= $item['item_status']; ?>
+									</span>
+								</div>
+							</div>
+						<?php endforeach; ?>
+					<?php else: ?>
+						<div class="no-items">
+							<p>No inventory items found</p>
 						</div>
-						<div class="todo-filters">
-						<button onclick="filterTodos('all')">All</button>
-						<button onclick="filterTodos('completed')" class="completed">Completed</button>
-						<button onclick="filterTodos('pending')" class="pending">Pending</button>
-						</div>
-						<ul class="todo-list">
-						<li class="completed" data-progress="100">
-							<span class="progress-text">%100</span>
-							<p>Check Inventory</p>
-							<i class='bx bx-dots-vertical-rounded menu-icon'>
-								<dl class="content-menu">
-									<dt class="menu-item"><a href="#">Edit</a></dt>
-									<dt class="menu-item"><a href="#">Delete</a></dt>
-									<dt class="menu-item"><a href="#">Mark as Pending</a></dt>
-								</dl>
-							</i>
-						</li>
-						<li class="completed" data-progress="100">
-							<span class="progress-text">%100</span>
-							<p>Manage Delivery Team</p>
-							<i class='bx bx-dots-vertical-rounded menu-icon'>
-								<dl class="content-menu">
-									<dt class="menu-item"><a href="#">Edit</a></dt>
-									<dt class="menu-item"><a href="#">Delete</a></dt>
-									<dt class="menu-item"><a href="#">Mark as Pending</a></dt>
-								</dl>
-							</i>
-						</li>
-						<li class="not-completed" data-progress="45">
-							<span class="progress-text">%45</span>
-							<p>Contact Salma: Confirm Delivery</p>
-							<i class='material-icons menu-icon'> More-vert
-								<dl class="content-menu">
-									<dt class="menu-item"><a href="#">Edit</a></dt>
-									<dt class="menu-item"><a href="#">Delete</a></dt>
-									<dt class="menu-item"><a href="#">Mark as Pending</a></dt>
-								</dl>
-							</i>
-						</li>
-						<li class="not-completed" data-progress="67">
-							<span class="progress-text">%67</span>
-							<p>Update Shop Catalogue</p>
-							<i class='bx bx-dots-vertical-rounded menu-icon'>
-								<dl class="content-menu">
-									<dt class="menu-item"><a href="#">Edit</a></dt>
-									<dt class="menu-item"><a href="#">Delete</a></dt>
-									<dt class="menu-item"><a href="#">Mark as Pending</a></dt>
-								</dl>
-							</i>
-						</li>
-						<li class="not-completed" data-progress="10">
-							<span class="progress-text">%10</span>
-							<p>Count Profit Analytics</p>
-							<i class='bx bx-dots-vertical-rounded menu-icon'>
-								<dl class="content-menu">
-									<dt class="menu-item"><a href="#">Edit</a></dt>
-									<dt class="menu-item"><a href="#">Delete</a></dt>
-									<dt class="menu-item"><a href="#">Mark as Pending</a></dt>
-								</dl>
-							</i>
-						</li>
-					</ul>
+					<?php endif; ?>
+				</div>
+				
+				<!-- View All Button -->
+				<div class="inventory-footer">
+					<a href="spa-inventory.php" class="view-all-btn">
+						<span>View All Inventory</span>
+						<i class='material-icons'>arrow_forward</i>
+					</a>
+				</div>
+			</div>
+			
+			<div class="todo">
+				<div class="head">
+					<h3>To-Do List</h3>
+				</div>
+				<div class="todo-filters">
+					<button onclick="filterTodos('all')" class="active">All</button>
+					<button onclick="filterTodos('completed')" class="completed">Completed</button>
+					<button onclick="filterTodos('pending')" class="pending">Pending</button>
+				</div>
+				<ul class="todo-list">
+					<!-- Todos will be loaded dynamically via JavaScript -->
+					<li style="text-align: center; padding: 20px; color: #999;">Loading todos...</li>
+				</ul>
+				
+				<!-- Add Button at Bottom Right -->
+				<div class="todo-add-button">
+					<button class="add-todo-btn" title="Add New Todo">
+						<i class='material-icons'>add</i>
+					</button>
+				</div>
 					
     
         </div>
     </section>
 
+	<!-- Todo Modal -->
+	<?php include '../includes/todo-modal.php'; ?>
 
-    <script src="../js/dashboard.js"></script>
+	<!-- Set Dashboard Station for Todo System -->
+	<script>
+		const DASHBOARD_STATION = 'Spa';
+		const DASHBOARD_USER_ID = <?php echo $_SESSION['user_id']; ?>;
+	</script>
+
+	<script src="../js/dropdown.js"> </script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="../js/spa-dashboard.js"></script>
+    <script src="../js/attendance.js"></script>
+    <script src="../js/employee.js"></script>
+    <script src="../js/inventory.js"></script>
+    <script src="../js/todo.js"></script>
 </body>
 </html>
