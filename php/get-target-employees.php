@@ -13,7 +13,7 @@ if (empty($employee_code)) {
 }
 
 // Get employee info
-$stmt = $conn->prepare("SELECT employee_code, first_name, last_name, shift, work_station, status
+$stmt = $conn->prepare("SELECT employee_id, employee_code, first_name, last_name, shift, work_station, status
                         FROM tbl_employee 
                         WHERE employee_code = ?");
 $stmt->bind_param("s", $employee_code);

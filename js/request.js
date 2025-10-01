@@ -1,7 +1,6 @@
 let html5QrCode = null;
 
-// --- Helper Functions (Defined in global scope for access by openQrScanner and other event handlers) ---
-
+// --- Helper Functions ---
 function showPopup(message, type = "success") {
     if (!message) return;
     const popup = document.createElement("div");
@@ -23,23 +22,22 @@ function postData(url, data) {
     }).then(res => res.text());
 }
 
-// Stubs for functions defined later in DOMContentLoaded, needed here by openQrScanner
-let populateChangeShiftModal = () => showPopup("System loading...", 'error');
-let populateLeaveModal = () => showPopup("System loading...", 'error');
+function openModal(modal) {
+    if (modal) modal.classList.add("show");
+}
+function closeModal(modal) {
+    if (modal) modal.classList.remove("show");
+}
 
-
-// --- QR Scanner Functions ---
-
+// --- QR Scanner ---
 function openQrScanner(action) {
     const modal = document.getElementById("qrModal");
     const title = document.getElementById("qrModalTitle");
     title.textContent = action === "change" ? "Request Change - Scan QR" : "Request Leave - Scan QR";
     modal.style.display = "flex";
 
-    if (html5QrCode) {
-        closeQrScanner();
-    }
-    
+    if (html5QrCode) closeQrScanner();
+
     html5QrCode = new Html5Qrcode("qr-reader");
 
     Html5Qrcode.getCameras()
@@ -50,16 +48,11 @@ function openQrScanner(action) {
                     { fps: 10, qrbox: 250 },
                     qrMessage => {
                         closeQrScanner();
-                        showPopup(`QR Scanned: ${qrMessage}. Opening form...`, 'success');
-                        if (action === 'change') {
-                            populateChangeShiftModal(qrMessage);
-                        } else if (action === 'leave') {
-                            populateLeaveModal(qrMessage);
-                        }
+                        showPopup(`QR Scanned: ${qrMessage}. Opening form...`, "success");
+                        if (action === "change") populateChangeShiftModal(qrMessage);
+                        if (action === "leave") populateLeaveModal(qrMessage);
                     },
-                    errorMessage => {
-                        console.warn("QR Scan error:", errorMessage);
-                    }
+                    err => console.warn("QR Scan error:", err)
                 );
             }
         })
@@ -69,93 +62,180 @@ function openQrScanner(action) {
 function closeQrScanner() {
     const modal = document.getElementById("qrModal");
     modal.style.display = "none";
-
     if (html5QrCode) {
-        const instanceToStop = html5QrCode;
+        const instance = html5QrCode;
         html5QrCode = null;
-
-        instanceToStop.stop()
-            .then(() => instanceToStop.clear())
-            .catch(err => console.error("Stop error:", err));
+        instance.stop().then(() => instance.clear()).catch(err => console.error("Stop error:", err));
     }
 }
-
-function openModal(modal) {
-  if (!modal) return;
-  modal.classList.add("show");
-}
-
-function closeModal(modal) {
-  if (!modal) return;
-  modal.classList.remove("show");
-}
-
-document.querySelectorAll(".request-modal .close-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const modal = btn.closest(".request-modal");
-    if (modal) closeModal(modal);
-  });
-});
-
-document.querySelectorAll(".request-modal").forEach(modal => {
-  modal.addEventListener("click", e => {
-    if (e.target === modal) closeModal(modal);
-  });
-});
 
 document.getElementById("closeQrModal")?.addEventListener("click", closeQrScanner);
 
+// --- Leave Request Submit ---
 function submitLeaveRequest(e) {
-  e.preventDefault();
+    e.preventDefault();
 
-  const employeeId = document.getElementById("leave_request_employee_id").value;
-  const leaveDate  = document.getElementById("leave_date").value;
-  const leaveType  = document.getElementById("leave_type").value;
-  const reason     = document.getElementById("leave_reason").value;
+    const employeeId = document.getElementById("leave_request_employee_id").value;
+    const leaveDate = document.getElementById("leave_date").value;
+    const leaveType = document.getElementById("leave_type").value;
+    const reason = document.getElementById("leave_reason").value;
 
-  if (!employeeId || !leaveDate || !leaveType || !reason) {
-    showPopup("All fields are required", "error");
-    return;
-  }
+    if (!employeeId || !leaveDate || !leaveType || !reason) {
+        showPopup("All fields are required", "error");
+        return;
+    }
 
-  // build form data
-  const formData = new FormData();
-  formData.append("employee_id", employeeId);
-  formData.append("target_date", leaveDate);
-  formData.append("leave_type", leaveType);
-  formData.append("reason", reason);
+    const formData = new FormData();
+    formData.append("employee_id", employeeId);
+    formData.append("target_date", leaveDate);
+    formData.append("leave_type", leaveType);
+    formData.append("reason", reason);
 
-  fetch("../php/request-leave.php", {
-    method: "POST",
-    body: formData
-  })
-    .then(res => {
-      if (!res.ok) throw new Error("Network error");
-      return res.text();
-    })
-    .then(() => {
-      showPopup("Leave request submitted", "success");
-      const modal = document.getElementById("leaveRequestModal");
-      closeModal(modal); // use your helper
-    })
-    .catch(err => {
-      console.error("Submit leave error:", err);
-      showPopup("Failed to submit leave request", "error");
+    fetch("../php/request-leave.php", { method: "POST", body: formData })
+        .then(res => {
+            if (!res.ok) throw new Error("Network error");
+            return res.text();
+        })
+        .then(() => {
+            showPopup("Leave request submitted", "success");
+            closeModal(document.getElementById("leaveRequestModal"));
+        })
+        .catch(err => {
+            console.error("Submit leave error:", err);
+            showPopup("Failed to submit leave request", "error");
+        });
+}
+
+function submitChangeShiftRequest(e) {
+    e.preventDefault();
+
+    const employeeId = document.getElementById("change_request_employee_id").value;
+    const targetEmployeeId = document.getElementById("target_employee_id").value;
+    const targetDate = document.getElementById("change_shift_date").value;
+    const reason = document.getElementById("change_shift_reason").value;
+
+    if (!employeeId || !targetEmployeeId || !targetDate || !reason) {
+        showPopup("All fields are required", "error");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("employee_id", employeeId);
+    formData.append("target_employee_id", targetEmployeeId);
+    formData.append("target_shift_date", targetDate);
+    formData.append("reason", reason);
+    formData.append("request_type", "change");
+
+    console.log("FormData being sent:");
+    for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+    }
+
+    fetch("../php/request-change-shift.php", { method: "POST", body: formData })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === "success") {
+                showPopup(data.message, "success");
+                closeModal(document.getElementById("changeShiftModal"));
+            } else {
+                showPopup(data.message, "error");
+            }
+            console.log("Server response:", data);
+        })
+        .catch(err => {
+            console.error("Submit change shift error:", err);
+            showPopup("Failed to submit change shift request", "error");
+        });
+}
+
+// --- Load All Employees ---
+function loadAllEmployees(containerId, hiddenInputId) {
+    fetch("../php/fetch-all-employee.php")
+        .then(res => {
+            if (!res.ok) throw new Error("Network error");
+            return res.json().catch(() => {
+                return res.text().then(txt => {
+                    console.error("Non-JSON response:", txt);
+                    throw new Error("Invalid JSON response");
+                });
+            });
+        })
+        .then(data => {
+            console.log(data);
+            if (!data || data.status !== "success") {
+                showPopup(data?.message || "Failed to fetch employees", "error");
+                return;
+            }
+            const container = document.getElementById(containerId);
+            const hiddenInput = document.getElementById(hiddenInputId);
+            if (!container || !hiddenInput) {
+                console.error("Dropdown container or hidden input not found");
+                return;
+            }
+            createCustomDropdown(container, hiddenInput, data.employees);
+        })
+        .catch(err => {
+            console.error("Error loading employees:", err);
+            showPopup("Error loading employees", "error");
+        });
+}
+
+// --- Custom Dropdown ---
+function createCustomDropdown(container, hiddenInput, employees) {
+    container.innerHTML = `
+        <div class="cds-selected">-- Select Employee --</div>
+        <div class="cds-dropdown">
+            <input type="text" class="cds-search" placeholder="Search by name or code...">
+            <div class="cds-options"></div>
+        </div>
+    `;
+
+    const selected = container.querySelector(".cds-selected");
+    const dropdown = container.querySelector(".cds-dropdown");
+    const searchInput = container.querySelector(".cds-search");
+    const optionsContainer = container.querySelector(".cds-options");
+
+    function renderOptions(list) {
+        optionsContainer.innerHTML = "";
+        list.forEach(emp => {
+            const opt = document.createElement("div");
+            opt.className = "cds-option";
+            opt.innerHTML = `<strong>${emp.first_name} ${emp.last_name}</strong><span>${emp.employee_code}</span>`;
+            opt.addEventListener("click", () => {
+                selected.textContent = `${emp.first_name} ${emp.last_name} (${emp.employee_code})`;
+                hiddenInput.value = emp.employee_id;
+                dropdown.style.display = "none";
+            });
+            optionsContainer.appendChild(opt);
+        });
+    }
+
+    renderOptions(employees);
+
+    selected.addEventListener("click", () => {
+        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        searchInput.value = "";
+        renderOptions(employees);
+        searchInput.focus();
+    });
+
+    searchInput.addEventListener("input", () => {
+        const val = searchInput.value.toLowerCase();
+        const filtered = employees.filter(emp =>
+            emp.first_name.toLowerCase().includes(val) ||
+            emp.last_name.toLowerCase().includes(val) ||
+            emp.employee_code.toLowerCase().includes(val)
+        );
+        renderOptions(filtered);
+    });
+
+    document.addEventListener("click", e => {
+        if (!container.contains(e.target)) dropdown.style.display = "none";
     });
 }
 
-
 // --- DOMContentLoaded Setup ---
-
 document.addEventListener("DOMContentLoaded", () => {
-    
-    function clearUrlParams() {
-        if (window.history.replaceState) {
-            const cleanUrl = window.location.origin + window.location.pathname;
-            window.history.replaceState({}, document.title, cleanUrl);
-        }
-    }
-
     const modals = {
         changeShift: document.getElementById("changeShiftModal"),
         leaveRequest: document.getElementById("leaveRequestModal"),
@@ -163,22 +243,18 @@ document.addEventListener("DOMContentLoaded", () => {
         decline: document.getElementById("declineModal"),
     };
 
-    function openModal(modal) { if (modal) modal.classList.add("show"); }
-    function closeModal(modal) { if (modal) modal.classList.remove("show"); }
-
     Object.values(modals).forEach(modal => {
         if (!modal) return;
         modal.querySelector(".close-btn")?.addEventListener("click", () => closeModal(modal));
         window.addEventListener("click", e => { if (e.target === modal) closeModal(modal); });
     });
-    
+
     // --- Change Shift Modal ---
     populateChangeShiftModal = (empCode) => {
         if (!empCode) {
             showPopup("Missing employee code for change shift request", "error");
             return;
         }
-
         fetch(`../php/get-target-employees.php?employee_id=${encodeURIComponent(empCode)}`)
             .then(res => res.json())
             .then(data => {
@@ -186,39 +262,18 @@ document.addEventListener("DOMContentLoaded", () => {
                     showPopup(data?.message || "Employee not found", "error");
                     return;
                 }
-
                 const emp = data.employee;
-                // Fill hidden input
-                document.getElementById("change_request_employee_id").value = emp.employee_code;
+                console.log(emp);
+                document.getElementById("change_request_employee_id").value = emp.employee_id;
+                openModal(document.getElementById("changeShiftModal"));
+                loadAllEmployees("targetEmployeeDropdown", "target_employee_id");
+                const header = document.querySelector("#changeShiftModal h3");
+                if (header) header.textContent = `Request Change Shift for ${emp.first_name} ${emp.last_name}`;
 
-                // ✅ Open modal using the helper
-                const modal = document.getElementById("changeShiftModal");
-                openModal(modal);
-
-                const header = modal.querySelector("h3");
-                if (header) {
-                    header.textContent = `Request Change Shift for ${emp.first_name} ${emp.last_name}`;
-                }
-
-                // Fetch possible swap targets and fill dropdown
-                const select = document.getElementById("target_employee_id");
-                fetch(`../php/get-target-employees.php?employee_id=${encodeURIComponent(emp.employee_code)}`)
-                    .then(res => res.json())
-                    .then(targets => {
-                        select.innerHTML = "<option value=''>-- Select Employee --</option>";
-
-                        if (!Array.isArray(targets) || targets.length === 0) {
-                            select.innerHTML = "<option value=''>No employees available</option>";
-                            return;
-                        }
-
-                        targets.forEach(t => {
-                            const option = document.createElement("option");
-                            option.value = t.employee_code;
-                            option.textContent = `${t.first_name} ${t.last_name} (${t.shift})`;
-                            select.appendChild(option);
-                        });
-                    });
+                // Attach form submit
+                const form = document.querySelector("#changeShiftModal form");
+                form.removeEventListener("submit", submitChangeShiftRequest);
+                form.addEventListener("submit", submitChangeShiftRequest);
             })
             .catch(err => {
                 console.error("Error:", err);
@@ -232,7 +287,6 @@ document.addEventListener("DOMContentLoaded", () => {
             showPopup("Missing employee code for leave request", "error");
             return;
         }
-
         fetch(`../php/get-target-employees.php?employee_id=${encodeURIComponent(empCode)}`)
             .then(res => res.json())
             .then(data => {
@@ -240,23 +294,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     showPopup(data?.message || "Employee not found", "error");
                     return;
                 }
-
                 const emp = data.employee;
-                // Fill hidden input
                 document.getElementById("leave_request_employee_id").value = emp.employee_code;
-
-                // ✅ Open modal using helper
-                const modal = document.getElementById("leaveRequestModal");
-                openModal(modal);
-
-                // Pre-fill modal title
-                const header = modal.querySelector("h3");
-                if (header) {
-                    header.textContent = `Request Leave for ${emp.first_name} ${emp.last_name}`;
-                }
-                
-                document.querySelector("#leaveRequestModal form")
-                .addEventListener("submit", submitLeaveRequest);
+                openModal(document.getElementById("leaveRequestModal"));
+                const header = document.querySelector("#leaveRequestModal h3");
+                if (header) header.textContent = `Request Leave for ${emp.first_name} ${emp.last_name}`;
+                const form = document.querySelector("#leaveRequestModal form");
+                form.removeEventListener("submit", submitLeaveRequest); // prevent multiple binds
+                form.addEventListener("submit", submitLeaveRequest);
             })
             .catch(err => {
                 console.error("Error:", err);

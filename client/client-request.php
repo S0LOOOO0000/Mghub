@@ -13,6 +13,7 @@ $error = $_GET['error'] ?? null;
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/components/forrm-request.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js" integrity="sha512-r6rDA7W6ZeQhvl8S7yRVQUKVHdexq+GAlNkNNqVC7YyIV+NwqCTJe2hDWCiffTyRNOeGEzRRJ9ifvRm/HCzGYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="../css/components/custom-dropdown.css">
   </head>
 <body>
 
@@ -130,19 +131,18 @@ $error = $_GET['error'] ?? null;
 
       <div class="form-group">
         <label>Target Employee</label>
-        <select id="target_employee_id" name="target_employee_id" required>
-          <option value="">-- Select Employee --</option>
-        </select>
+        <div id="targetEmployeeDropdown" class="cds-container"></div>
+        <input type="hidden" id="target_employee_id" name="target_employee_id" required>
       </div>
 
       <div class="form-group">
         <label>Target Shift Date</label>
-        <input type="date" name="target_shift_date" required>
+        <input type="date" id="change_shift_date" name="target_shift_date" required>
       </div>
 
       <div class="form-group">
         <label>Reason</label>
-        <textarea name="reason" rows="3" placeholder="Enter reason..." required></textarea>
+        <textarea id="change_shift_reason" name="reason" rows="3" placeholder="Enter reason..." required></textarea>
       </div>
 
       <div class="modal-actions"> 
