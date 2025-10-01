@@ -187,34 +187,6 @@ function filterAdminRequests() {
 
 // Dashboard Request Actions
 document.addEventListener('DOMContentLoaded', function() {
-    // Handle approve button clicks
-    document.querySelectorAll('.btn-approve').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const requestId = this.dataset.id;
-            if(confirm('Approve this request?')) {
-                fetch('../php/approve-request.php', {
-                    method: 'POST',
-                    headers: {'Content-Type':'application/x-www-form-urlencoded'},
-                    body: 'request_id=' + requestId + '&action=approve'
-                }).then(() => location.reload());
-            }
-        });
-    });
-
-    // Handle reject button clicks
-    document.querySelectorAll('.btn-reject').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const requestId = this.dataset.id;
-            if(confirm('Decline this request?')) {
-                fetch('../php/approve-request.php', {
-                    method: 'POST',
-                    headers: {'Content-Type':'application/x-www-form-urlencoded'},
-                    body: 'request_id=' + requestId + '&action=decline'
-                }).then(() => location.reload());
-            }
-        });
-    });
-
     // Handle view button clicks
     document.querySelectorAll('.btn-view').forEach(btn => {
         btn.addEventListener('click', function() {
