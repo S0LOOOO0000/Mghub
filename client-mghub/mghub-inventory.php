@@ -5,6 +5,25 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'staff') {
     exit;
 }
 
+// ✅ Detect which page we are on and set branch
+$pageName = basename($_SERVER['PHP_SELF']); 
+
+switch ($pageName) {
+    case "client-inventory.php":
+        $branch = "MG Cafe";
+        break;
+    case "spa-inventory.php":
+        $branch = "MG Spa";
+        break;
+    case "mghub-inventory.php":
+        $branch = "MG Hub";
+        break;
+    default:
+        $branch = "Unknown";
+}
+$_SESSION['branch'] = $branch;
+
+
 include __DIR__ . '/../php/get-inventory.php';
 ?>
 

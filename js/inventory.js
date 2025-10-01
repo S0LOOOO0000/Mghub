@@ -24,9 +24,9 @@ function initModals() {
   }
 
   // Close buttons
-  document.querySelectorAll(".modal .close-btn").forEach(btn => {
-    btn.addEventListener("click", () => btn.closest(".modal").classList.remove("show"));
-  });
+document.querySelectorAll(".modal-inv .close-btn").forEach(btn => {
+  btn.addEventListener("click", () => btn.closest(".modal-inv").classList.remove("show"));
+});
 
   // Cancel Delete
   const cancelDeleteBtn = document.getElementById("cancelDeleteInventoryBtn");

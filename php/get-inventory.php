@@ -1,45 +1,55 @@
 <?php
-// admin-inventory.php
-
-// Include database connection
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 include __DIR__ . '/../config/database-connection.php';
 
-/** ---------------- FETCH INVENTORY LIST ---------------- **/
-$sql = "SELECT inventory_id, item_name, item_quantity, item_category, created_at 
-        FROM tbl_inventory 
-        ORDER BY created_at ASC";
-
-$result = $conn->query($sql);
-
+$branch = $_SESSION['branch'] ?? 'Unknown';
 $inventory = [];
-if ($result && $result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
+$totalInventory = 0;
 
-        // Auto-determine status based on quantity
-        if ($row['item_quantity'] <= 0) {
-            $row['item_status'] = "Out of Stock";
-        } elseif ($row['item_quantity'] <= 10) {
-            $row['item_status'] = "Low Stock";
-        } elseif ($row['item_quantity'] > 100) {
-            $row['item_status'] = "Overstock";
-        } else {
-            $row['item_status'] = "In Stock";
+if ($branch !== 'Unknown') {
+    // ✅ Fetch items for this branch
+    $sql = "SELECT inventory_id, item_name, item_quantity, item_category, created_at 
+            FROM tbl_inventory 
+            WHERE branch = ?
+            ORDER BY created_at ASC";
+    $stmt = $conn->prepare($sql);
+
+    if ($stmt) {
+        $stmt->bind_param("s", $branch);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        while ($row = $result->fetch_assoc()) {
+            // Auto-assign stock status
+            $qty = (int)$row['item_quantity'];
+            if ($qty <= 0) {
+                $row['item_status'] = "Out of Stock";
+            } elseif ($qty <= 10) {
+                $row['item_status'] = "Low Stock";
+            } elseif ($qty > 100) {
+                $row['item_status'] = "Overstock";
+            } else {
+                $row['item_status'] = "In Stock";
+            }
+            $inventory[] = $row;
         }
+        $stmt->close();
+    }
 
-        $inventory[] = $row;
+    // ✅ Fetch total inventory count
+    $sql = "SELECT COUNT(*) AS total_inventory FROM tbl_inventory WHERE branch = ?";
+    $stmt = $conn->prepare($sql);
+
+    if ($stmt) {
+        $stmt->bind_param("s", $branch);
+        $stmt->execute();
+        $stmt->bind_result($totalInventory);
+        $stmt->fetch();
+        $stmt->close();
     }
 }
 
-/** ---------------- FETCH TOTAL INVENTORY COUNT ---------------- **/
-$sql = "SELECT COUNT(*) AS total_inventory FROM tbl_inventory";
-$result = $conn->query($sql);
-
-$totalInventory = 0; 
-if ($result && $result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    $totalInventory = $row['total_inventory'];
-}
-
-// Close connection
 $conn->close();
 ?>
