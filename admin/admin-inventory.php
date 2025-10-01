@@ -17,6 +17,8 @@ include __DIR__ . '/../php/get-inventory.php';
 <?php include '../includes/favicon.php'; ?>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/components/inventory-tab.css">
+
 </head>
 <body data-role="<?= $_SESSION['user_role'] ?>">
 <section class="sidebar">
@@ -45,6 +47,17 @@ include __DIR__ . '/../php/get-inventory.php';
                 <li><a class="active">Home</a></li>
             </ul>
         </div>
+    </div>
+
+    <div class="inventory-tabs">
+    <button class="tab-btn <?= ($_GET['branch'] ?? 'MG Cafe') === 'MG Cafe' ? 'active' : '' ?>"
+            onclick="window.location.href='admin-inventory.php?branch=MG Cafe'">MG Café</button>
+
+    <button class="tab-btn <?= ($_GET['branch'] ?? 'MG Cafe') === 'MG Hub' ? 'active' : '' ?>"
+            onclick="window.location.href='admin-inventory.php?branch=MG Hub'">MG Hub</button>
+
+    <button class="tab-btn <?= ($_GET['branch'] ?? 'MG Cafe') === 'MG Spa' ? 'active' : '' ?>"
+            onclick="window.location.href='admin-inventory.php?branch=MG Spa'">MG Spa</button>
     </div>
 
     <div class="table-container">

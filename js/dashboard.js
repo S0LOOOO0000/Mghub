@@ -60,26 +60,6 @@ if (searchButton && searchButtonIcon && searchForm) {
 
 
 
-function updatePresentToday() {
-  fetch('../php/get-attendance-dashboard.php') // ✅ correct endpoint
-    .then(res => res.json())
-    .then(data => {
-      if (data.status === 'success') {
-        document.getElementById('presentToday').textContent = data.present_today;
-      }
-    })
-    .catch(err => console.error('Error fetching attendance:', err));
-}
-
-// Initial load
-updatePresentToday();
-
-// Auto refresh every 30 seconds
-setInterval(updatePresentToday, 30000);
-
-
-
-
 // Menülerin açılıp kapanması için fonksiyon
     function toggleMenu(menuId) {
       var contentMenu = document.getElementById(menuId);
