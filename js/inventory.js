@@ -143,7 +143,7 @@ async function postForm(url, formData) {
 function handleResponse(res, form, type) {
   if (res.status === "success") {
     showPopup(res.message, "success");
-    form.closest(".modal").classList.remove("show");
+    form.closest(".modal-inv").classList.remove("show");
     setTimeout(() => window.location.reload(), 1000); // refresh to show changes
   } else {
     showPopup(res.message, "error");
@@ -177,3 +177,5 @@ function handlePopupsFromURL() {
     if (addModal) addModal.classList.add("show");
   }
 }
+
+form.closest(".modal-inv").classList.remove("show");

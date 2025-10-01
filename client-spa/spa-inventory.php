@@ -135,6 +135,24 @@ include __DIR__ . '/../php/get-inventory.php';
         </div>
     </div>
 
+
+    <?php
+// Setup categories depending on branch
+switch ($branch) {
+    case "MG Cafe":
+        $branchCategories = ["Food", "Beverages", "Snacks", "Ingredients"];
+        break;
+    case "MG Spa":
+        $branchCategories = ["Lotions", "Oils", "Scrubs", "Wellness Products"];
+        break;
+    case "MG Hub":
+        $branchCategories = ["Cosmetics", "Haircare", "Skincare", "Accessories"];
+        break;
+    default:
+        $branchCategories = ["General"];
+}  ?>  
+
+
     <?php include '../includes/inventory-modal.php'; ?>
 </div>
 </section>

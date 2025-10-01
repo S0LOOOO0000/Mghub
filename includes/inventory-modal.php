@@ -25,6 +25,7 @@
 
     <!-- ✅ Connect to backend -->
     <form id="addInventoryForm" method="POST" action="../php/add-inventory.php">
+      <input type="hidden" name="branch" value="<?= htmlspecialchars($_SESSION['branch']); ?>">
       <div class="form-group">
         <label for="add_item_name">Item Name</label>
         <input type="text" id="add_item_name" name="item_name" required>
@@ -62,6 +63,7 @@
 
     <!-- ✅ Connect to backend -->
     <form id="editInventoryForm" method="POST" action="../php/edit-inventory.php">
+      <input type="hidden" name="branch" value="<?= htmlspecialchars($_SESSION['branch']); ?>">
       <!-- hidden ID -->
       <input type="hidden" name="inventory_id" id="edit_inventory_id">
 
@@ -76,8 +78,8 @@
       </div>
 
 <div class="form-group">
-  <label for="add_item_category">Category</label>
-  <select id="add_item_category" name="item_category" required>
+  <label for="edit_item_category">Category</label>
+  <select id="edit_item_category" name="item_category" required>
     <option value="">Select Category</option>
     <?php foreach ($branchCategories as $cat): ?>
       <option value="<?php echo htmlspecialchars($cat); ?>">
