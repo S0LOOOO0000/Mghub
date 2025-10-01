@@ -178,4 +178,3 @@ function handlePopupsFromURL() {
   }
 }
 
-form.closest(".modal-inv").classList.remove("show");

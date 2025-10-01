@@ -4,6 +4,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
     header("Location: ../index.php");
     exit;
 }
+$branch = $_GET['branch'] ?? 'MG Cafe';
 
 include __DIR__ . '/../php/get-inventory.php';
 ?>
@@ -49,16 +50,16 @@ include __DIR__ . '/../php/get-inventory.php';
         </div>
     </div>
 
-    <div class="inventory-tabs">
-    <button class="tab-btn <?= ($_GET['branch'] ?? 'MG Cafe') === 'MG Cafe' ? 'active' : '' ?>"
-            onclick="window.location.href='admin-inventory.php?branch=MG Cafe'">MG Café</button>
+            <div class="inventory-tabs">
+                <button class="tab-btn <?= ($branch === 'MG Cafe') ? 'active' : '' ?>"
+                        onclick="switchBranch('MG Cafe')">MG Café</button>
 
-    <button class="tab-btn <?= ($_GET['branch'] ?? 'MG Cafe') === 'MG Hub' ? 'active' : '' ?>"
-            onclick="window.location.href='admin-inventory.php?branch=MG Hub'">MG Hub</button>
+                <button class="tab-btn <?= ($branch === 'MG Hub') ? 'active' : '' ?>"
+                        onclick="switchBranch('MG Hub')">MG Hub</button>
 
-    <button class="tab-btn <?= ($_GET['branch'] ?? 'MG Cafe') === 'MG Spa' ? 'active' : '' ?>"
-            onclick="window.location.href='admin-inventory.php?branch=MG Spa'">MG Spa</button>
-    </div>
+                <button class="tab-btn <?= ($branch === 'MG Spa') ? 'active' : '' ?>"
+                        onclick="switchBranch('MG Spa')">MG Spa</button>
+            </div>
 
     <div class="table-container">
         <div class="table-card">
@@ -89,7 +90,7 @@ include __DIR__ . '/../php/get-inventory.php';
                         <td><?= $counter++; ?></td>
                         <td><?= htmlspecialchars($row['item_name']); ?></td>
                         <td><?= htmlspecialchars($row['item_quantity']); ?></td>
-                        <td><?= htmlspecialchars($row['item_category']); ?></td>
+                        <td class="inv-category"><?= htmlspecialchars($row['item_category']); ?></td>
                         <td><span class="status <?= strtolower(str_replace(' ', '-', $row['item_status'])); ?>"><?= htmlspecialchars($row['item_status']); ?></span></td>
                         <td><?= date("F j, Y", strtotime($row['created_at'])); ?></td>
                         <td>
@@ -129,14 +130,38 @@ include __DIR__ . '/../php/get-inventory.php';
         </div>
     </div>
 
-    <?php include '../includes/inventory-modal.php'; ?>
+<?php
+// Define categories for each branch
+$allCategories = [
+    'MG Cafe' => ['Food', 'Beverages', 'Snacks', 'Ingredients'],
+    'MG Hub'  => ['Cosmetics', 'Haircare', 'Skincare', 'Accessories'],
+    'MG Spa'  => ['Lotions', 'Oils', 'Scrubs', 'Wellness Products']
+];
+
+// Use current branch to get categories
+$branchCategories = $allCategories[$branch] ?? [];
+
+// Now include the modal
+include '../includes/inventory-modal.php';
+?>
+
+
 </div>
 </section>
+
 
 <script src="../js/inventory-filter.js"></script>
 <script src="../js/dropdown.js"></script>
 <script src="../js/dashboard.js"></script>
 <script src="../js/inventory.js"></script>
+
+
+<script>
+function switchBranch(branch) {
+    // Reload with branch in query string
+    window.location.href = "admin-inventory.php?branch=" + encodeURIComponent(branch);
+}
+</script>
 
 </body>
 </html>

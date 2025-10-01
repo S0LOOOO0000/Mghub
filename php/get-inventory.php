@@ -4,16 +4,17 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 include __DIR__ . '/../config/database-connection.php';
 
-$branch = $_SESSION['branch'] ?? 'Unknown';
+// --- ADMIN: branch from query string ---
+$branch = $_GET['branch'] ?? ($_SESSION['branch'] ?? 'MG Cafe'); // default MG Cafe
+
 $inventory = [];
 $totalInventory = 0;
 
 if ($branch !== 'Unknown') {
-    // ✅ Fetch items for this branch
     $sql = "SELECT inventory_id, item_name, item_quantity, item_category, created_at 
             FROM tbl_inventory 
             WHERE branch = ?
-            ORDER BY created_at DESC"; // latest first
+            ORDER BY created_at DESC";
     $stmt = $conn->prepare($sql);
 
     if ($stmt) {
@@ -24,7 +25,6 @@ if ($branch !== 'Unknown') {
         while ($row = $result->fetch_assoc()) {
             $qty = (int)$row['item_quantity'];
 
-            // ✅ Safe stock status (matches enum values in DB)
             if ($qty <= 0) {
                 $row['item_status'] = "Out of Stock";
             } elseif ($qty <= 10) {
@@ -33,7 +33,6 @@ if ($branch !== 'Unknown') {
                 $row['item_status'] = "In Stock";
             }
 
-            // ✅ Optional: extra flag for UI highlighting
             $row['is_overstock'] = ($qty > 100);
 
             $inventory[] = $row;
@@ -41,7 +40,6 @@ if ($branch !== 'Unknown') {
         $stmt->close();
     }
 
-    // ✅ Fetch total inventory count
     $sql = "SELECT COUNT(*) AS total_inventory FROM tbl_inventory WHERE branch = ?";
     $stmt = $conn->prepare($sql);
 
@@ -53,6 +51,9 @@ if ($branch !== 'Unknown') {
         $stmt->close();
     }
 }
+
+// Optionally store in session if needed
+$_SESSION['branch'] = $branch;
 
 $conn->close();
 ?>

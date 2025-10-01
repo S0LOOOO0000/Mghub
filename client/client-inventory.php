@@ -95,7 +95,7 @@ include __DIR__ . '/../php/get-inventory.php';
                         <td><?= $counter++; ?></td>
                         <td><?= htmlspecialchars($row['item_name']); ?></td>
                         <td><?= htmlspecialchars($row['item_quantity']); ?></td>
-                        <td><?= htmlspecialchars($row['item_category']); ?></td>
+                        <td class="inv-category"><?= htmlspecialchars($row['item_category']); ?></td>
                         <td><span class="status <?= strtolower(str_replace(' ', '-', $row['item_status'])); ?>"><?= htmlspecialchars($row['item_status']); ?></span></td>
                         <td><?= date("F j, Y", strtotime($row['created_at'])); ?></td>
                         <td>

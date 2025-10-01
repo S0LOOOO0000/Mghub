@@ -5,7 +5,7 @@ include __DIR__ . '/../php/get-event.php';
 include __DIR__ . '/../php/get-request.php';
 
 session_start();
-include __DIR__ . '/../php/get-inventory.php';
+
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../index.php");

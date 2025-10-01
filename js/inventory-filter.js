@@ -60,6 +60,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const rowCategory = normalize(row.querySelector(".inv-category")?.textContent);
       const rowText = row.innerText.toLowerCase();
 
+      // Debug each row
+      console.log("rowCategory:", rowCategory, "selected:", selectedFilters.category);
+
       return (
         (selectedFilters.status === "all" || rowStatus === selectedFilters.status) &&
         (selectedFilters.category === "all" || rowCategory === selectedFilters.category) &&
@@ -74,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderTable() {
     const filteredRows = getFilteredRows();
 
-    // Hide all rows
+    // Hide all rows first
     tbody.querySelectorAll("tr").forEach((row) => (row.style.display = "none"));
 
     const totalPages = Math.max(1, Math.ceil(filteredRows.length / rowsPerPage));
@@ -140,10 +143,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --------------------
-  // Init
+  // Initialize
   // --------------------
   renderTable();
 
-  // Watch for dynamic row changes (AJAX, etc.)
+  // Watch for dynamic changes (e.g., AJAX)
   new MutationObserver(renderTable).observe(tbody, { childList: true });
 });
