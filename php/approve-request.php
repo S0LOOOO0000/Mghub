@@ -58,7 +58,7 @@ try {
         throw new Exception("Invalid request data");
     }
 
-    // Fetch request with employee info
+    // Fetch request with requester info
     $stmt = $conn->prepare("
         SELECT r.*, e.first_name, e.last_name, e.email_address, e.shift AS employee_shift
         FROM tbl_request r
@@ -88,17 +88,18 @@ try {
     $stmt->execute();
     $stmt->close();
 
-    // Swap shifts if approved & Change Shift request
+    // Handle Change Shift swap if approved
     if ($newStatus === 'Approved' && $request['request_type'] === 'Change Shift' && !empty($request['target_employee_id'])) {
-        // Get target employee shift
-        $stmt = $conn->prepare("SELECT shift FROM tbl_employee WHERE employee_id=? LIMIT 1");
+
+        // Get target employee info
+        $stmt = $conn->prepare("SELECT shift, first_name, last_name, email_address FROM tbl_employee WHERE employee_id=? LIMIT 1");
         $stmt->bind_param("i", $request['target_employee_id']);
         $stmt->execute();
-        $targetShiftRow = $stmt->get_result()->fetch_assoc();
+        $targetEmployee = $stmt->get_result()->fetch_assoc();
         $stmt->close();
 
-        if ($targetShiftRow) {
-            $targetShift = $targetShiftRow['shift'];
+        if ($targetEmployee) {
+            $targetShift = $targetEmployee['shift'];
 
             // Swap requester shift
             $stmt = $conn->prepare("UPDATE tbl_employee SET shift=? WHERE employee_id=?");
@@ -111,12 +112,23 @@ try {
             $stmt->bind_param("si", $request['employee_shift'], $request['target_employee_id']);
             $stmt->execute();
             $stmt->close();
+
+            // Send email to target employee about the swap
+            sendRequestStatusEmail(
+                $targetEmployee['email_address'],
+                $targetEmployee['first_name'] . ' ' . $targetEmployee['last_name'],
+                "Shift Swap",
+                $request['target_date'],
+                "You have been assigned a shift swap with " . $request['first_name'] . " " . $request['last_name'] . ".",
+                "Approved"
+            );
         }
     }
 
+    // Commit transaction
     $conn->commit();
 
-    // Send email
+    // Send email to requester
     sendRequestStatusEmail(
         $request['email_address'],
         $request['first_name'] . ' ' . $request['last_name'],

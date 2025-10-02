@@ -85,7 +85,6 @@ include __DIR__ . '/../php/get-employee.php';
                                                 <th>CONTACT</th>
                                                 <th>STATION & ROLE</th>
                                                 <th>SHIFT</th>
-                                                <th>STATUS</th>
                                                 <th>EMPLOYED</th>
                                                 <th>QR CODE</th>
                                                 <th>ACTION</th>
@@ -120,12 +119,6 @@ include __DIR__ . '/../php/get-employee.php';
                                                         <td class="emp-shift">
                                                             <span class="shift <?= strtolower($row['shift']); ?>">
                                                                 <?= htmlspecialchars($row['shift']); ?>
-                                                            </span>
-                                                        </td>
-
-                                                        <td class="emp-status">
-                                                            <span class="<?= strtolower($row['status']); ?>">
-                                                                <?= htmlspecialchars($row['status']); ?>
                                                             </span>
                                                         </td>
 
