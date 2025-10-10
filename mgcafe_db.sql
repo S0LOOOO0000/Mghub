@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 28, 2025 at 01:11 PM
+-- Generation Time: Oct 02, 2025 at 02:08 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -65,27 +65,13 @@ INSERT INTO `activity_log` (`log_id`, `user_id`, `user_role`, `module`, `record_
 (20, 1, 'admin', 'Inventory', 27, 'Delete', '\"Item: haha; Quantity: 23; Category: Food;\"', '2025-09-17 04:15:33'),
 (21, 2, 'staff', 'Inventory', 20, 'Delete', '\"Item: haha1123; Quantity: 121222; Category: Drinks;\"', '2025-09-17 04:19:16'),
 (22, 2, 'staff', 'Inventory', 23, 'Edit', '\"Item: Meat; Quantity: 10 → 20; \"', '2025-09-17 04:19:32'),
-(23, 1, 'admin', 'EventBooking', 42, 'Update', '\"{\\\"old\\\":{\\\"event_id\\\":42,\\\"customer_name\\\":\\\"Romulo Erroba\\\",\\\"customer_email\\\":\\\"romuloerrobajr@gmail.com\\\",\\\"customer_contact\\\":\\\"099182312123\\\",\\\"event_name\\\":\\\"Suntukan sa gate\\\",\\\"event_date\\\":\\\"2025-09-29\\\",\\\"event_time\\\":\\\"20:37:00\\\",\\\"event_description\\\":\\\"Minsa\'y nauuna, minsa\'y nahuhuli\\\\r\\\\nDapat matulin ka nang ikaw ay makarami\\\\r\\\\nDapat mag-ingat ka sa \'yong pagmamaneho\\\\r\\\\nNang \'di nagagalit ang mga pasahero\\\\r\\\\n\'Wag singit nang singit sa mga masisikip\\\\r\\\\nBaka maipit ka at magkasabit-sabit\\\",\\\"event_status\\\":\\\"Booked\\\",\\\"created_at\\\":\\\"2025-09-15 18:37:45\\\"},\\\"new\\\":{\\\"customer_name\\\":\\\"Romulo Errobaa\\\",\\\"customer_email\\\":\\\"romuloerrobajr@gmail.com\\\",\\\"customer_contact\\\":\\\"099182312123\\\",\\\"event_name\\\":\\\"Suntukan sa gate\\\",\\\"event_date\\\":\\\"2025-09-29\\\",\\\"event_time\\\":\\\"20:37:00\\\",\\\"event_description\\\":\\\"Minsa\'y nauuna, minsa\'y nahuhuli\\\\r\\\\nDapat matulin ka nang ikaw ay makarami\\\\r\\\\nDapat mag-ingat ka sa \'yong pagmamaneho\\\\r\\\\nNang \'di nagagalit ang mga pasahero\\\\r\\\\n\'Wag singit nang singit sa mga masisikip\\\\r\\\\nBaka maipit ka at magkasabit-sabit\\\",\\\"event_status\\\":\\\"Booked\\\"}}\"', '2025-09-17 04:41:23'),
-(24, 1, 'admin', 'EventBooking', 42, 'Delete', '\"Event deleted: Suntukan sa gate; Customer: Romulo Errobaa; Date: 2025-09-29; Time: 20:37:00; Status: Booked\"', '2025-09-17 05:03:28'),
-(25, 1, 'admin', 'EventBooking', 43, 'Delete', '\"Event deleted: Suntukan sa gate; Customer: Romulo Erroba; Date: 2025-09-30; Time: 18:53:00; Status: Booked\"', '2025-09-17 05:03:43'),
-(26, 1, 'admin', 'EventBooking', 44, 'Delete', '\"{\\\"event_id\\\":44,\\\"customer_name\\\":\\\"migol\\\",\\\"customer_email\\\":\\\"babymigz.01@gmail.com\\\",\\\"customer_contact\\\":\\\"09232232133\\\",\\\"event_name\\\":\\\"Suntukan sa gate\\\",\\\"event_date\\\":\\\"2025-10-01\\\",\\\"event_time\\\":\\\"19:06:00\\\",\\\"event_description\\\":\\\"asdasdasdsad\\\",\\\"event_status\\\":\\\"Booked\\\",\\\"created_at\\\":\\\"2025-09-15 19:05:59\\\"}\"', '2025-09-17 05:06:01');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tbl_todo`
---
-
-CREATE TABLE `tbl_todo` (
-  `todo_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `station` enum('Cafe','MG Hub','Spa') NOT NULL,
-  `todo_text` varchar(255) NOT NULL,
-  `progress` int(11) DEFAULT 0,
-  `is_completed` tinyint(1) DEFAULT 0,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+(26, 1, 'admin', 'EventBooking', 44, 'Delete', '\"{\\\"event_id\\\":44,\\\"customer_name\\\":\\\"migol\\\",\\\"customer_email\\\":\\\"babymigz.01@gmail.com\\\",\\\"customer_contact\\\":\\\"09232232133\\\",\\\"event_name\\\":\\\"Suntukan sa gate\\\",\\\"event_date\\\":\\\"2025-10-01\\\",\\\"event_time\\\":\\\"19:06:00\\\",\\\"event_description\\\":\\\"asdasdasdsad\\\",\\\"event_status\\\":\\\"Booked\\\",\\\"created_at\\\":\\\"2025-09-15 19:05:59\\\"}\"', '2025-09-17 05:06:01'),
+(27, 3, 'staff', 'Inventory', 30, 'Add', '\"Item: kyutiks; Quantity: 3; Category: Cosmetics; Branch: MG Hub;\"', '2025-10-02 01:50:31'),
+(28, 3, 'staff', 'Inventory', 31, 'Add', '\"Item: lotion; Quantity: 20; Category: Lotions; Branch: MG Spa;\"', '2025-10-02 01:50:51'),
+(29, 3, 'staff', 'Inventory', 31, 'Delete', '\"Item: lotion; Quantity: 20; Category: Lotions; Branch: MG Spa;\"', '2025-10-02 02:00:50'),
+(30, 3, 'staff', 'Inventory', 32, 'Add', '\"Item: lotion; Quantity: 20; Category: Lotions; Branch: MG Spa;\"', '2025-10-02 02:01:03'),
+(31, 3, 'staff', 'Inventory', 32, 'Edit', '\"Item: lotion; Item_quantity: 20 → 9; Branch: MG Spa;\"', '2025-10-02 02:01:13'),
+(32, 4, 'staff', 'Inventory', 33, 'Add', '\"Item: lavender; Quantity: 20; Category: Lotions; Branch: MG Spa;\"', '2025-10-02 02:59:15');
 
 -- --------------------------------------------------------
 
@@ -109,115 +95,66 @@ CREATE TABLE `tbl_attendance` (
 --
 
 INSERT INTO `tbl_attendance` (`attendance_id`, `employee_id`, `attendance_date`, `time_in`, `time_out`, `attendance_status`, `created_at`, `updated_at`) VALUES
-(1, 1, '2025-09-06', NULL, NULL, 'Absent', '2025-09-05 18:54:16', '2025-09-05 18:54:16'),
-(2, 2, '2025-09-06', NULL, NULL, 'Absent', '2025-09-05 18:54:16', '2025-09-05 18:54:16'),
-(4, 4, '2025-09-06', '12:40:17', NULL, 'Late', '2025-09-05 19:18:35', '2025-09-06 04:40:17'),
 (5, 7, '2025-09-06', NULL, NULL, 'Absent', '2025-09-05 19:18:35', '2025-09-05 19:18:35'),
-(6, 3, '2025-09-06', '12:41:35', NULL, 'Late', '2025-09-05 19:18:35', '2025-09-06 04:41:35'),
 (7, 11, '2025-09-06', NULL, NULL, 'Absent', '2025-09-05 19:18:35', '2025-09-05 19:18:35'),
 (8, 12, '2025-09-06', NULL, NULL, 'Absent', '2025-09-05 19:18:35', '2025-09-05 19:18:35'),
 (9, 6, '2025-09-06', NULL, NULL, 'Absent', '2025-09-05 19:18:35', '2025-09-05 19:18:35'),
-(10, 10, '2025-09-06', NULL, NULL, 'Absent', '2025-09-05 19:18:35', '2025-09-05 19:18:35'),
-(11, 9, '2025-09-06', NULL, NULL, 'Absent', '2025-09-05 19:18:35', '2025-09-05 19:18:35'),
 (12, 5, '2025-09-06', NULL, NULL, 'Absent', '2025-09-05 19:18:35', '2025-09-05 19:18:35'),
 (13, 13, '2025-09-06', NULL, NULL, 'Absent', '2025-09-05 19:18:35', '2025-09-05 19:18:35'),
-(14, 8, '2025-09-06', NULL, NULL, 'Absent', '2025-09-05 19:18:35', '2025-09-05 19:18:35'),
 (19, 15, '2025-09-06', '12:39:24', NULL, 'Late', '2025-09-05 19:34:44', '2025-09-06 04:39:24'),
 (20, 14, '2025-09-06', '12:40:00', NULL, 'Late', '2025-09-05 19:34:44', '2025-09-06 04:40:00'),
-(21, 4, '2025-09-07', NULL, NULL, 'Absent', '2025-09-06 16:00:06', '2025-09-06 16:00:06'),
 (22, 7, '2025-09-07', '20:59:19', NULL, 'Late', '2025-09-06 16:00:06', '2025-09-07 12:59:19'),
-(23, 3, '2025-09-07', NULL, NULL, 'Absent', '2025-09-06 16:00:06', '2025-09-06 16:00:06'),
 (24, 11, '2025-09-07', NULL, NULL, 'Absent', '2025-09-06 16:00:06', '2025-09-06 16:00:06'),
 (25, 12, '2025-09-07', NULL, NULL, 'Absent', '2025-09-06 16:00:06', '2025-09-06 16:00:06'),
 (26, 6, '2025-09-07', NULL, NULL, 'Absent', '2025-09-06 16:00:06', '2025-09-06 16:00:06'),
-(27, 1, '2025-09-07', NULL, NULL, 'Absent', '2025-09-06 16:00:06', '2025-09-06 16:00:06'),
-(28, 10, '2025-09-07', '18:30:14', NULL, 'Late', '2025-09-06 16:00:06', '2025-09-07 10:30:14'),
-(29, 9, '2025-09-07', NULL, NULL, 'Absent', '2025-09-06 16:00:06', '2025-09-06 16:00:06'),
-(30, 2, '2025-09-07', NULL, NULL, 'Absent', '2025-09-06 16:00:06', '2025-09-06 16:00:06'),
 (31, 5, '2025-09-07', NULL, NULL, 'Absent', '2025-09-06 16:00:06', '2025-09-06 16:00:06'),
 (32, 15, '2025-09-07', NULL, NULL, 'Absent', '2025-09-06 16:00:06', '2025-09-06 16:00:06'),
 (33, 13, '2025-09-07', NULL, NULL, 'Absent', '2025-09-06 16:00:06', '2025-09-06 16:00:06'),
 (34, 14, '2025-09-07', NULL, NULL, 'Absent', '2025-09-06 16:00:06', '2025-09-06 16:00:06'),
-(35, 8, '2025-09-07', NULL, NULL, 'Absent', '2025-09-06 16:00:06', '2025-09-06 16:00:06'),
-(36, 4, '2025-09-08', NULL, NULL, 'Absent', '2025-09-07 16:00:05', '2025-09-07 16:00:05'),
 (37, 7, '2025-09-08', NULL, NULL, 'Absent', '2025-09-07 16:00:05', '2025-09-07 16:00:05'),
-(38, 3, '2025-09-08', NULL, NULL, 'Absent', '2025-09-07 16:00:05', '2025-09-07 16:00:05'),
 (39, 11, '2025-09-08', NULL, NULL, 'Absent', '2025-09-07 16:00:05', '2025-09-07 16:00:05'),
 (40, 12, '2025-09-08', NULL, NULL, 'Absent', '2025-09-07 16:00:05', '2025-09-07 16:00:05'),
 (41, 6, '2025-09-08', NULL, NULL, 'Absent', '2025-09-07 16:00:05', '2025-09-07 16:00:05'),
-(42, 1, '2025-09-08', NULL, NULL, 'Absent', '2025-09-07 16:00:05', '2025-09-07 16:00:05'),
-(43, 10, '2025-09-08', NULL, NULL, 'Absent', '2025-09-07 16:00:05', '2025-09-07 16:00:05'),
-(44, 9, '2025-09-08', NULL, NULL, 'Absent', '2025-09-07 16:00:05', '2025-09-07 16:00:05'),
-(45, 2, '2025-09-08', NULL, NULL, 'Absent', '2025-09-07 16:00:05', '2025-09-07 16:00:05'),
 (46, 5, '2025-09-08', NULL, NULL, 'Absent', '2025-09-07 16:00:05', '2025-09-07 16:00:05'),
 (47, 15, '2025-09-08', NULL, NULL, 'Absent', '2025-09-07 16:00:05', '2025-09-07 16:00:05'),
 (48, 13, '2025-09-08', NULL, NULL, 'Absent', '2025-09-07 16:00:05', '2025-09-07 16:00:05'),
 (49, 14, '2025-09-08', NULL, NULL, 'Absent', '2025-09-07 16:00:05', '2025-09-07 16:00:05'),
-(50, 8, '2025-09-08', NULL, NULL, 'Absent', '2025-09-07 16:00:05', '2025-09-07 16:00:05'),
-(51, 4, '2025-09-09', NULL, NULL, 'Pending', '2025-09-09 02:51:19', '2025-09-09 02:51:19'),
 (52, 7, '2025-09-09', NULL, NULL, 'Pending', '2025-09-09 02:51:19', '2025-09-09 02:51:19'),
-(53, 3, '2025-09-09', NULL, NULL, 'Pending', '2025-09-09 02:51:19', '2025-09-09 02:51:19'),
 (54, 11, '2025-09-09', NULL, NULL, 'Pending', '2025-09-09 02:51:19', '2025-09-09 02:51:19'),
 (55, 12, '2025-09-09', '07:52:23', NULL, 'Present', '2025-09-09 02:51:19', '2025-09-08 23:52:23'),
 (56, 6, '2025-09-09', NULL, NULL, 'Pending', '2025-09-09 02:51:19', '2025-09-09 02:51:19'),
-(57, 1, '2025-09-09', NULL, NULL, 'Pending', '2025-09-09 02:51:19', '2025-09-09 02:51:19'),
-(58, 10, '2025-09-09', NULL, NULL, 'Pending', '2025-09-09 02:51:19', '2025-09-09 02:51:19'),
-(59, 9, '2025-09-09', NULL, NULL, 'Pending', '2025-09-09 02:51:19', '2025-09-09 02:51:19'),
-(60, 2, '2025-09-09', NULL, NULL, 'Pending', '2025-09-09 02:51:19', '2025-09-09 02:51:19'),
 (61, 5, '2025-09-09', NULL, NULL, 'Pending', '2025-09-09 02:51:19', '2025-09-09 02:51:19'),
 (62, 15, '2025-09-09', NULL, NULL, 'Pending', '2025-09-09 02:51:19', '2025-09-09 02:51:19'),
 (63, 13, '2025-09-09', NULL, NULL, 'Pending', '2025-09-09 02:51:19', '2025-09-09 02:51:19'),
 (64, 14, '2025-09-09', NULL, NULL, 'Pending', '2025-09-09 02:51:19', '2025-09-09 02:51:19'),
-(65, 8, '2025-09-09', NULL, NULL, 'Pending', '2025-09-09 02:51:19', '2025-09-09 02:51:19'),
 (66, 16, '2025-09-09', NULL, NULL, 'Pending', '2025-09-08 19:00:07', '2025-09-08 19:00:07'),
-(67, 4, '2025-09-15', NULL, NULL, 'Pending', '2025-09-15 11:51:01', '2025-09-15 11:51:01'),
 (68, 7, '2025-09-15', NULL, NULL, 'Pending', '2025-09-15 11:51:01', '2025-09-15 11:51:01'),
-(69, 3, '2025-09-15', NULL, NULL, 'Pending', '2025-09-15 11:51:01', '2025-09-15 11:51:01'),
 (70, 11, '2025-09-15', NULL, NULL, 'Pending', '2025-09-15 11:51:01', '2025-09-15 11:51:01'),
 (71, 12, '2025-09-15', NULL, NULL, 'Pending', '2025-09-15 11:51:01', '2025-09-15 11:51:01'),
 (72, 6, '2025-09-15', NULL, NULL, 'Pending', '2025-09-15 11:51:01', '2025-09-15 11:51:01'),
-(73, 1, '2025-09-15', NULL, NULL, 'Pending', '2025-09-15 11:51:01', '2025-09-15 11:51:01'),
-(74, 10, '2025-09-15', NULL, NULL, 'Pending', '2025-09-15 11:51:01', '2025-09-15 11:51:01'),
-(75, 9, '2025-09-15', NULL, NULL, 'Pending', '2025-09-15 11:51:01', '2025-09-15 11:51:01'),
-(76, 2, '2025-09-15', NULL, NULL, 'Pending', '2025-09-15 11:51:01', '2025-09-15 11:51:01'),
 (77, 5, '2025-09-15', NULL, NULL, 'Pending', '2025-09-15 11:51:01', '2025-09-15 11:51:01'),
 (78, 15, '2025-09-15', NULL, NULL, 'Pending', '2025-09-15 11:51:01', '2025-09-15 11:51:01'),
 (79, 13, '2025-09-15', NULL, NULL, 'Pending', '2025-09-15 11:51:01', '2025-09-15 11:51:01'),
 (80, 16, '2025-09-15', NULL, NULL, 'Pending', '2025-09-15 11:51:01', '2025-09-15 11:51:01'),
 (81, 14, '2025-09-15', NULL, NULL, 'Pending', '2025-09-15 11:51:01', '2025-09-15 11:51:01'),
-(82, 8, '2025-09-15', NULL, NULL, 'Pending', '2025-09-15 11:51:01', '2025-09-15 11:51:01'),
-(83, 4, '2025-09-16', NULL, NULL, 'Pending', '2025-09-16 15:51:08', '2025-09-16 15:51:08'),
 (84, 7, '2025-09-16', NULL, NULL, 'Pending', '2025-09-16 15:51:08', '2025-09-16 15:51:08'),
-(85, 3, '2025-09-16', NULL, NULL, 'Pending', '2025-09-16 15:51:08', '2025-09-16 15:51:08'),
 (86, 11, '2025-09-16', NULL, NULL, 'Pending', '2025-09-16 15:51:08', '2025-09-16 15:51:08'),
 (87, 12, '2025-09-16', NULL, NULL, 'Pending', '2025-09-16 15:51:08', '2025-09-16 15:51:08'),
 (88, 6, '2025-09-16', NULL, NULL, 'Pending', '2025-09-16 15:51:08', '2025-09-16 15:51:08'),
-(89, 1, '2025-09-16', NULL, NULL, 'Pending', '2025-09-16 15:51:08', '2025-09-16 15:51:08'),
-(90, 10, '2025-09-16', NULL, NULL, 'Pending', '2025-09-16 15:51:08', '2025-09-16 15:51:08'),
-(91, 9, '2025-09-16', NULL, NULL, 'Pending', '2025-09-16 15:51:08', '2025-09-16 15:51:08'),
-(92, 2, '2025-09-16', NULL, NULL, 'Pending', '2025-09-16 15:51:08', '2025-09-16 15:51:08'),
 (93, 5, '2025-09-16', NULL, NULL, 'Pending', '2025-09-16 15:51:08', '2025-09-16 15:51:08'),
 (94, 15, '2025-09-16', NULL, NULL, 'Pending', '2025-09-16 15:51:08', '2025-09-16 15:51:08'),
 (95, 13, '2025-09-16', NULL, NULL, 'Pending', '2025-09-16 15:51:08', '2025-09-16 15:51:08'),
 (96, 16, '2025-09-16', NULL, NULL, 'Pending', '2025-09-16 15:51:08', '2025-09-16 15:51:08'),
 (97, 14, '2025-09-16', NULL, NULL, 'Pending', '2025-09-16 15:51:08', '2025-09-16 15:51:08'),
-(98, 8, '2025-09-16', NULL, NULL, 'Pending', '2025-09-16 15:51:08', '2025-09-16 15:51:08'),
-(114, 4, '2025-09-17', NULL, NULL, 'Pending', '2025-09-16 16:28:56', '2025-09-16 16:28:56'),
 (115, 7, '2025-09-17', NULL, NULL, 'Pending', '2025-09-16 16:28:56', '2025-09-16 16:28:56'),
-(116, 3, '2025-09-17', NULL, NULL, 'Pending', '2025-09-16 16:28:56', '2025-09-16 16:28:56'),
 (117, 11, '2025-09-17', NULL, NULL, 'Pending', '2025-09-16 16:28:56', '2025-09-16 16:28:56'),
 (118, 12, '2025-09-17', NULL, NULL, 'Pending', '2025-09-16 16:28:56', '2025-09-16 16:28:56'),
 (119, 6, '2025-09-17', NULL, NULL, 'Pending', '2025-09-16 16:28:56', '2025-09-16 16:28:56'),
-(120, 1, '2025-09-17', NULL, NULL, 'Pending', '2025-09-16 16:28:56', '2025-09-16 16:28:56'),
-(121, 10, '2025-09-17', NULL, NULL, 'Pending', '2025-09-16 16:28:56', '2025-09-16 16:28:56'),
-(122, 9, '2025-09-17', NULL, NULL, 'Pending', '2025-09-16 16:28:56', '2025-09-16 16:28:56'),
-(123, 2, '2025-09-17', NULL, NULL, 'Pending', '2025-09-16 16:28:56', '2025-09-16 16:28:56'),
 (124, 5, '2025-09-17', NULL, NULL, 'Pending', '2025-09-16 16:28:56', '2025-09-16 16:28:56'),
 (125, 15, '2025-09-17', NULL, NULL, 'Pending', '2025-09-16 16:28:56', '2025-09-16 16:28:56'),
 (126, 13, '2025-09-17', NULL, NULL, 'Pending', '2025-09-16 16:28:56', '2025-09-16 16:28:56'),
 (127, 16, '2025-09-17', NULL, NULL, 'Pending', '2025-09-16 16:28:56', '2025-09-16 16:28:56'),
-(128, 14, '2025-09-17', NULL, NULL, 'Pending', '2025-09-16 16:28:56', '2025-09-16 16:28:56'),
-(129, 8, '2025-09-17', NULL, NULL, 'Pending', '2025-09-16 16:28:56', '2025-09-16 16:28:56');
+(128, 14, '2025-09-17', NULL, NULL, 'Pending', '2025-09-16 16:28:56', '2025-09-16 16:28:56');
 
 -- --------------------------------------------------------
 
@@ -265,22 +202,18 @@ CREATE TABLE `tbl_employee` (
 --
 
 INSERT INTO `tbl_employee` (`employee_id`, `employee_code`, `qr_code`, `first_name`, `last_name`, `email_address`, `contact_number`, `employee_image`, `work_station`, `role`, `shift`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'EMP001', 'EMP001', 'John', 'Smith', 'john.smith1@example.com', '09171234567', '1757098410_uifaces-popular-avatar (5).jpg', 'Cafe', 'Team Leader', 'Morning', 'Inactive', '2025-09-05 20:53:30', '2025-09-08 00:10:03'),
-(2, 'EMP002', 'EMP002', 'Maria', 'Lopez', 'maria.lopez2@example.com', '09182345678', '1757098453_uifaces-popular-avatar (26).jpg', 'Spa', 'Team Leader / Receptionist', 'Fixed', 'Inactive', '2025-09-05 20:54:13', '2025-09-08 00:10:03'),
-(3, 'EMP003', 'EMP003', 'David', 'Cruz', 'david.cruz3@example.com', '09203456789', '1757098615_uifaces-popular-avatar (29).jpg', 'Cafe', 'Barista', 'Mid', 'Active', '2025-09-05 20:56:55', '2025-09-06 12:41:43'),
-(4, 'EMP004', 'EMP004', 'Angela', 'Reyes', 'angela.reyes4@example.com', '09214567890', '1757098654_uifaces-popular-avatar (8).jpg', 'Cafe', 'Cashier / Waitress', 'Morning', 'Active', '2025-09-05 20:57:34', '2025-09-06 12:41:43'),
 (5, 'EMP005', 'EMP005', 'Mark', 'Santos', 'mark.santos5@example.com', '09305678901', '1757098697_uifaces-popular-avatar (4).jpg', 'Cafe', 'Head Chef', 'Night', 'Inactive', '2025-09-05 20:58:17', '2025-09-08 00:10:03'),
 (6, 'EMP006', 'EMP006', 'Jessica', 'Navarro', 'jessica.navarro6@example.com', '09406789012', '1757098747_uifaces-popular-avatar (17).jpg', 'Spa', 'Nail Technician', 'Fixed', 'Inactive', '2025-09-05 20:59:07', '2025-09-08 00:10:03'),
 (7, 'EMP007', 'EMP007', 'Chloe', 'Garcia', 'chloe.garcia10@example.com', '09800123456', '1757098792_uifaces-popular-avatar (16).jpg', 'Spa', 'Massage Therapist', 'Fixed', 'Active', '2025-09-05 20:59:52', '2025-09-07 21:04:32'),
-(8, 'EMP008', 'EMP008', 'Ryan', 'Mendoza', 'ryan.mendoza9@example.com', '09709012345', '1757098843_uifaces-popular-avatar (13).jpg', 'Cafe', 'Line Cook', 'Mid', 'Inactive', '2025-09-05 21:00:43', '2025-09-08 00:10:03'),
-(9, 'EMP009', 'EMP009', 'Liam', 'Santos', 'liam.dss11@example.com', '09901234567', '1757098893_uifaces-popular-avatar (18).jpg', 'Cafe', 'Line Cook', 'Morning', 'Inactive', '2025-09-05 21:01:33', '2025-09-08 00:10:03'),
-(10, 'EMP010', 'EMP010', 'Carlos Johua', 'Delos Fernandez', 'joshua.fernandez13@example.com', '09223456789', '1757099140_uifaces-popular-avatar (14).jpg', 'Cafe', 'Line Cook', 'Mid', 'Active', '2025-09-05 21:05:40', '2025-09-07 18:30:19'),
 (11, 'EMP011', 'EMP011', 'Ethan', 'Morales', 'ethan.morales15@example.com', '09445678901', '1757099198_uifaces-popular-avatar (6).jpg', 'Cafe', 'Line Cook', 'Night', 'Inactive', '2025-09-05 21:06:38', '2025-09-08 00:10:03'),
 (12, 'EMP012', 'EMP012', 'Grace', 'Aquino', 'grace.aquino16@example.com', '09556789012', '1757099237_uifaces-popular-avatar (21).jpg', 'Cafe', 'Cashier / Waitress', 'Night', 'Inactive', '2025-09-05 21:07:17', '2025-09-08 00:10:03'),
 (13, 'EMP013', 'EMP013', 'Olivia', 'Santos', 'olivia.santos20@example.com', '09990123456', '1757099325_uifaces-popular-avatar (7).jpg', 'Beauty Lounge', 'Team Leader / Receptionist', 'Fixed', 'Inactive', '2025-09-05 21:08:45', '2025-09-08 00:10:03'),
 (14, 'EMP014', 'EMP014', 'Ruby', 'Torres', 'ruby.torres36@example.com', '09556789036', '1757100613_v3_0894457.jpg', 'Beauty Lounge', 'Massage Therapist', 'Fixed', 'Active', '2025-09-05 21:30:13', '2025-09-06 12:41:43'),
 (15, 'EMP015', 'EMP015', 'Mia', 'Rivera', 'mia.rivera50@example.com', '09800123450', '1757100680_uifaces-popular-avatar (28).jpg', 'Beauty Lounge', 'Nail Technician', 'Fixed', 'Active', '2025-09-05 21:31:20', '2025-09-06 12:41:43'),
-(16, 'EMP016', 'EMP016', 'Romulo', 'Erroba', 'romulolang8@gmail.com', '09324234721', '1757357997_uifaces-popular-avatar (14).jpg', 'Cafe', 'On-Call', 'Night', 'New', '2025-09-08 20:59:57', '2025-09-08 20:59:57');
+(16, 'EMP016', 'EMP016', 'Romulo', 'Erroba', 'romulolang8@gmail.com', '09324234721', '1757357997_uifaces-popular-avatar (14).jpg', 'Cafe', 'On-Call', 'Night', 'New', '2025-09-08 20:59:57', '2025-09-08 20:59:57'),
+(17, 'EMP017', 'EMP017', 'Miguel', 'Lequin', 'babymigz.01@gmail.com', '923223213', '1759359815_uifaces-popular-avatar (20).jpg', 'Cafe', 'Barista', 'Night', 'New', '2025-10-02 01:03:35', '2025-10-02 08:06:39'),
+(18, 'EMP018', 'EMP018', 'Carlos', 'Dizon', 'carlosjosephdizon19@gmail.com', '09231283723', '1759362012_uifaces-popular-avatar (12).jpg', 'Cafe', 'Barista', 'Mid', 'New', '2025-10-02 01:40:12', '2025-10-02 01:40:12'),
+(19, 'EMP019', 'EMP019', 'Anknown', 'Nymous', 'anknownnymous1@gmail.com', '091238127323', '1759363339_uifaces-popular-avatar (11).jpg', 'Cafe', 'Cashier / Waitress', 'Mid', 'New', '2025-10-02 02:02:19', '2025-10-02 08:06:39');
 
 -- --------------------------------------------------------
 
@@ -313,6 +246,38 @@ INSERT INTO `tbl_event_booking` (`event_id`, `customer_name`, `customer_email`, 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_event_pending`
+--
+
+CREATE TABLE `tbl_event_pending` (
+  `pending_id` int(11) NOT NULL,
+  `customer_name` varchar(100) DEFAULT NULL,
+  `customer_email` varchar(100) DEFAULT NULL,
+  `customer_contact` varchar(20) DEFAULT NULL,
+  `event_name` varchar(100) DEFAULT NULL,
+  `event_date` date DEFAULT NULL,
+  `event_time` time DEFAULT NULL,
+  `event_description` text DEFAULT NULL,
+  `event_status` enum('Pending','Approved','Declined') NOT NULL DEFAULT 'Pending',
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_event_pending`
+--
+
+INSERT INTO `tbl_event_pending` (`pending_id`, `customer_name`, `customer_email`, `customer_contact`, `event_name`, `event_date`, `event_time`, `event_description`, `event_status`, `created_at`) VALUES
+(2, 'migol', 'babymigz.01@gmail.com', '09232232133', 'hindi party', '2025-10-05', '16:27:00', 'testing 2', 'Declined', '2025-09-30 02:27:37'),
+(4, 'Von', 'babymigz.01@gmail.com', '0923223213', 'rainny', '2025-10-02', '16:51:00', 'testing', 'Declined', '2025-09-30 23:52:00'),
+(5, 'Arlo', 'babymigz.01@gmail.com', '0923223213', 'kapitbahayt', '2025-10-03', '13:49:00', 'hahahaha', 'Approved', '2025-09-30 23:53:38'),
+(6, 'Migolito', 'babymigz.01@gmail.com', '0923223213', 'kapitbahayt', '2025-10-02', '15:03:00', 'hahahahja', 'Approved', '2025-10-01 00:10:30'),
+(7, 'Migolito', 'babymigz.01@gmail.com', '0923223213', 'kapitbahayt', '2025-10-05', '13:30:00', 'hahahahahahah', 'Declined', '2025-10-01 00:34:37'),
+(8, 'Migolito', 'babymigz.01@gmail.com', '0923223213', 'buhay', '2025-10-05', '00:38:00', 'asdsadsa', 'Approved', '2025-10-01 00:36:02'),
+(9, 'Migolito', 'babymigz.01@gmail.com', '0923223213', 'buhay', '2025-10-06', '15:00:00', 'testing time interval', 'Approved', '2025-10-01 01:59:24');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_inventory`
 --
 
@@ -323,32 +288,36 @@ CREATE TABLE `tbl_inventory` (
   `item_category` varchar(50) DEFAULT NULL,
   `item_status` enum('In Stock','Low Stock','Out of Stock') DEFAULT 'In Stock',
   `created_at` datetime DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `branch` enum('MG Cafe','MG Hub','MG Spa') NOT NULL DEFAULT 'MG Cafe'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_inventory`
 --
 
-INSERT INTO `tbl_inventory` (`inventory_id`, `item_name`, `item_quantity`, `item_category`, `item_status`, `created_at`, `updated_at`) VALUES
-(7, 'Supdrenks', 99, 'Drinks', '', '2025-08-26 19:26:36', '2025-09-16 18:07:48'),
-(8, 'Meat', 18, 'Food', '', '2025-08-26 19:34:04', '2025-08-26 11:34:04'),
-(9, 'pork', 12, 'Food', '', '2025-08-26 19:34:42', '2025-08-26 11:34:42'),
-(10, 'Magic', 20, 'Supplies', '', '2025-08-26 19:35:13', '2025-09-16 20:09:48'),
-(11, 'Salt', 8, 'Supplies', '', '2025-08-26 19:35:33', '2025-08-26 11:35:33'),
-(12, 'Mangga', 60, 'Food', '', '2025-08-26 19:36:03', '2025-08-26 11:36:03'),
-(13, 'Cornstartch', 20, 'Food', '', '2025-08-26 19:38:03', '2025-08-26 11:38:03'),
-(14, 'Toyo', 0, 'Supplies', '', '2025-08-26 19:38:43', '2025-08-26 11:56:26'),
-(15, 'Suka', 2, 'Supplies', '', '2025-08-26 19:38:58', '2025-08-26 11:38:58'),
-(16, 'Cinamon', 100, 'Supplies', '', '2025-08-26 19:39:33', '2025-08-26 11:39:33'),
-(17, 'Pepper', 10, 'Supplies', '', '2025-08-26 19:40:00', '2025-08-26 11:40:00'),
-(18, 'Coke', 5, 'Drinks', '', '2025-09-07 17:43:49', '2025-09-07 09:43:49'),
-(19, 'Coke', 5, 'Drinks', '', '2025-09-07 17:49:39', '2025-09-07 09:49:39'),
-(21, 'Cheese', 10, 'Supplies', '', '2025-09-07 18:42:11', '2025-09-07 10:42:34'),
-(22, 'coffee beans', 10, 'Food', '', '2025-09-16 23:16:13', '2025-09-16 15:16:13'),
-(23, 'Meat', 20, 'Food', '', '2025-09-17 00:01:44', '2025-09-16 20:19:32'),
-(24, 'Supdrenks', 20, 'Drinks', '', '2025-09-17 00:04:45', '2025-09-16 16:04:45'),
-(26, 'Ayos na', 22, 'Food', '', '2025-09-17 01:40:20', '2025-09-16 17:41:01');
+INSERT INTO `tbl_inventory` (`inventory_id`, `item_name`, `item_quantity`, `item_category`, `item_status`, `created_at`, `updated_at`, `branch`) VALUES
+(7, 'Supdrenks', 99, 'Drinks', '', '2025-08-26 19:26:36', '2025-09-16 18:07:48', 'MG Cafe'),
+(8, 'Meat', 18, 'Food', '', '2025-08-26 19:34:04', '2025-08-26 11:34:04', 'MG Cafe'),
+(9, 'pork', 12, 'Food', '', '2025-08-26 19:34:42', '2025-08-26 11:34:42', 'MG Cafe'),
+(10, 'Magic', 20, 'Supplies', '', '2025-08-26 19:35:13', '2025-09-16 20:09:48', 'MG Cafe'),
+(11, 'Salt', 8, 'Supplies', '', '2025-08-26 19:35:33', '2025-08-26 11:35:33', 'MG Cafe'),
+(12, 'Mangga', 60, 'Food', '', '2025-08-26 19:36:03', '2025-08-26 11:36:03', 'MG Cafe'),
+(13, 'Cornstartch', 20, 'Food', '', '2025-08-26 19:38:03', '2025-08-26 11:38:03', 'MG Cafe'),
+(14, 'Toyo', 0, 'Supplies', '', '2025-08-26 19:38:43', '2025-08-26 11:56:26', 'MG Cafe'),
+(15, 'Suka', 2, 'Supplies', '', '2025-08-26 19:38:58', '2025-08-26 11:38:58', 'MG Cafe'),
+(16, 'Cinamon', 100, 'Supplies', '', '2025-08-26 19:39:33', '2025-08-26 11:39:33', 'MG Cafe'),
+(17, 'Pepper', 10, 'Supplies', '', '2025-08-26 19:40:00', '2025-08-26 11:40:00', 'MG Cafe'),
+(18, 'Coke', 5, 'Drinks', '', '2025-09-07 17:43:49', '2025-09-07 09:43:49', 'MG Cafe'),
+(19, 'Coke', 5, 'Drinks', '', '2025-09-07 17:49:39', '2025-09-07 09:49:39', 'MG Cafe'),
+(21, 'Cheese', 10, 'Supplies', '', '2025-09-07 18:42:11', '2025-09-07 10:42:34', 'MG Cafe'),
+(22, 'coffee beans', 10, 'Food', '', '2025-09-16 23:16:13', '2025-09-16 15:16:13', 'MG Cafe'),
+(23, 'Meat', 20, 'Food', '', '2025-09-17 00:01:44', '2025-09-16 20:19:32', 'MG Cafe'),
+(24, 'Supdrenks', 20, 'Drinks', '', '2025-09-17 00:04:45', '2025-09-16 16:04:45', 'MG Cafe'),
+(26, 'Ayos na', 22, 'Food', '', '2025-09-17 01:40:20', '2025-09-16 17:41:01', 'MG Cafe'),
+(30, 'kyutiks', 3, 'Cosmetics', 'In Stock', '2025-10-02 01:50:31', '2025-10-01 17:50:31', 'MG Hub'),
+(32, 'lotion', 9, 'Lotions', 'In Stock', '2025-10-02 02:01:03', '2025-10-01 18:01:13', 'MG Spa'),
+(33, 'lavender', 20, 'Lotions', 'In Stock', '2025-10-02 02:59:15', '2025-10-01 18:59:15', 'MG Spa');
 
 -- --------------------------------------------------------
 
@@ -376,7 +345,39 @@ CREATE TABLE `tbl_request` (
 --
 
 INSERT INTO `tbl_request` (`request_id`, `employee_id`, `request_type`, `target_employee_id`, `leave_type`, `reason`, `request_date`, `target_date`, `status`, `email_sent`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Change Shift', 3, NULL, 'hahahaha', '2025-09-07 18:26:22', '2025-09-08', 'Pending', 0, '2025-09-07 10:26:22', '2025-09-07 10:26:22');
+(2, 16, 'Change Shift', 5, NULL, 'hahahahaha', '2025-10-02 01:19:44', '2025-10-10', 'Pending', 0, '2025-10-01 17:19:44', '2025-10-01 17:19:44'),
+(3, 16, 'On Leave', NULL, 'Sick', 'hahahahahaa', '2025-10-02 01:20:18', '2025-10-10', 'Pending', 0, '2025-10-01 17:20:18', '2025-10-01 17:20:18'),
+(4, 16, 'On Leave', NULL, 'Sick', 'hahahahahaa', '2025-10-02 01:21:42', '2025-10-10', 'Approved', 0, '2025-10-01 17:21:42', '2025-10-01 23:02:48'),
+(5, 17, 'Change Shift', 5, NULL, 'personal matters', '2025-10-02 07:04:38', '2025-10-03', 'Approved', 0, '2025-10-01 23:04:38', '2025-10-01 23:04:47'),
+(6, 17, 'Change Shift', 5, NULL, 'personal matters', '2025-10-02 07:09:15', '2025-10-08', 'Approved', 0, '2025-10-01 23:09:15', '2025-10-01 23:09:22'),
+(7, 17, 'On Leave', NULL, 'Sick', 'lagnat', '2025-10-02 07:14:11', '2025-10-10', 'Declined', 0, '2025-10-01 23:14:11', '2025-10-01 23:36:36'),
+(8, 17, 'On Leave', NULL, 'Sick', 'testing', '2025-10-02 07:29:37', '2025-10-11', 'Approved', 0, '2025-10-01 23:29:37', '2025-10-01 23:36:13'),
+(9, 18, 'Change Shift', 17, NULL, 'testing 1', '2025-10-02 07:41:05', '2025-10-08', 'Approved', 0, '2025-10-01 23:41:05', '2025-10-01 23:41:23'),
+(10, 19, 'Change Shift', 17, NULL, 'testing version 2', '2025-10-02 08:06:32', '2025-10-07', 'Approved', 0, '2025-10-02 00:06:32', '2025-10-02 00:06:39');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_todo`
+--
+
+CREATE TABLE `tbl_todo` (
+  `todo_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `station` enum('Cafe','MG Hub','Spa') NOT NULL,
+  `todo_text` varchar(255) NOT NULL,
+  `progress` int(11) DEFAULT 0,
+  `is_completed` tinyint(1) DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_todo`
+--
+
+INSERT INTO `tbl_todo` (`todo_id`, `user_id`, `station`, `todo_text`, `progress`, `is_completed`, `created_at`, `updated_at`) VALUES
+(1, 1, 'MG Hub', 'ayusin yung nasirang lababo', 10, 0, '2025-10-01 23:50:39', '2025-10-01 23:50:39');
 
 -- --------------------------------------------------------
 
@@ -441,6 +442,12 @@ ALTER TABLE `tbl_event_booking`
   ADD PRIMARY KEY (`event_id`);
 
 --
+-- Indexes for table `tbl_event_pending`
+--
+ALTER TABLE `tbl_event_pending`
+  ADD PRIMARY KEY (`pending_id`);
+
+--
 -- Indexes for table `tbl_inventory`
 --
 ALTER TABLE `tbl_inventory`
@@ -475,7 +482,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `activity_log`
 --
 ALTER TABLE `activity_log`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `tbl_attendance`
@@ -493,7 +500,7 @@ ALTER TABLE `tbl_attendance_reset`
 -- AUTO_INCREMENT for table `tbl_employee`
 --
 ALTER TABLE `tbl_employee`
-  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `tbl_event_booking`
@@ -502,22 +509,28 @@ ALTER TABLE `tbl_event_booking`
   MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
+-- AUTO_INCREMENT for table `tbl_event_pending`
+--
+ALTER TABLE `tbl_event_pending`
+  MODIFY `pending_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
 -- AUTO_INCREMENT for table `tbl_inventory`
 --
 ALTER TABLE `tbl_inventory`
-  MODIFY `inventory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `inventory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `tbl_request`
 --
 ALTER TABLE `tbl_request`
-  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tbl_todo`
 --
 ALTER TABLE `tbl_todo`
-  MODIFY `todo_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `todo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
