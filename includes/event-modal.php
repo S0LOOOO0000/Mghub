@@ -1,9 +1,9 @@
-<link rel="stylesheet" href="../css/components/form2.css">
+<link rel="stylesheet" href="../css/components/small-modal.css">
 <link rel="stylesheet" href="../css/components/alerts.css">
 
 <!-- ADD EVENT MODAL -->
-<div id="addEventModal" class="modal">
-  <div class="modal-content">
+<div id="addEventModal" class="modal-univ">
+  <div class="modal-contents">
     <button class="close-btn">&times;</button>
     <h2>Add New Event</h2>
     
@@ -65,8 +65,8 @@
 </div>
 
 <!-- EDIT EVENT MODAL -->
-<div id="editEventModal" class="modal">
-  <div class="modal-content">
+<div id="editEventModal" class="modal-univ">
+  <div class="modal-contents">
     <button class="close-btn">&times;</button>
     <h2>Edit Event</h2>
       <div class="scrollable">
@@ -134,8 +134,8 @@
 
 
 <!-- Delete Event Confirmation Modal -->
-<div id="eventDeleteModal" class="modal">
-  <div class="modal-content small">
+<div id="eventDeleteModal" class="modal-univ">
+  <div class="modal-contents small">
     <div class="head">
       <h3>Confirm Delete</h3>
       <span class="close-btn" id="closeEventDeleteModal">&times;</span>

@@ -1,22 +1,31 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="../css/components/dropdown.css">
+<!--
+<?php
+// Make sure $branchCategories is defined in the parent page before including this file
+if (!isset($branchCategories)) {
+    $branchCategories = ['All']; // fallback
+}
+?>
 
 
-<h3>Filtered By:</h3>
 
-<!-- Category Dropdown -->
+ Category Dropdown 
 <div class="custom-dropdown">
   <button type="button" class="dropdown-toggle">
     Category: <i class="material-icons dropdown-icon">expand_more</i>
   </button>
   <ul class="dropdown-menu">
     <li data-value="all">All</li>
-    <li data-value="food">Food</li>
-    <li data-value="drinks">Drinks</li>
-    <li data-value="supplies">Supplies</li>
+    <?php foreach ($branchCategories as $cat): ?>
+      <li data-value="<?= strtolower(str_replace(' ', '-', $cat)) ?>">
+        <?= htmlspecialchars($cat) ?>
+      </li>
+    <?php endforeach; ?>
   </ul>
-</div>
+</div>-->
 
+<h3>Filtered By:</h3>
 
 <!-- Stock Status Dropdown -->
 <div class="custom-dropdown">

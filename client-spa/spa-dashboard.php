@@ -1,10 +1,11 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+$_SESSION['branch'] = "MG Spa";
 include __DIR__ . '/../php/get-employee.php';
 include __DIR__ . '/../php/get-inventory.php';
 include __DIR__ . '/../php/get-event.php';
-
-session_start();
-include __DIR__ . '/../php/get-inventory.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../index.php");
@@ -13,9 +14,6 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 $user_role = $_SESSION['user_role'];
-
-// Station is now handled by JavaScript to support multiple tabs
-// Each dashboard sends its own station identifier via AJAX requests
 ?>
 
 <!DOCTYPE html>

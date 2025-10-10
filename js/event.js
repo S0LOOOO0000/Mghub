@@ -266,7 +266,7 @@ const renderDates = () => {
   // ---------- Modals ----------
   const openModal = m => m?.classList.add("show");
   const closeModal = m => m?.classList.remove("show");
-  document.querySelectorAll(".close-btn").forEach(btn => btn.addEventListener("click", () => closeModal(btn.closest(".modal"))));
+  document.querySelectorAll(".close-btn").forEach(btn => btn.addEventListener("click", () => closeModal(btn.closest(".modal-univ"))));
   document.querySelectorAll(".modal").forEach(m => m.addEventListener("click", e => { if (e.target === m) closeModal(m); }));
 
   // ---------- Forms ----------

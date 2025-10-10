@@ -71,7 +71,6 @@ $error = $_GET['error'] ?? null;
               <th>CONTACT</th>
               <th>STATION & ROLE</th>
               <th>SHIFT</th>
-              <th>STATUS</th>
               <th>EMPLOYED</th>
             </tr>
           </thead>
@@ -88,7 +87,6 @@ $error = $_GET['error'] ?? null;
                   <td><?= htmlspecialchars($emp['contact_number']) ?></td>
                   <td><?= htmlspecialchars($emp['work_station'].' / '.$emp['role']) ?></td>
                   <td><span class="shift <?= strtolower($emp['shift']) ?>"><?= htmlspecialchars($emp['shift']) ?></span></td>
-                  <td><?= htmlspecialchars($emp['status']) ?></td>
                   <td><?= date("F j, Y", strtotime($emp['created_at'])) ?></td>
                 </tr>
               <?php endforeach; ?>

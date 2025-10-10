@@ -1,10 +1,10 @@
-<link rel="stylesheet" href="../css/components/form.css">
+<link rel="stylesheet" href="../css/components/small-modal.css">
 <link rel="stylesheet" href="../css/style.css">
 
 
 <!-- Employee Add Modal -->
-<div id="employeeModal" class="modal">
-  <div class="modal-content">
+<div id="employeeModal" class="modal-univ">
+  <div class="modal-contents">
         <div class="head">
             <h3>Add New Employee</h3>
             <span class="close-btn" id="closeModal">&times;</span>
@@ -86,8 +86,8 @@ $error = $_GET['error'] ?? null;
 
 
 <!-- Employee Edit Modal -->
-<div id="editEmployeeModal" class="modal">
-  <div class="modal-content">
+<div id="editEmployeeModal" class="modal-univ">
+  <div class="modal-contents">
     <div class="head">
       <h3>Edit Employee</h3>
       <span class="close-btn" id="closeEditModal">&times;</span>
@@ -178,8 +178,8 @@ $error = $_GET['error'] ?? null;
 
 
 <!-- Delete Confirmation Modal -->
-<div id="deleteConfirmModal" class="modal">
-  <div class="modal-content small">
+<div id="deleteConfirmModal" class="modal-univ">
+  <div class="modal-contents small">
     <div class="head">
       <h3>Confirm Delete</h3>
       <span class="close-btn" id="closeDeleteModal">&times;</span>
@@ -197,7 +197,7 @@ $error = $_GET['error'] ?? null;
 
 <!-- Download Modal -->
 <div id="downloadModal" class="confirmation-modal">
-  <div class="modal-content">
+  <div class="modal-contents">
     <div class="head">
       <h3 id="downloadModalTitle">Download File</h3>
       <span class="close-btn" id="closeDownloadModal">&times;</span>

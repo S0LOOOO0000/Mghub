@@ -227,3 +227,33 @@ function renderPagination(container, totalPages, currentPage, onClick) {
   if (reqTbody) new MutationObserver(() => renderRequestTable()).observe(reqTbody, { childList: true });
 
 });
+
+
+  // =========================
+  // BOOKING REQUEST TABLE
+  // =========================
+  const bookTbody = document.querySelector("#bookingTable tbody");
+  const bookTotalRowsEl = document.getElementById("bookingTotalRows");
+  const bookPaginationEl = document.getElementById("bookingPagination");
+  const bookSearchInput = document.querySelector("#bookingSearch");
+  const bookingFilters = { search: "" };
+
+  function getFilteredBookingRows() {
+    return Array.from(bookTbody.querySelectorAll("tr")).filter(row => {
+      const rowText = row.innerText.toLowerCase();
+      return bookingFilters.search === "" || rowText.includes(bookingFilters.search);
+    });
+  }
+
+  function renderBookingTable(page = 1) {
+    const rows = getFilteredBookingRows();
+    renderTable(bookTbody, bookTotalRowsEl, bookPaginationEl, rows, page, ROWS_PER_PAGE, "requests");
+  }
+
+  if (bookSearchInput) bookSearchInput.addEventListener("input", () => {
+    bookingFilters.search = bookSearchInput.value.toLowerCase();
+    renderBookingTable();
+  });
+
+  if (bookTbody) renderBookingTable();
+  if (bookTbody) new MutationObserver(() => renderBookingTable()).observe(bookTbody, { childList: true });

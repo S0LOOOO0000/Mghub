@@ -146,54 +146,67 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /*** -------------------- DELETE EMPLOYEE MODAL -------------------- ***/
-  const deleteModal = document.getElementById("deleteConfirmModal");
-  const closeDeleteModal = document.getElementById("closeDeleteModal");
-  const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
-  const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+ const deleteModal = document.getElementById("deleteConfirmModal");
+const closeDeleteModal = document.getElementById("closeDeleteModal");
+const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
+const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+const deleteMessage = document.getElementById("deleteMessage");
 
-  let employeeIdToDelete = null;
-  let rowToDelete = null;
+let employeeIdToDelete = null;
+let rowToDelete = null;
 
-  document.addEventListener("click", (e) => {
-    if (e.target.classList.contains("delete-btn")) {
-      employeeIdToDelete = e.target.dataset.employeeId;
-      const employeeName = e.target.dataset.employeeName;
-      rowToDelete = e.target.closest("tr");
+// Open delete modal
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("delete-btn")) {
+    employeeIdToDelete = e.target.dataset.employeeId || null;
+    const employeeName = e.target.dataset.employeeName || "this employee";
+    rowToDelete = e.target.closest("tr");
 
-      document.getElementById("deleteMessage").innerText = `Are you sure you want to delete employee ${employeeName}?`;
-      deleteModal.classList.add("show");
+    if (deleteMessage) {
+      deleteMessage.textContent = `Are you sure you want to delete employee ${employeeName}?`;
     }
-  });
-
-  if (closeDeleteModal) closeDeleteModal.onclick = () => deleteModal.classList.remove("show");
-  if (cancelDeleteBtn) cancelDeleteBtn.onclick = () => deleteModal.classList.remove("show");
-
-  if (confirmDeleteBtn) {
-    confirmDeleteBtn.onclick = function () {
-      if (!employeeIdToDelete) return;
-      fetch("../php/delete-function.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: "employee_id=" + encodeURIComponent(employeeIdToDelete),
-      })
-        .then((res) => res.text())
-        .then((data) => {
-          if (data.trim() === "success") {
-            rowToDelete.remove();
-            showPopup("Employee deleted successfully!", "success");
-          } else {
-            showPopup("Failed to delete: " + data, "error");
-          }
-          deleteModal.classList.remove("show");
-        })
-        .catch((err) => {
-          console.error("Delete error:", err);
-          showPopup("Error deleting employee.", "error");
-          deleteModal.classList.remove("show");
-        });
-    };
+    deleteModal?.classList.add("show");
   }
+});
+
+// Close delete modal (X, Cancel, or outside click)
+function closeDelete() {
+  deleteModal?.classList.remove("show");
+  employeeIdToDelete = null;
+  rowToDelete = null;
+}
+closeDeleteModal?.addEventListener("click", closeDelete);
+cancelDeleteBtn?.addEventListener("click", closeDelete);
+window.addEventListener("click", (e) => {
+  if (e.target === deleteModal) closeDelete();
+});
+
+// Confirm delete
+confirmDeleteBtn?.addEventListener("click", async () => {
+  if (!employeeIdToDelete) return;
+
+  try {
+    const res = await fetch("../php/delete-function.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: "employee_id=" + encodeURIComponent(employeeIdToDelete),
+    });
+
+    const data = await res.text();
+
+    if (data.trim() === "success") {
+      rowToDelete?.remove();
+      showPopup("Employee deleted successfully!", "success");
+    } else {
+      showPopup("Failed to delete: " + data, "error");
+    }
+  } catch (err) {
+    console.error("Delete error:", err);
+    showPopup("Error deleting employee.", "error");
+  } finally {
+    closeDelete();
+  }
+});
 
 
   /*** -------------------- PREVIEW IMAGE & QR -------------------- ***/

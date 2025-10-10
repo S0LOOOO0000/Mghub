@@ -5,6 +5,25 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'staff') {
     exit;
 }
 
+// ✅ Detect which page we are on and set branch
+$pageName = basename($_SERVER['PHP_SELF']); 
+
+switch ($pageName) {
+    case "client-inventory.php":
+        $branch = "MG Cafe";
+        break;
+    case "spa-inventory.php":
+        $branch = "MG Spa";
+        break;
+    case "mghub-inventory.php":
+        $branch = "MG Hub";
+        break;
+    default:
+        $branch = "Unknown";
+}
+$_SESSION['branch'] = $branch;
+
+
 include __DIR__ . '/../php/get-inventory.php';
 ?>
 
@@ -76,7 +95,7 @@ include __DIR__ . '/../php/get-inventory.php';
                         <td><?= $counter++; ?></td>
                         <td><?= htmlspecialchars($row['item_name']); ?></td>
                         <td><?= htmlspecialchars($row['item_quantity']); ?></td>
-                        <td><?= htmlspecialchars($row['item_category']); ?></td>
+                        <td class="inv-category"><?= htmlspecialchars($row['item_category']); ?></td>
                         <td><span class="status <?= strtolower(str_replace(' ', '-', $row['item_status'])); ?>"><?= htmlspecialchars($row['item_status']); ?></span></td>
                         <td><?= date("F j, Y", strtotime($row['created_at'])); ?></td>
                         <td>
@@ -115,6 +134,24 @@ include __DIR__ . '/../php/get-inventory.php';
             <div class="table-pagination" id="inventoryPagination"></div>
         </div>
     </div>
+
+
+    <?php
+// Setup categories depending on branch
+switch ($branch) {
+    case "MG Cafe":
+        $branchCategories = ["Food", "Beverages", "Snacks", "Ingredients"];
+        break;
+    case "MG Spa":
+        $branchCategories = ["Lotions", "Oils", "Scrubs", "Wellness Products"];
+        break;
+    case "MG Hub":
+        $branchCategories = ["Cosmetics", "Haircare", "Skincare", "Accessories"];
+        break;
+    default:
+        $branchCategories = ["General"];
+}  ?>  
+
 
     <?php include '../includes/inventory-modal.php'; ?>
 </div>

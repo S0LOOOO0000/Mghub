@@ -1,11 +1,14 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+
 include __DIR__ . '/../php/get-employee.php';
 include __DIR__ . '/../php/get-inventory.php';
 include __DIR__ . '/../php/get-event.php';
 include __DIR__ . '/../php/get-request.php';
 
-session_start();
-include __DIR__ . '/../php/get-inventory.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../index.php");
@@ -173,9 +176,9 @@ $user_role = $_SESSION['user_role'];
 										<td class="text-center">
 											<?php if($row['status'] == 'Pending') : ?>
 												<div class="action-buttons">
-													<button class="btn-approve" data-id="<?= $row['request_id']; ?>" title="Approve">✓</button>
-													<button class="btn-reject" data-id="<?= $row['request_id']; ?>" title="Reject">✗</button>
-													<button class="btn-view" data-id="<?= $row['request_id']; ?>" title="View">👁</button>
+													<button type="button" class="btn-approve" data-id="<?= $row['request_id']; ?>" title="Approve">✓</button>
+													<button type="button" class="btn-reject" data-id="<?= $row['request_id']; ?>" title="Reject">✗</button>
+													<button type="button" class="btn-view" data-id="<?= $row['request_id']; ?>" title="View">👁</button>
 												</div>
 											<?php else: ?>
 												<div class="action-buttons">
@@ -258,10 +261,14 @@ $user_role = $_SESSION['user_role'];
         </div>
     </section>
 
+
+	<?php include '../includes/request-approval-modal.php'; ?>
+
 	<script src="../js/dropdown.js"> </script>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <script src="../js/dashboard.js"></script>
-    <script src="../js/attendance.js"></script>
     <script src="../js/employee.js"></script>
+	<script src="../js/request-approval.js"></script>
+
 </body>
 </html>
