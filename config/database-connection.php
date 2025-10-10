@@ -1,8 +1,8 @@
 <?php
 $servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "mgcafe_db";
+$username = "u325117766_mgcafe_adm2025";
+$password = "MGcafeadm_2025";
+$dbname = "u325117766_mgcafe_db";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
