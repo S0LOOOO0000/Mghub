@@ -183,7 +183,10 @@
 }
 
 .form-switch .switch input {
-  display: none;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
 }
 
 .form-switch .slider {

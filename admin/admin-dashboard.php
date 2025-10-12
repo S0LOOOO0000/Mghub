@@ -264,6 +264,7 @@ $user_role = $_SESSION['user_role'];
 	<?php include '../includes/preview-request-modal.php'; ?>						
 	<?php include '../includes/request-approval-modal.php'; ?>
 
+	<script src="../js/dashboard.js?v=2"></script>
 	<script src="../js/dropdown.js"> </script>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <script src="../js/dashboard.js"></script>

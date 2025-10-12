@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="../css/components/form2.css">
 <link rel="stylesheet" href="../css/components/alerts.css">
 
-<div class="modal" id="previewEventModal">
+<div class="modal modal-univ" id="previewEventModal">
   <div class="modal-content preview-modal-content">
     <span class="close-btn">&times;</span>
 
