@@ -185,50 +185,51 @@ function filterAdminRequests() {
     });
 }
 
-// Dashboard Request Actions
-// Dashboard Request Actions
-document.addEventListener('DOMContentLoaded', function() {
+
+document.addEventListener('DOMContentLoaded', function () {
     const modal = document.getElementById('previewRequestModal');
     const closeBtn = modal?.querySelector('.close-btn');
 
-    document.querySelectorAll('.btn-view').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const row = this.closest('tr');
+    // Use event delegation for dynamically generated rows
+    document.addEventListener('click', function (e) {
+        const btn = e.target.closest('.btn-view');
+        if (!btn) return;
 
-            // Extract info directly from the table row
-            const employee = row.querySelector('td:nth-child(2) strong').textContent.trim();
-            const email = row.querySelector('td:nth-child(2) p').textContent.trim();
-            const station = row.querySelector('td.req-station span').textContent.trim();
-            const role = row.querySelector('td.req-station p').textContent.trim();
-            const shift = row.querySelector('td.emp-shift').textContent.trim();
-            const type = row.querySelector('td.req-type span').textContent.trim();
-            const details = row.querySelector('td:nth-child(6)').textContent.trim();
-            const reason = row.querySelector('td:nth-child(7)').textContent.trim();
-            const targetDate = row.querySelector('td:nth-child(8)').textContent.trim();
-            const status = row.querySelector('td.req-status span').textContent.trim();
+        const row = btn.closest('tr');
+        if (!row) return;
 
-            // Fill modal fields
-            document.getElementById('preview_employee_name').textContent = employee;
-            document.getElementById('preview_employee_email').textContent = email;
-            document.getElementById('preview_station_role').textContent = `${station} • ${role}`;
-            document.getElementById('preview_shift').textContent = shift;
-            document.getElementById('preview_request_type_text').textContent = type;
-            document.getElementById('preview_request_details').textContent = details;
-            document.getElementById('preview_request_reason').textContent = reason;
-            document.getElementById('preview_target_date').textContent = targetDate;
-            document.getElementById('preview_request_status').textContent = status;
+        // Get modal fields safely
+        const employee = row.querySelector('td:nth-child(2) strong')?.textContent.trim() || '';
+        const email = row.querySelector('td:nth-child(2) p')?.textContent.trim() || '';
+        const station = row.querySelector('td.req-station span')?.textContent.trim() || '';
+        const role = row.querySelector('td.req-station p')?.textContent.trim() || '';
+        const shift = row.querySelector('td.emp-shift')?.textContent.trim() || '';
+        const type = row.querySelector('td.req-type span')?.textContent.trim() || '';
+        const details = row.querySelector('td:nth-child(6)')?.textContent.trim() || '';
+        const reason = row.querySelector('td:nth-child(7)')?.textContent.trim() || '';
+        const targetDate = row.querySelector('td:nth-child(8)')?.textContent.trim() || '';
+        const status = row.querySelector('td.req-status span')?.textContent.trim() || '';
 
-            // Show modal
-            modal.classList.add('show');
-        });
+        // Fill modal fields
+        document.getElementById('preview_employee_name').textContent = employee;
+        document.getElementById('preview_employee_email').textContent = email;
+        document.getElementById('preview_station_role').textContent = `${station} • ${role}`;
+        document.getElementById('preview_shift').textContent = shift;
+        document.getElementById('preview_request_type_text').textContent = type;
+        document.getElementById('preview_request_details').textContent = details;
+        document.getElementById('preview_request_reason').textContent = reason;
+        document.getElementById('preview_target_date').textContent = targetDate;
+        document.getElementById('preview_request_status').textContent = status;
+
+        // Show modal
+        modal.classList.add('show');
     });
 
-    // Close modal button
+    // Close modal
     closeBtn?.addEventListener('click', () => {
         modal.classList.remove('show');
     });
 
-    // Close modal when clicking outside
     window.addEventListener('click', (e) => {
         if (e.target === modal) {
             modal.classList.remove('show');
@@ -239,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener("DOMContentLoaded", function() {
     function initializePagination() {
         const rows = document.querySelectorAll('.table-data .order table tbody tr');
-        if (!rows.length) return; // no data
+        if (!rows.length) return;
 
         const itemsPerPage = 5;
         let currentPage = 1;
@@ -286,6 +287,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     initializePagination();
 });
+
 
 
 // Inventory filtering functionality
