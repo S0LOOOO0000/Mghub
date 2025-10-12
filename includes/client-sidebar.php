@@ -34,6 +34,12 @@
                     <span class="text">Bookings</span>
                 </a>
             </li>
+            <li>
+                <a href="../client/client-booking-approval.php">
+                    <i class="material-icons icon-btn">event_available</i>
+                    <span class="text">Booking Approval</span>
+                </a>
+            </li>
         </ul>
         <ul class="side-menu bottom">
             <li>

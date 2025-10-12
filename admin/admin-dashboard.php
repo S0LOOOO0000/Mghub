@@ -261,7 +261,7 @@ $user_role = $_SESSION['user_role'];
         </div>
     </section>
 
-
+	<?php include '../includes/preview-request-modal.php'; ?>						
 	<?php include '../includes/request-approval-modal.php'; ?>
 
 	<script src="../js/dropdown.js"> </script>

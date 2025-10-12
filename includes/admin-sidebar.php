@@ -23,12 +23,6 @@
                 </a>
             </li>
             <li>
-                <a href="../admin/admin-request.php">
-                    <i class="material-icons icon-btn">mark_email_read</i>
-                    <span class="text">Request</span>
-                </a>
-            </li>
-            <li>
                 <a href="../admin/admin-inventory.php">
                     <i class="material-icons icon-btn">inventory_2</i>
                     <span class="text">Inventory</span>

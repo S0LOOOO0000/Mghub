@@ -186,74 +186,107 @@ function filterAdminRequests() {
 }
 
 // Dashboard Request Actions
+// Dashboard Request Actions
 document.addEventListener('DOMContentLoaded', function() {
-    // Handle view button clicks
+    const modal = document.getElementById('previewRequestModal');
+    const closeBtn = modal?.querySelector('.close-btn');
+
     document.querySelectorAll('.btn-view').forEach(btn => {
         btn.addEventListener('click', function() {
-            const requestId = this.dataset.id;
-            // Redirect to full requests page for detailed view
-            window.location.href = 'admin-request.php';
+            const row = this.closest('tr');
+
+            // Extract info directly from the table row
+            const employee = row.querySelector('td:nth-child(2) strong').textContent.trim();
+            const email = row.querySelector('td:nth-child(2) p').textContent.trim();
+            const station = row.querySelector('td.req-station span').textContent.trim();
+            const role = row.querySelector('td.req-station p').textContent.trim();
+            const shift = row.querySelector('td.emp-shift').textContent.trim();
+            const type = row.querySelector('td.req-type span').textContent.trim();
+            const details = row.querySelector('td:nth-child(6)').textContent.trim();
+            const reason = row.querySelector('td:nth-child(7)').textContent.trim();
+            const targetDate = row.querySelector('td:nth-child(8)').textContent.trim();
+            const status = row.querySelector('td.req-status span').textContent.trim();
+
+            // Fill modal fields
+            document.getElementById('preview_employee_name').textContent = employee;
+            document.getElementById('preview_employee_email').textContent = email;
+            document.getElementById('preview_station_role').textContent = `${station} • ${role}`;
+            document.getElementById('preview_shift').textContent = shift;
+            document.getElementById('preview_request_type_text').textContent = type;
+            document.getElementById('preview_request_details').textContent = details;
+            document.getElementById('preview_request_reason').textContent = reason;
+            document.getElementById('preview_target_date').textContent = targetDate;
+            document.getElementById('preview_request_status').textContent = status;
+
+            // Show modal
+            modal.classList.add('show');
         });
     });
 
-    // Initialize pagination
+    // Close modal button
+    closeBtn?.addEventListener('click', () => {
+        modal.classList.remove('show');
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('show');
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    function initializePagination() {
+        const rows = document.querySelectorAll('.table-data .order table tbody tr');
+        if (!rows.length) return; // no data
+
+        const itemsPerPage = 5;
+        let currentPage = 1;
+        const totalPages = Math.ceil(rows.length / itemsPerPage);
+
+        const prevBtn = document.getElementById('prevPage');
+        const nextBtn = document.getElementById('nextPage');
+        const currentPageSpan = document.getElementById('currentPage');
+        const paginationInfo = document.getElementById('paginationInfo');
+
+        function updatePagination() {
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+
+            rows.forEach((row, index) => {
+                row.style.display = (index >= startIndex && index < endIndex) ? '' : 'none';
+            });
+
+            currentPageSpan.textContent = currentPage;
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+
+            const startItem = startIndex + 1;
+            const endItem = Math.min(endIndex, rows.length);
+            paginationInfo.textContent = `Showing ${startItem}-${endItem} of ${rows.length} requests`;
+        }
+
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                updatePagination();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                updatePagination();
+            }
+        });
+
+        updatePagination();
+    }
+
     initializePagination();
 });
 
-// Pagination functionality
-function initializePagination() {
-    const rows = document.querySelectorAll('.table-data .order table tbody tr');
-    const itemsPerPage = 5;
-    let currentPage = 1;
-    const totalPages = Math.ceil(rows.length / itemsPerPage);
-    
-    const prevBtn = document.getElementById('prevPage');
-    const nextBtn = document.getElementById('nextPage');
-    const currentPageSpan = document.getElementById('currentPage');
-    const paginationInfo = document.getElementById('paginationInfo');
-    
-    function updatePagination() {
-        // Show/hide rows based on current page
-        rows.forEach((row, index) => {
-            const startIndex = (currentPage - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-            
-            if (index >= startIndex && index < endIndex) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
-        
-        // Update pagination controls
-        currentPageSpan.textContent = currentPage;
-        prevBtn.disabled = currentPage === 1;
-        nextBtn.disabled = currentPage === totalPages;
-        
-        // Update pagination info
-        const startItem = (currentPage - 1) * itemsPerPage + 1;
-        const endItem = Math.min(currentPage * itemsPerPage, rows.length);
-        paginationInfo.textContent = `Showing ${startItem}-${endItem} of ${rows.length} requests`;
-    }
-    
-    // Event listeners
-    prevBtn.addEventListener('click', () => {
-        if (currentPage > 1) {
-            currentPage--;
-            updatePagination();
-        }
-    });
-    
-    nextBtn.addEventListener('click', () => {
-        if (currentPage < totalPages) {
-            currentPage++;
-            updatePagination();
-        }
-    });
-    
-    // Initialize
-    updatePagination();
-}
 
 // Inventory filtering functionality
 function filterInventory(status) {
