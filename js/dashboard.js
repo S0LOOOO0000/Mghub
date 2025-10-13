@@ -143,47 +143,112 @@ function updateNotificationCount() {
     document.querySelector('.notification .num').textContent = unreadNotifications;
 }
 
-// Admin Dashboard Requests Filtering
+// Admin Dashboard Requests Filtering - Using same design as employees page
 document.addEventListener('DOMContentLoaded', function() {
+    const ROWS_PER_PAGE = 10;
+    
+    // Helper to normalize strings for comparison
+    const normalize = s => (s || "").trim().toLowerCase().replace(/[_\s]+/g, "-");
+    
+    const tbody = document.querySelector('.table-data .order table tbody');
+    const totalRowsEl = document.getElementById('paginationInfo');
+    const paginationEl = document.getElementById('requestPagination');
     const statusFilter = document.querySelector('.table-data .order .filterStatus');
     const typeFilter = document.querySelector('.table-data .order .filterType');
     
+    const requestFilters = { status: "all", type: "all" };
+
+    function getFilteredRequestRows() {
+        return Array.from(tbody.querySelectorAll("tr")).filter(row => {
+            // Skip empty state row
+            if (row.querySelector('td[colspan]')) return false;
+            
+            const rowStatus = normalize(row.querySelector('.req-status span')?.textContent);
+            const rowType = normalize(row.querySelector('.req-type span')?.textContent);
+
+            return (
+                (requestFilters.status === "all" || rowStatus === requestFilters.status) &&
+                (requestFilters.type === "all" || 
+                 (requestFilters.type === 'on_leave' && rowType === 'on-leave') ||
+                 (requestFilters.type === 'change_shift' && rowType === 'change-shift'))
+            );
+        });
+    }
+
+    function renderRequestTable(page = 1) {
+        const rows = getFilteredRequestRows();
+        renderTable(tbody, totalRowsEl, paginationEl, rows, page, ROWS_PER_PAGE, "requests");
+    }
+
+    // Filter event listeners
     if (statusFilter) {
-        statusFilter.addEventListener('change', filterAdminRequests);
+        statusFilter.addEventListener('change', () => {
+            requestFilters.status = statusFilter.value.toLowerCase();
+            renderRequestTable();
+        });
     }
+    
     if (typeFilter) {
-        typeFilter.addEventListener('change', filterAdminRequests);
+        typeFilter.addEventListener('change', () => {
+            requestFilters.type = typeFilter.value.toLowerCase();
+            renderRequestTable();
+        });
     }
-});
 
-function filterAdminRequests() {
-    const statusFilter = document.querySelector('.table-data .order .filterStatus')?.value || 'all';
-    const typeFilter = document.querySelector('.table-data .order .filterType')?.value || 'all';
+    // Generic table render function (same as employees page)
+    function renderTable(tbody, totalEl, paginationEl, rows, page, rowsPerPage, label) {
+        tbody.querySelectorAll("tr").forEach(row => row.style.display = "none");
 
-    document.querySelectorAll('.table-data .order table tbody tr').forEach(row => {
-        // Skip empty state row
-        if (row.querySelector('td[colspan]')) return;
-        
-        const statusCell = row.querySelector('td:nth-child(9) .status');
-        const typeCell = row.querySelector('td:nth-child(5) span');
-        
-        if (!statusCell || !typeCell) return;
-        
-        const status = statusCell.textContent.toLowerCase().trim();
-        const type = typeCell.textContent.toLowerCase().trim();
-        
-        const matchesStatus = statusFilter === 'all' || status === statusFilter;
-        const matchesType = typeFilter === 'all' || 
-                           (typeFilter === 'on_leave' && type === 'on leave') ||
-                           (typeFilter === 'change_shift' && type === 'change shift');
+        const totalPages = Math.max(1, Math.ceil(rows.length / rowsPerPage));
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
 
-        if (matchesStatus && matchesType) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
+        rows.slice(start, end).forEach((row, idx) => {
+            row.style.display = "";
+            const numberCell = row.querySelector("td:first-child");
+            if (numberCell) numberCell.textContent = start + idx + 1;
+        });
+
+        totalEl.textContent =
+            rows.length === 0
+                ? `No ${label} found`
+                : `Showing ${start + 1}-${Math.min(end, rows.length)} of ${rows.length} ${label}`;
+
+        renderPagination(paginationEl, totalPages, page, (newPage) => {
+            renderRequestTable(newPage);
+        });
+    }
+
+    // Pagination helper (same as employees page)
+    function renderPagination(container, totalPages, currentPage, onClick) {
+        container.innerHTML = "";
+
+        const createButton = (label, disabled = false, pageNum = null, active = false) => {
+            const btn = document.createElement("button");
+            btn.textContent = label;
+            if (disabled) btn.disabled = true;
+            if (active) btn.classList.add("active");
+            if (pageNum !== null) {
+                btn.addEventListener("click", () => onClick(pageNum));
+            }
+            return btn;
+        };
+
+        // Prev button
+        container.appendChild(createButton("«", currentPage === 1, currentPage - 1));
+
+        // Number buttons
+        for (let i = 1; i <= totalPages; i++) {
+            container.appendChild(createButton(i, false, i, i === currentPage));
         }
-    });
-}
+
+        // Next button
+        container.appendChild(createButton("»", currentPage === totalPages, currentPage + 1));
+    }
+
+    // Initial render
+    if (tbody) renderRequestTable();
+});
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -237,56 +302,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-document.addEventListener("DOMContentLoaded", function() {
-    function initializePagination() {
-        const rows = document.querySelectorAll('.table-data .order table tbody tr');
-        if (!rows.length) return;
-
-        const itemsPerPage = 5;
-        let currentPage = 1;
-        const totalPages = Math.ceil(rows.length / itemsPerPage);
-
-        const prevBtn = document.getElementById('prevPage');
-        const nextBtn = document.getElementById('nextPage');
-        const currentPageSpan = document.getElementById('currentPage');
-        const paginationInfo = document.getElementById('paginationInfo');
-
-        function updatePagination() {
-            const startIndex = (currentPage - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-
-            rows.forEach((row, index) => {
-                row.style.display = (index >= startIndex && index < endIndex) ? '' : 'none';
-            });
-
-            currentPageSpan.textContent = currentPage;
-            prevBtn.disabled = currentPage === 1;
-            nextBtn.disabled = currentPage === totalPages;
-
-            const startItem = startIndex + 1;
-            const endItem = Math.min(endIndex, rows.length);
-            paginationInfo.textContent = `Showing ${startItem}-${endItem} of ${rows.length} requests`;
-        }
-
-        prevBtn.addEventListener('click', () => {
-            if (currentPage > 1) {
-                currentPage--;
-                updatePagination();
-            }
-        });
-
-        nextBtn.addEventListener('click', () => {
-            if (currentPage < totalPages) {
-                currentPage++;
-                updatePagination();
-            }
-        });
-
-        updatePagination();
-    }
-
-    initializePagination();
-});
 
 
 

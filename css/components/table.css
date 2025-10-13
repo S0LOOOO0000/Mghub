@@ -15,10 +15,11 @@
 
 /* Table Card */
 .table-card {
-    overflow: visible;
+    overflow-x: auto;
+    overflow-y: auto;
     flex: 1;
     background: var(--light);
-    overflow-x: auto;
+    max-height: calc(100vh - 200px); /* Adjust based on your layout */
     padding: 20px 20px 0 20px;
     border-radius: 20px 20px 0 0;
     box-shadow: 0 2px 5px rgba(62,44,35,0.15);

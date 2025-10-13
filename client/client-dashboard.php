@@ -132,8 +132,8 @@ $user_role = $_SESSION['user_role'];
 						<?php if (!empty($events)) : ?>
 							<?php 
 							$counter = 1;
-							// Limit to 5 most recent bookings for dashboard
-							$dashboardEvents = array_slice($events, 0, 5);
+							// Show all bookings for dashboard with pagination
+							$dashboardEvents = $events;
 							?>
 							<?php foreach ($dashboardEvents as $event): ?>
 								<tr>
@@ -171,18 +171,10 @@ $user_role = $_SESSION['user_role'];
 				
 				<!-- Pagination Controls -->
 				<div class="table-pagination-container">
-					<div class="pagination-info">
-						<span id="paginationInfo">Showing 1-5 of <?= count($events); ?> bookings</span>
+					<div class="total-rows" id="paginationInfo">
+						Loading...
 					</div>
-					<div class="pagination-controls">
-						<button id="prevPage" class="pagination-btn" disabled>
-							<i class="material-icons">chevron_left</i>
-						</button>
-						<span id="currentPage" class="current-page">1</span>
-						<button id="nextPage" class="pagination-btn" disabled>
-							<i class="material-icons">chevron_right</i>
-						</button>
-					</div>
+					<div class="table-pagination" id="bookingPagination"></div>
 				</div>
 			</div>
 			
