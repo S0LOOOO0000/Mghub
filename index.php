@@ -65,7 +65,7 @@
         .input-group {
             margin-bottom: 20px;
             width: 100%;
-            max-width: 320px;
+            max-width: 330px;
             text-align: left;
             position: relative;
         }
@@ -85,7 +85,7 @@
         }
 
         .input-group input {
-            width: 300px;
+            width: 330px;
             padding: 16px 18px;
             border: 2px solid #e2e8f0;
             border-radius: 12px;
@@ -127,7 +127,7 @@
 
         .input-group .password-toggle-btn {
             position: absolute;
-            right: 28px;
+            right: 15px;
             top: 50%;
             transform: translateY(-50%);
             background: none;

@@ -136,8 +136,8 @@ $user_role = $_SESSION['user_role'];
 							<?php if (!empty($requests)) : ?>
 								<?php 
 								$counter = 1;
-								// Limit to 5 most recent requests for dashboard
-								$dashboardRequests = array_slice($requests, 0, 5);
+								// Show all requests for dashboard with pagination
+								$dashboardRequests = $requests;
 								?>
 								<?php foreach ($dashboardRequests as $row): ?>
 									<tr>
@@ -196,18 +196,10 @@ $user_role = $_SESSION['user_role'];
 					
 					<!-- Pagination Controls -->
 					<div class="table-pagination-container">
-						<div class="pagination-info">
-							<span id="paginationInfo">Showing 1-5 of 5 requests</span>
+						<div class="total-rows" id="paginationInfo">
+							Loading...
 						</div>
-						<div class="pagination-controls">
-							<button id="prevPage" class="pagination-btn" disabled>
-								<i class="material-icons">chevron_left</i>
-							</button>
-							<span id="currentPage" class="current-page">1</span>
-							<button id="nextPage" class="pagination-btn" disabled>
-								<i class="material-icons">chevron_right</i>
-							</button>
-						</div>
+						<div class="table-pagination" id="requestPagination"></div>
 					</div>
 				</div>
 				

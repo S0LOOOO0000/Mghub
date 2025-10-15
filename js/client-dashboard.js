@@ -60,55 +60,113 @@ if (searchButton && searchButtonIcon && searchForm) {
     });
 }
 
-// Client Dashboard Bookings Filtering
+// Client Dashboard Bookings Filtering - Using same design as admin dashboard
 document.addEventListener('DOMContentLoaded', function() {
+    const ROWS_PER_PAGE = 10;
+    
+    // Helper to normalize strings for comparison
+    const normalize = s => (s || "").trim().toLowerCase().replace(/[_\s]+/g, "-");
+    
+    const tbody = document.querySelector('.table-data .order table tbody');
+    const totalRowsEl = document.getElementById('paginationInfo');
+    const paginationEl = document.getElementById('bookingPagination');
     const statusFilter = document.querySelector('.table-data .order .filterStatus');
     const typeFilter = document.querySelector('.table-data .order .filterType');
     
+    const bookingFilters = { status: "all", type: "all" };
+
+    function getFilteredBookingRows() {
+        return Array.from(tbody.querySelectorAll("tr")).filter(row => {
+            // Skip empty state row
+            if (row.querySelector('td[colspan]')) return false;
+            
+            const rowStatus = normalize(row.querySelector('.booking-status span')?.textContent);
+            const rowType = normalize(row.querySelector('.event-type span')?.textContent);
+
+            return (
+                (bookingFilters.status === "all" || rowStatus === bookingFilters.status) &&
+                (bookingFilters.type === "all" || 
+                 (bookingFilters.type === 'birthday' && rowType.includes('birthday')) ||
+                 (bookingFilters.type === 'wedding' && rowType.includes('wedding')) ||
+                 (bookingFilters.type === 'corporate' && rowType.includes('corporate')))
+            );
+        });
+    }
+
+    function renderBookingTable(page = 1) {
+        const rows = getFilteredBookingRows();
+        renderTable(tbody, totalRowsEl, paginationEl, rows, page, ROWS_PER_PAGE, "bookings");
+    }
+
+    // Filter event listeners
     if (statusFilter) {
-        statusFilter.addEventListener('change', filterBookings);
+        statusFilter.addEventListener('change', () => {
+            bookingFilters.status = statusFilter.value.toLowerCase();
+            renderBookingTable();
+        });
     }
+    
     if (typeFilter) {
-        typeFilter.addEventListener('change', filterBookings);
+        typeFilter.addEventListener('change', () => {
+            bookingFilters.type = typeFilter.value.toLowerCase();
+            renderBookingTable();
+        });
     }
+
+    // Generic table render function (same as admin dashboard)
+    function renderTable(tbody, totalEl, paginationEl, rows, page, rowsPerPage, label) {
+        tbody.querySelectorAll("tr").forEach(row => row.style.display = "none");
+
+        const totalPages = Math.max(1, Math.ceil(rows.length / rowsPerPage));
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+
+        rows.slice(start, end).forEach((row, idx) => {
+            row.style.display = "";
+            const numberCell = row.querySelector("td:first-child");
+            if (numberCell) numberCell.textContent = start + idx + 1;
+        });
+
+        totalEl.textContent =
+            rows.length === 0
+                ? `No ${label} found`
+                : `Showing ${start + 1}-${Math.min(end, rows.length)} of ${rows.length} ${label}`;
+
+        renderPagination(paginationEl, totalPages, page, (newPage) => {
+            renderBookingTable(newPage);
+        });
+    }
+
+    // Pagination helper (same as admin dashboard)
+    function renderPagination(container, totalPages, currentPage, onClick) {
+        container.innerHTML = "";
+
+        const createButton = (label, disabled = false, pageNum = null, active = false) => {
+            const btn = document.createElement("button");
+            btn.textContent = label;
+            if (disabled) btn.disabled = true;
+            if (active) btn.classList.add("active");
+            if (pageNum !== null) {
+                btn.addEventListener("click", () => onClick(pageNum));
+            }
+            return btn;
+        };
+
+        // Prev button
+        container.appendChild(createButton("«", currentPage === 1, currentPage - 1));
+
+        // Number buttons
+        for (let i = 1; i <= totalPages; i++) {
+            container.appendChild(createButton(i, false, i, i === currentPage));
+        }
+
+        // Next button
+        container.appendChild(createButton("»", currentPage === totalPages, currentPage + 1));
+    }
+
+    // Initial render
+    if (tbody) renderBookingTable();
 });
-
-function filterBookings() {
-    const statusFilter = document.querySelector('.table-data .order .filterStatus')?.value || 'all';
-    const typeFilter = document.querySelector('.table-data .order .filterType')?.value || 'all';
-
-    document.querySelectorAll('.table-data .order table tbody tr').forEach(row => {
-        // Skip empty state row
-        if (row.querySelector('td[colspan]')) return;
-        
-        const statusCell = row.querySelector('td:nth-child(7) .status');
-        const typeCell = row.querySelector('td:nth-child(3) span');
-        
-        if (!statusCell || !typeCell) return;
-        
-        const status = statusCell.textContent.toLowerCase().trim();
-        const type = typeCell.textContent.toLowerCase().trim();
-        
-        // Status filtering
-        const matchesStatus = statusFilter === 'all' || status === statusFilter.toLowerCase();
-        
-        // Type filtering - map filter values to actual event types
-        let matchesType = typeFilter === 'all';
-        if (typeFilter === 'birthday') {
-            matchesType = type.includes('birthday');
-        } else if (typeFilter === 'wedding') {
-            matchesType = type.includes('wedding');
-        } else if (typeFilter === 'corporate') {
-            matchesType = type.includes('corporate');
-        }
-
-        if (matchesStatus && matchesType) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
-    });
-}
 
 // Todo filtering functionality
 function filterTodos(status) {
