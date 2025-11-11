@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const roleOptions = {
     Cafe: ["Team Leader", "Barista", "Cashier / Waitress", "On-Call", "Head Chef", "Line Cook", "Kitchen Helper"],
     Spa: ["Team Leader / Receptionist", "Massage Therapist", "Nail Technician", "Brow Technician"],
-    Hub: ["Reseller", "Driver", "Repacker", "Quality Assurance"],
+    'Hub': ["Reseller", "Driver", "Repacker", "Quality Assurance"],
   };
 
   function populateRolesByStation(station, selectElem, selectedRole = "") {
