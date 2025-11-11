@@ -3,7 +3,7 @@ require_once __DIR__ . '/../config/database-connection.php';
 require_once __DIR__ . '/../config/phppdf/fpdf.php';
 
 // Stations order
-$stations = ['Cafe', 'Spa', 'Beauty Lounge'];
+$stations = ['Cafe', 'Spa', 'Hub'];
 
 // PDF setup
 $pdf = new FPDF();

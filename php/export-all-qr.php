@@ -7,7 +7,7 @@ require_once __DIR__ . '/../config/phppdf/fpdf.php';
 $stationColors = [
     'Cafe' => [183, 123, 87],        // warm brown
     'Spa' => [0, 150, 136],          // teal
-    'Beauty Lounge' => [233, 30, 99] // pink
+    'Hub' => [233, 30, 99] // pink
 ];
 
 // QR & layout settings
@@ -24,7 +24,7 @@ $pdf = new FPDF('P', 'mm', 'A4');
 $pdf->SetAutoPageBreak(true, 10);
 
 // Stations order
-$stations = ['Cafe', 'Spa', 'Beauty Lounge'];
+$stations = ['Cafe', 'Spa', 'Hub'];
 $shifts = ['Morning', 'Mid', 'Night', 'Fixed'];
 
 foreach ($stations as $station) {

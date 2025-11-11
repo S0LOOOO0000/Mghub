@@ -24,7 +24,7 @@ $stationColors = [
     'All Station' => ['title' => [79, 129, 189], 'header' => [198, 224, 255]],      // Blue tones
     'Cafe' => ['title' => [183, 123, 87], 'header' => [239, 222, 205]],             // Warm brown tones
     'Spa' => ['title' => [0, 150, 136], 'header' => [204, 242, 238]],               // Teal tones
-    'Beauty Lounge' => ['title' => [233, 30, 99], 'header' => [255, 204, 221]]      // Pink tones
+    'Hub' => ['title' => [233, 30, 99], 'header' => [255, 204, 221]]      // Pink tones
 ];
 
 function styleSheet($sheet, $highestRow, $titleColorRGB, $headerColorRGB) {
@@ -62,7 +62,7 @@ $stations = [
     'All Station' => null,
     'Cafe' => 'Cafe',
     'Spa' => 'Spa',
-    'Beauty Lounge' => 'Beauty Lounge'
+    'Hub' => 'Hub'
 ];
 
 foreach ($stations as $sheetName => $station) {

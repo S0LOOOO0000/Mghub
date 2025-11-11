@@ -5,18 +5,6 @@
 
             
             <h3>Filtered By:</h3>
-            <!-- Status Dropdown -->
-            <div class="custom-dropdown" data-filter="employee-status">
-            <button type="button" class="dropdown-toggle">
-                Status: <i class="material-icons dropdown-icon">expand_more</i>
-            </button>
-            <ul class="dropdown-menu">
-                <li data-value="all">All</li>
-                <li data-value="active">Active</li>
-                <li data-value="inactive">Inactive</li>
-                <li data-value="new">New</li>
-            </ul>
-            </div>
             <!-- Shift Dropdown -->
             <div class="custom-dropdown" data-filter="employee-shift">
                 <button type="button" class="dropdown-toggle">
@@ -40,7 +28,7 @@
                     <li data-value="all">All</li>
                     <li data-value="cafe">Cafe</li>
                     <li data-value="spa">Spa</li>
-                    <li data-value="beauty-lounge">Beauty Lounge</li>
+                    <li data-value="hub">Hub</li>
                 </ul>
             </div>
 

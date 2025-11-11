@@ -54,7 +54,7 @@ $error = $_GET['error'] ?? null;
                 <option value="">-- Select Work Station --</option>
                 <option value="Cafe">Cafe</option>
                 <option value="Spa">Spa</option>
-                <option value="Beauty Lounge">Beauty Lounge</option>
+                <option value="Hub">Hub</option>
             </select>
 
             <select id="role" name="role" required>
@@ -138,7 +138,7 @@ $error = $_GET['error'] ?? null;
             <option value="">-- Select Work Station --</option>
             <option value="Cafe">Cafe</option>
             <option value="Spa">Spa</option>
-            <option value="Beauty Lounge">Beauty Lounge</option>
+            <option value="Hub">Hub</option>
           </select>
 
           <select id="edit_role" name="role" required>
