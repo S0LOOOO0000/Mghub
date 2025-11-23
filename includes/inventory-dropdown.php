@@ -37,6 +37,5 @@ if (!isset($branchCategories)) {
         <li data-value="in-stock">In Stock</li>
         <li data-value="low-stock">Low Stock</li>
         <li data-value="out-of-stock">Out of Stock</li>
-        <li data-value="overstock">Overstock</li>
     </ul>
 </div>

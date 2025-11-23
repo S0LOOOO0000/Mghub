@@ -100,8 +100,10 @@ include __DIR__ . '/../php/get-employee.php';
                                                         <td class="emp-code"><?= htmlspecialchars($row['employee_code']); ?></td>
 
                                                         <td class="emp-image">
-                                                            <img src="<?= !empty($row['employee_image']) ? '../images/employee-photos/' . htmlspecialchars($row['employee_image']) : 'https://placehold.co/50x50.png'; ?>" 
-                                                                width="50" height="50" class="preview-img">
+                                                            <img src="<?= !empty($row['employee_image']) 
+                                                            ? '../images/employee-photos/' . htmlspecialchars($row['employee_image']) 
+                                                            : '../images/default-avatar.png'; ?>"
+                                                        width="50" height="50" class="preview-img">
                                                         </td>
 
                                                         <td class="emp-name">

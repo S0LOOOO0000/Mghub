@@ -171,6 +171,7 @@ $conn->close();
 <script src="../js/dashboard.js"></script>
 <script src="../js/inventory.js"></script>
 <script src="../js/activity-logs.js"></script>
+<script src="../js/activity-log-search.js"></script>
 
 </body>
 </html>

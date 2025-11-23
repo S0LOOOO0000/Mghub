@@ -79,18 +79,37 @@ $error = $_GET['error'] ?? null;
           <tbody>
             <?php if(!empty($employees)): $counter=1; ?>
               <?php foreach($employees as $emp): ?>
-                <tr data-employee-id="<?= $emp['employee_id'] ?>">
-                  <td><?= $counter++ ?></td>
-                  <td><?= htmlspecialchars($emp['employee_code']) ?></td>
-                  <td>
-                    <img src="<?= !empty($emp['employee_image']) ? '../images/employee-photos/' . htmlspecialchars($emp['employee_image']) : 'https://placehold.co/50x50.png' ?>" width="50">
-                  </td>
-                  <td><?= htmlspecialchars($emp['first_name'].' '.$emp['last_name']) ?><br><?= htmlspecialchars($emp['email_address']) ?></td>
-                  <td><?= htmlspecialchars($emp['contact_number']) ?></td>
-                  <td><?= htmlspecialchars($emp['work_station'].' / '.$emp['role']) ?></td>
-                  <td><span class="shift <?= strtolower($emp['shift']) ?>"><?= htmlspecialchars($emp['shift']) ?></span></td>
-                  <td><?= date("F j, Y", strtotime($emp['created_at'])) ?></td>
-                </tr>
+               <tr data-employee-id="<?= $emp['employee_id'] ?>">
+                <td><?= $counter++ ?></td>
+                <td><?= htmlspecialchars($emp['employee_code']) ?></td>
+                <td>
+                    <img src="<?= !empty($emp['employee_image']) 
+                        ? '../images/employee-photos/' . htmlspecialchars($emp['employee_image']) 
+                        : '../images/default-avatar.png'; ?>" 
+                    width="50" class="preview-img">
+                </td>
+
+                <td class="emp-name">
+                  <?= htmlspecialchars($emp['first_name'].' '.$emp['last_name']) ?><br>
+                  <?= htmlspecialchars($emp['email_address']) ?>
+                </td>
+
+                <td><?= htmlspecialchars($emp['contact_number']) ?></td>
+
+                <!-- FIXED STATION + ROLE -->
+                <td class="emp-station">
+                  <span><?= htmlspecialchars($emp['work_station']) ?></span>
+                  <p><?= htmlspecialchars($emp['role']) ?></p>
+                </td>
+
+              <td class="emp-shift">
+                  <span class="shift <?= strtolower($emp['shift']) ?>">
+                    <?= htmlspecialchars($emp['shift']) ?>
+                  </span>
+              </td>
+
+                <td><?= date("F j, Y", strtotime($emp['created_at'])) ?></td>
+              </tr>
               <?php endforeach; ?>
             <?php else: ?>
               <tr><td colspan="9">No employees found</td></tr>
@@ -204,5 +223,8 @@ $error = $_GET['error'] ?? null;
 
     <script src="../js/dashboard.js"></script>
     <script src="../js/request.js"></script>
+    <script src="../js/dropdown.js"> </script>
+    <script src="../js/filter.js"> </script>
+    <script src="../js/employee.js"> </script>
 </body>
 </html>

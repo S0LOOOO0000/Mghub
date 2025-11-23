@@ -97,7 +97,11 @@ $conn->close();
                   </td>
                   <td><?= htmlspecialchars($row['customer_contact']); ?></td>
                   <td><?= htmlspecialchars($row['event_name']); ?></td>
-                  <td><?= htmlspecialchars($row['event_description']); ?></td>
+                  <td class="reason-text truncated" title="<?= htmlspecialchars($row['event_description']); ?>">
+                      <?= htmlspecialchars(strlen($row['event_description']) > 30 
+                          ? substr($row['event_description'], 0, 30) . '...' 
+                          : $row['event_description']); ?>
+                  </td>
                   <td><?= date("F j, Y h:i A", strtotime($row['event_date'].' '.$row['event_time'])); ?></td>
                   <td class="req-status">
                     <span class="<?= strtolower($row['event_status']); ?>">
