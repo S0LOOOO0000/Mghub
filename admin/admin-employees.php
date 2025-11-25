@@ -195,7 +195,7 @@ include __DIR__ . '/../php/get-employee.php';
                             
                 </div>
 
-                    <!-- All Employee Modal (Add, Edit, Delete, Image & QRcode Preasdasdasdview) -->
+                    <!-- All Employee Modalsadasd (Add, Edit, Delete, Image & QRcode Preasdasdasdview) -->
                     <?php include '../includes/employee-modal.php'; ?>
 <!-- All Employee Modal (Add, Edit, Delete, Image & QRcode Preview) -->
             <!-- All Employee Modal (Add, Edit, Delete, Image & QRcode Preview) -->
