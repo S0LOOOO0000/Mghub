@@ -19,6 +19,8 @@ include __DIR__ . '/../php/get-inventory.php';
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
 <link rel="stylesheet" href="../css/components/inventory-tab.css">
+<link rel="stylesheet" href="../css/components/small-modal.css">
+
 
 </head>
 <body data-role="<?= $_SESSION['user_role'] ?>">
@@ -67,9 +69,17 @@ include __DIR__ . '/../php/get-inventory.php';
                 <h2>Inventory Management</h2>
                 <?php include '../includes/inventory-dropdown.php' ?>
                 
-                <button type="button" class="btn-add" id="openInventoryModal">
-                    <i class="material-icons icon-add">add</i> Add Item
-                </button>
+
+                <div class="gap"></div>
+                <!-- Export Button -->
+                <div class="custom-dropdown export-dropdown">
+                    <button type="button" class="dropdown-toggle">
+                        Export <i class="material-icons dropdown-icon">expand_more</i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li data-export="excel">Export Excel</li>
+                    </ul>
+                </div>
 
                 <button type="button" class="btn-add" id="openInventoryModal">
                     <i class="material-icons icon-add">add</i> Add Item
@@ -135,6 +145,25 @@ include __DIR__ . '/../php/get-inventory.php';
         </div>
     </div>
 
+
+
+
+<!-- Download Modal (for employee & inventory) -->
+<div id="downloadModal" class="confirmation-modal">
+  <div class="modal-contents">
+    <div class="head">
+      <h3 id="downloadModalTitle">Export Inventory</h3>
+      <span class="close-btn" id="closeDownloadModal">&times;</span>
+    </div>
+    <p id="downloadModalMessage">Do you want to export all inventory data to Excel?</p>
+    <div class="modal-actions">
+      <button type="button" class="btn-cancel" id="cancelDownloadBtn">Cancel</button>
+      <button type="button" class="btn-danger" id="confirmDownloadBtn">Export</button>
+    </div>
+  </div>
+</div>
+
+
 <?php
 // Define categories for each branch
 $allCategories = [
@@ -159,7 +188,7 @@ include '../includes/inventory-modal.php';
 <script src="../js/dropdown.js"></script>
 <script src="../js/dashboard.js"></script>
 <script src="../js/inventory.js"></script>
-
+<script src="../js/export-inventory.js"></script>
 
 <script>
 function switchBranch(branch) {
@@ -167,6 +196,7 @@ function switchBranch(branch) {
     window.location.href = "admin-inventory.php?branch=" + encodeURIComponent(branch);
 }
 </script>
+
 
 </body>
 </html>
