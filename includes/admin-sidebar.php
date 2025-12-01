@@ -64,7 +64,7 @@
 
 
     <div class="modal-overlay" id="accountModal">
-        <div class="modal">
+        <div class="user-account-modal">
             <h2 class="modal-title">Change Password</h2>
             <p class="modal-description">
                 To change your password, please enter your current password and then provide a new one. 

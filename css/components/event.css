@@ -3,6 +3,7 @@
 ============================== */
 .container {
   display: flex;
+  
   flex-direction: column;
   margin-top: 24px;
   background-color: var(--secondary-bg-color);
@@ -160,6 +161,8 @@
 /* Calendar Header */
 .calendar-header {
     display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
