@@ -76,13 +76,13 @@ $user_role = $_SESSION['user_role'];
 							<p>Employees</p>
 						</span>
 					</li>
-					<li>
-						<i class="material-icons icon-card two">inventory_2</i>
-						<span class="text">
-							<h3><?= $totalInventory; ?></h3>
-							<p>Inventory</p>
-						</span>
-					</li>
+    <li>
+        <i class="material-icons icon-card two">inventory_2</i>
+        <span class="text">
+            <h3><?= $totalInventoryAll; ?></h3>
+            <p>Inventory</p>
+        </span>
+    </li>
 					<li>
 						<i class="material-icons icon-card three">event</i>
 						<span class="text">

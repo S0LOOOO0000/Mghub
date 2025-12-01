@@ -52,7 +52,7 @@ include __DIR__ . '/../php/get-inventory.php';
 
             <div class="inventory-tabs">
                 <button class="tab-btn <?= ($branch === 'MG Cafe') ? 'active' : '' ?>"
-                        onclick="switchBranch('MG Cafe')">MG Café</button>
+                        onclick="switchBranch('MG Cafe')">MG Cafe</button>
 
                 <button class="tab-btn <?= ($branch === 'MG Hub') ? 'active' : '' ?>"
                         onclick="switchBranch('MG Hub')">MG Hub</button>
@@ -66,6 +66,11 @@ include __DIR__ . '/../php/get-inventory.php';
             <div class="head">
                 <h2>Inventory Management</h2>
                 <?php include '../includes/inventory-dropdown.php' ?>
+                
+                <button type="button" class="btn-add" id="openInventoryModal">
+                    <i class="material-icons icon-add">add</i> Add Item
+                </button>
+
                 <button type="button" class="btn-add" id="openInventoryModal">
                     <i class="material-icons icon-add">add</i> Add Item
                 </button>
