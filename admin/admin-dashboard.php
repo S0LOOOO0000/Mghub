@@ -43,12 +43,14 @@ $user_role = $_SESSION['user_role'];
                 <!-- Menu Icon -->
                 <i class="material-icons icon-menu">menu</i>
                 <!-- Searchbar -->
-                <form action="#">
-                    <div class="form-input">
-                        <input type="search" placeholder="Search...">
-                        <button type="submit" class="search-btn"><i class='material-icons search-icon' >search</i></button>
-                    </div>
-                </form>
+<form action="#">
+    <div class="form-input">
+        <input type="search" id="requestSearch" placeholder="Search requests...">
+        <button type="submit" class="search-btn">
+            <i class='material-icons search-icon'>search</i>
+        </button>
+    </div>
+</form>
                 <!-- Notification Bell and Profile -->
                 <?php include '../includes/admin-navbar.php'; ?>
             </nav>
@@ -255,6 +257,27 @@ $user_role = $_SESSION['user_role'];
 
 	<?php include '../includes/preview-request-modal.php'; ?>						
 	<?php include '../includes/request-approval-modal.php'; ?>
+
+
+
+	<script>
+		document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.getElementById("requestSearch");
+    const tableRows = document.querySelectorAll(".order table tbody tr");
+
+    if (!searchInput) return;
+
+    searchInput.addEventListener("keyup", () => {
+        const query = searchInput.value.toLowerCase().trim();
+
+        tableRows.forEach(row => {
+            const rowText = row.innerText.toLowerCase();
+            row.style.display = rowText.includes(query) ? "" : "none";
+        });
+    });
+});
+	</script>
+
 
 	<script src="../js/dashboard.js?v=2"></script>
 	<script src="../js/dropdown.js"> </script>

@@ -29,12 +29,12 @@ include __DIR__ . '/../php/get-inventory.php';
 <section class="content">
 <nav>
     <i class="material-icons icon-menu">menu</i>
-    <form action="#">
-        <div class="form-input">
-            <input type="search" placeholder="Search...">
-            <button type="submit" class="search-btn"><i class="material-icons search-icon">search</i></button>
-        </div>
-    </form>
+<form onsubmit="return false;">
+    <div class="form-input">
+        <input type="search" id="inventorySearch" placeholder="Search item...">
+        <button type="button" class="search-btn"><i class="material-icons search-icon">search</i></button>
+    </div>
+</form>
     <?php include '../includes/admin-navbar.php'; ?>
 </nav>
 

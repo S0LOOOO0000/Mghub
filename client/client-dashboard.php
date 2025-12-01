@@ -41,12 +41,14 @@ $user_role = $_SESSION['user_role'];
                 <!-- Menu Icon -->
                 <i class="material-icons icon-menu">menu</i>
                 <!-- Searchbar -->
-                <form action="#">
-                    <div class="form-input">
-                        <input type="search" placeholder="Search...">
-                        <button type="submit" class="search-btn"><i class='material-icons search-icon' >search</i></button>
-                    </div>
-                </form>
+<form action="#">
+    <div class="form-input">
+        <input type="search" id="bookingSearch" placeholder="Search bookings...">
+        <button type="submit" class="search-btn">
+            <i class='material-icons search-icon'>search</i>
+        </button>
+    </div>
+</form>
                 <!-- Notification Bell and Profile -->
                 <?php include '../includes/admin-navbar.php'; ?>
             </nav>
@@ -108,12 +110,7 @@ $user_role = $_SESSION['user_role'];
 						<option value="Cancelled">Cancelled</option>
 					</select>
 					
-					<select class="filterType">
-						<option value="all">All Types</option>
-						<option value="birthday">Birthday Party</option>
-						<option value="wedding">Wedding</option>
-						<option value="corporate">Corporate Event</option>
-					</select>
+
 				</div>
 				<table>
 					<thead>
@@ -149,8 +146,7 @@ $user_role = $_SESSION['user_role'];
 										<span><?= date("M j, Y", strtotime($event['event_date'])); ?></span>
 										<p><?= date("g:i A", strtotime($event['event_time'])); ?></p>
 									</td>
-									<td>Standard Package</td>
-									<td>50-100 guests</td>
+
 									<td class="booking-status">
 										<span class="status <?= strtolower($event['event_status']); ?>">
 											<?= htmlspecialchars($event['event_status']); ?>
@@ -211,6 +207,23 @@ $user_role = $_SESSION['user_role'];
 		const DASHBOARD_STATION = 'Cafe';
 		const DASHBOARD_USER_ID = <?php echo $_SESSION['user_id']; ?>;
 	</script>
+
+<script>document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.getElementById("bookingSearch");
+    const tableRows = document.querySelectorAll("table tbody tr");
+
+    if (!searchInput) return;
+
+    searchInput.addEventListener("keyup", () => {
+        const query = searchInput.value.toLowerCase().trim();
+
+        tableRows.forEach(row => {
+            const rowText = row.innerText.toLowerCase();
+            row.style.display = rowText.includes(query) ? "" : "none";
+        });
+    });
+});
+</script>
 
 	<script src="../js/dropdown.js"> </script>
     <script src="https://unpkg.com/html5-qrcode"></script>

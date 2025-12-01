@@ -150,3 +150,30 @@ document.addEventListener("DOMContentLoaded", () => {
   // Watch for dynamic changes (e.g., AJAX)
   new MutationObserver(renderTable).observe(tbody, { childList: true });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.getElementById("inventorySearch");
+    const rows = document.querySelectorAll("tbody tr");
+
+    searchInput.addEventListener("keyup", () => {
+        const q = searchInput.value.toLowerCase().trim();
+
+        rows.forEach(row => {
+            const name = row.querySelector("td:nth-child(2)")?.innerText.toLowerCase() || "";
+            const qty = row.querySelector("td:nth-child(3)")?.innerText.toLowerCase() || "";
+            const category = row.querySelector("td:nth-child(4)")?.innerText.toLowerCase() || "";
+            const status = row.querySelector("td:nth-child(5)")?.innerText.toLowerCase() || "";
+            const created = row.querySelector("td:nth-child(6)")?.innerText.toLowerCase() || "";
+
+            // Search matching ANY column
+            const matches =
+                name.includes(q) ||
+                qty.includes(q) ||
+                category.includes(q) ||
+                status.includes(q) ||
+                created.includes(q);
+
+            row.style.display = matches ? "" : "none";
+        });
+    });
+});

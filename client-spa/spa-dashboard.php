@@ -42,11 +42,14 @@ $user_role = $_SESSION['user_role'];
                 <i class="material-icons icon-menu">menu</i>
                 <!-- Searchbar -->
                 <form action="#">
-                    <div class="form-input">
-                        <input type="search" placeholder="Search...">
-                        <button type="submit" class="search-btn"><i class='material-icons search-icon' >search</i></button>
-                    </div>
-                </form>
+<form onsubmit="return false;">
+    <div class="form-input">
+        <input type="search" id="dashboardInventorySearch" placeholder="Search inventory...">
+        <button type="button" class="search-btn">
+            <i class='material-icons search-icon'>search</i>
+        </button>
+    </div>
+</form>
                 <!-- Notification Bell and Profile -->
                 <?php include '../includes/admin-navbar.php'; ?>
             </nav>
@@ -175,6 +178,25 @@ $user_role = $_SESSION['user_role'];
 	<script>
 		const DASHBOARD_STATION = 'Spa';
 		const DASHBOARD_USER_ID = <?php echo $_SESSION['user_id']; ?>;
+	</script>
+
+
+	<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.getElementById("dashboardInventorySearch");
+    const items = document.querySelectorAll(".inventory-item");
+
+    if (!searchInput) return;
+
+    searchInput.addEventListener("keyup", () => {
+        const query = searchInput.value.toLowerCase().trim();
+
+        items.forEach(item => {
+            const text = item.innerText.toLowerCase();
+            item.style.display = text.includes(query) ? "" : "none";
+        });
+    });
+});
 	</script>
 
 	<script src="../js/dropdown.js"> </script>
