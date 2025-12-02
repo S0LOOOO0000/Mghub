@@ -70,7 +70,7 @@ $error = $_GET['error'] ?? null;
       <span class="close-btn">&times;</span>
     </div>
 
-    <form method="POST" action="../php/request-change-shift.php">
+    <form class="form-container" method="POST" action="../php/request-change-shift.php">
       <input type="hidden" id="change_request_employee_id" name="employee_id">
 
       <div class="form-group">
